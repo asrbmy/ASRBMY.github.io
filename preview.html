@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ajit Singh Rathore | ASRBMY</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:#050510;
+color:white;
+overflow-x:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+padding:20px 10%;
+backdrop-filter:blur(10px);
+}
+
+.logo{
+font-size:20px;
+color:#00ffff;
+}
+
+nav ul{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+transition:.3s;
+}
+
+nav a:hover{
+color:#00ffff;
+}
+
+/* HERO */
+
+.hero{
+height:90vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+.hero h1{
+font-size:60px;
+background:linear-gradient(90deg,#00ffff,#ff00ff);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.hero h2{
+margin-top:10px;
+font-size:22px;
+color:#aaa;
+}
+
+.hero p{
+max-width:600px;
+margin-top:20px;
+color:#ccc;
+}
+
+.btn{
+margin-top:30px;
+padding:12px 30px;
+border:1px solid #00ffff;
+color:#00ffff;
+text-decoration:none;
+transition:.3s;
+}
+
+.btn:hover{
+background:#00ffff;
+color:black;
+}
+
+/* SECTIONS */
+
+section{
+padding:100px 10%;
+}
+
+.section-title{
+font-size:40px;
+margin-bottom:40px;
+color:#00ffff;
+}
+
+/* CARDS */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:10px;
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+border:1px solid #00ffff;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+color:#888;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<nav>
+<div class="logo">ASRBMY</div>
+<ul>
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#achievements">Achievements</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+
+<section class="hero">
+
+<h1>Ajit Singh Rathore</h1>
+<h2>Cyber Security • AI • Robotics</h2>
+
+<p>
+17 year old developer passionate about ethical hacking,
+cryptography, artificial intelligence and robotics.
+National 2nd Position winner in AI VidyaSetu Hackathon.
+</p>
+
+<a href="mailto:asrbmy@gmail.com" class="btn">Contact Me</a>
+
+</section>
+
+<section id="about">
+
+<h2 class="section-title">About Me</h2>
+
+<div class="card">
+<p>
+Hi, I'm Ajit Singh Rathore also known as <b>ASRBMY</b> on the internet.
+I am a cybersecurity and AI enthusiast from Rajasthan, India.
+
+I love working on cryptography, ethical hacking,
+OSINT investigations and robotics projects.
+
+My goal is to build innovative technology that solves
+real-world problems.
+</p>
+</div>
+
+</section>
+
+<section id="skills">
+
+<h2 class="section-title">Skills</h2>
+
+<div class="grid">
+
+<div class="card">HTML / CSS / JavaScript</div>
+<div class="card">Python</div>
+<div class="card">Cyber Security</div>
+<div class="card">Cryptography</div>
+<div class="card">Artificial Intelligence</div>
+<div class="card">Robotics</div>
+
+</div>
+
+</section>
+
+<section id="achievements">
+
+<h2 class="section-title">Achievements</h2>
+
+<div class="grid">
+
+<div class="card">
+🏆 National 2nd Position<br>
+AI VidyaSetu Hackathon (KVS)
+</div>
+
+<div class="card">
+🏆 Winner<br>
+AI VidyaSetu State & National
+</div>
+
+<div class="card">
+🏆 Winner<br>
+APS Hackathon
+</div>
+
+<div class="card">
+🚀 Participation<br>
+iStart Rajasthan Innovation Ecosystem
+</div>
+
+</div>
+
+</section>
+
+<section id="projects">
+
+<h2 class="section-title">Projects</h2>
+
+<div class="grid">
+
+<div class="card">
+Cyber Security Toolkit
+</div>
+
+<div class="card">
+OSINT Investigation Tool
+</div>
+
+<div class="card">
+AI Automation Projects
+</div>
+
+</div>
+
+</section>
+
+<section id="contact">
+
+<h2 class="section-title">Contact</h2>
+
+<div class="card">
+
+Email: asrbmy@gmail.com <br><br>
+
+LinkedIn:<br>
+<a href="https://www.linkedin.com/in/asrbmy/" style="color:#00ffff">
+linkedin.com/in/asrbmy
+</a>
+
+<br><br>
+
+GitHub:<br>
+<a href="https://asrbmy.github.io" style="color:#00ffff">
+asrbmy.github.io
+</a>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Ajit Singh Rathore | ASRBMY
+
+</footer>
+
+<script>
+
+/* futuristic particles */
+
+const canvas=document.getElementById("bg")
+const ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let particles=[]
+
+for(let i=0;i<100;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2,
+dx:Math.random()*1,
+dy:Math.random()*1
+})
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+particles.forEach(p=>{
+ctx.beginPath()
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+ctx.fillStyle="#00ffff"
+ctx.fill()
+
+p.x+=p.dx
+p.y+=p.dy
+
+if(p.x>canvas.width)p.x=0
+if(p.y>canvas.height)p.y=0
+})
+
+requestAnimationFrame(animate)
+}
+
+animate()
+
+</script>
+
+</body>
+</html>
