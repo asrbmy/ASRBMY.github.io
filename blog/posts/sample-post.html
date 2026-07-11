@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample write-up — Ajit Singh Rathore (ASRBMY)</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="description" content="A placeholder write-up explaining how the blog template works.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://asrbmy.github.io/blog/posts/sample-post.html">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>04 Jul 2026</span><span>2 min read</span></div>
+  <h1>Sample write-up — replace me</h1>
+</main>
+
+<article class="post-body">
+  <p class="muted">This is a placeholder post so the blog page has something to show. It also doubles as a quick guide to publishing your own.</p>
+
+  <h2>How this blog works</h2>
+  <p>Every post is a plain HTML file living in <code>/blog/posts/</code>. There's no backend, database, or build step — GitHub Pages serves each file directly, and this listing page just reads metadata from <code>/blog/posts.js</code> to build the cards and filter chips.</p>
+
+  <h2>Publishing a new write-up</h2>
+  <ul>
+    <li>Copy <code>/blog/post-template.html</code> into <code>/blog/posts/your-slug.html</code></li>
+    <li>Replace the title, date, and body content inside it</li>
+    <li>Add a matching entry to the <code>POSTS</code> array in <code>/blog/posts.js</code></li>
+    <li>Commit and push — it appears on the listing page automatically, sorted by date</li>
+  </ul>
+
+  <h2>Tags and filtering</h2>
+  <p>Whatever you put in a post's <code>tags</code> array in <code>posts.js</code> automatically becomes a filter chip on the listing page — no extra setup needed.</p>
+
+  <blockquote>Once you've published a real write-up, delete this file and remove its entry from posts.js.</blockquote>
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defending Against Malicious Extensions — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="Defending Against Malicious Extensions">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>13 Mar 2026</span><span>8 min read</span></div>
+  <h1>Defending Against Malicious Extensions</h1>
+</main>
+
+<article class="post-body">
+<h1 id="defending-against-malicious-ai-conversation-capturing-browser-extensions">Defending Against Malicious AI-Conversation-Capturing Browser Extensions</h1>
+<h2 id="a-guide-for-security-teams">A Guide for Security Teams</h2>
+<h3 id="overview">Overview</h3>
+<p>A class of browser extensions can passively observe and exfiltrate content from AI chat platforms (ChatGPT, Claude, Gemini, etc.) using only commonly-granted permissions. Because these extensions require no special access beyond what many legitimate tools already request, traditional permission-based review is often insufficient on its own. This guide outlines detection, prevention, and policy controls organizations can put in place.</p>
+<hr>
+<h3 id="1-extension-governance">1. Extension Governance</h3>
+<p><strong>Maintain an allowlist for managed browsers.</strong> Rather than relying on a blocklist (which can never be complete), configure managed Chrome/Edge/Firefox policies to permit only extensions explicitly approved by IT/security. This is the single most effective control against this entire class of threat.</p>
+<ul><li>Chrome: <code>ExtensionInstallAllowlist</code> / <code>ExtensionInstallBlocklist</code> via Chrome Enterprise policy</li><li>Edge: equivalent <code>ExtensionInstallAllowlist</code> policy via Microsoft Endpoint Manager / Group Policy</li><li>Firefox: <code>ExtensionSettings</code> policy in <code>policies.json</code> or via an enterprise management platform</li></ul>
+<p><strong>Review permissions, not just names.</strong> Any extension requesting &quot;Read and change all your data on websites you visit&quot; (host permission <code>&lt;all_urls&gt;</code> or broad wildcard matches) should receive heightened scrutiny, especially if the extension&#39;s stated purpose doesn&#39;t obviously require full-page access (e.g., a &quot;PDF tool&quot; that also wants access to AI chat domains).</p>
+<p><strong>Pay attention to <code>content_scripts</code> <code>matches</code> fields.</strong> An extension whose manifest specifically targets <code>claude.ai</code>, <code>chatgpt.com</code>, <code>gemini.google.com</code>, or other AI platforms — but whose advertised functionality has nothing to do with those sites — is a strong red flag.</p>
+<p><strong>Re-review on update.</strong> Extensions can change behavior and permissions after initial approval via auto-update. Periodically re-audit installed extensions, particularly after version changes, and monitor for permission scope increases.</p>
+<hr>
+<h3 id="2-network-level-detection-and-controls">2. Network-Level Detection and Controls</h3>
+<p><strong>Monitor for unexpected outbound connections from browser processes.</strong> The exfiltration step in this technique class typically involves the browser&#39;s background/service-worker process making HTTP requests to:</p>
+<ul><li><code>localhost</code> / loopback addresses on non-standard ports</li><li>Tunneling services (e.g., <code>*.ngrok-free.app</code>, <code>*.trycloudflare.com</code>, <code>*.loca.lt</code>, similar dynamic-DNS tunnel providers)</li><li>Newly-registered or low-reputation domains</li></ul>
+<p><strong>Recommended controls:</strong></p>
+<ul><li>Egress filtering/proxy rules that flag or block connections to known tunneling-service domains from endpoint browsers, especially outside of approved developer use cases.</li><li>DNS monitoring for lookups to dynamic tunnel domains correlated with browser process activity.</li><li>Alerting on browser extension service workers initiating POST requests to destinations not present in the extension&#39;s declared <code>host_permissions</code>.</li></ul>
+<p><strong>Content Security Policy (CSP) considerations:</strong> CSP headers set by the AI platform itself generally cannot prevent this technique, because the extension&#39;s background script operates outside the page&#39;s CSP context (browser extensions are exempt from page CSP in most browsers for their own background/service-worker network calls). CSP hardening on the AI platform side is not a reliable mitigation for this specific technique — defenses need to focus on the browser/extension layer instead.</p>
+<hr>
+<h3 id="3-endpoint-and-browser-configuration">3. Endpoint and Browser Configuration</h3>
+<p><strong>Use separate browser profiles for sensitive work.</strong> Maintain a dedicated, tightly-controlled browser profile (with minimal or zero non-essential extensions) for work involving credentials, proprietary code, or sensitive AI-assisted tasks. General-purpose browsing with consumer extensions should be isolated in a separate profile or browser entirely.</p>
+<p><strong>Disable developer mode / unpacked extension loading on managed endpoints.</strong> Many proof-of-concept and malicious extensions rely on &quot;Load unpacked extension&quot; via developer mode. Disabling this via enterprise policy (<code>Extensions.DeveloperModeAllowed</code> or equivalent) closes off a common distribution path for internally-distributed or sideloaded malicious tooling.</p>
+<p><strong>Enforce Manifest V3 minimums and monitor for excessive <code>host_permissions</code>.</strong> While MV3 reduced some classes of abuse (e.g., remote code execution via <code>eval</code>), it does not prevent DOM observation or background-script network calls. Don&#39;t treat &quot;MV3-compliant&quot; as equivalent to &quot;safe.&quot;</p>
+<hr>
+<h3 id="4-detection-heuristics-for-security-teams">4. Detection Heuristics for Security Teams</h3>
+<p>Indicators that may suggest an extension is performing this type of capture:</p>
+<ul><li>A content script with <code>matches</code> entries for <code>claude.ai</code>, <code>chatgpt.com</code>, <code>gemini.google.com</code>, <code>copilot.microsoft.com</code>, or similar AI domains, in an extension not specifically marketed as an AI tool.</li><li>A <code>background</code> service worker that makes <code>fetch</code>/<code>XMLHttpRequest</code> calls shortly after DOM mutations on these domains.</li><li><code>host_permissions</code> entries pointing to <code>localhost</code>, loopback addresses, or tunneling-service wildcard domains.</li><li>Use of <code>MutationObserver</code> (or similar DOM-watching APIs) combined with selectors that reference chat-message containers, user/assistant message roles, or &quot;stop generating&quot; type controls.</li><li>Extensions that request account/profile information (e.g., reading elements that display the logged-in username or email) without a clear product justification.</li></ul>
+<p>These are useful signals for manual code review or automated static analysis of extension source, not reliable real-time detection on their own — code review of unpacked/CRX contents during the approval process remains the most effective check.</p>
+<hr>
+<h3 id="5-user-education">5. User Education</h3>
+<p>Train users on the following points as part of security awareness programs:</p>
+<ul><li><strong>AI chat conversations are not a secure channel.</strong> Treat anything pasted into an AI chatbot as though it were sent over an unencrypted connection — because, from a browser-extension standpoint, it effectively is.</li><li><strong>Never paste live credentials, API keys, tokens, or connection strings into AI chat interfaces</strong> — even temporarily, even for &quot;just debugging.&quot; Use placeholder values or redact secrets before pasting.</li><li><strong>Extension permission prompts deserve a second look</strong>, especially &quot;read and change all your data on websites you visit.&quot; This phrasing is common, but its implications are broad.</li><li><strong>Fewer extensions is safer.</strong> Periodically uninstall extensions that are no longer actively used.</li><li><strong>Report unusual extension behavior</strong> (e.g., unexpected pop-ups, unfamiliar icons appearing after an update) to IT/security promptly.</li></ul>
+<hr>
+<h3 id="6-incident-response-considerations">6. Incident Response Considerations</h3>
+<p>If a malicious extension of this type is identified in the environment:</p>
+<ol><li>Identify all endpoints with the extension installed via EDR/MDM inventory.</li><li>Treat any credentials, API keys, or secrets that may have been pasted into AI chat tools on affected endpoints as potentially compromised — rotate them.</li><li>Review network logs for outbound traffic to the exfiltration endpoint (tunneling domains, unfamiliar IPs/ports) to establish exposure timeline.</li><li>Remove the extension via managed policy push, and add its extension ID to the enterprise blocklist.</li><li>Audit how the extension was installed (official store, sideload, group policy gap) to close the distribution gap.</li></ol>
+<hr>
+<h3 id="summary-checklist">Summary Checklist</h3>
+<ul><li>[ ] Enterprise extension allowlist enforced on managed browsers</li><li>[ ] Developer mode / unpacked extension loading disabled on managed endpoints</li><li>[ ] Egress monitoring for tunneling-service domains from browser processes</li><li>[ ] Separate browser profiles for sensitive vs. general-purpose use</li><li>[ ] Periodic re-audit of installed extensions and permission changes</li><li>[ ] User training on treating AI chat as an unencrypted channel and never pasting live secrets</li><li>[ ] Incident response runbook updated to cover extension-based AI conversation exfiltration</li></ul>
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"></script>
+</body>
+</html>

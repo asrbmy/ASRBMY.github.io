@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Write-ups — Ajit Singh Rathore (ASRBMY)</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="description" content="Write-ups and notes from Ajit Singh Rathore (ASRBMY) on cyber security, CTFs, OSINT, and AI/robotics projects.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://asrbmy.github.io/blog/">
+<link rel="alternate" type="application/rss+xml" title="ASRBMY Write-ups" href="/rss.xml">
+<meta name="theme-color" content="#0B1220">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Write-ups — Ajit Singh Rathore (ASRBMY)">
+<meta property="og:description" content="Notes and write-ups on cyber security, CTFs, OSINT, and AI/robotics projects.">
+<meta property="og:url" content="https://asrbmy.github.io/blog/">
+<meta property="og:image" content="https://asrbmy.github.io/og-image.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/blog.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../index.html">Portfolio</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="index.html" class="active">Write-ups</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero-small">
+    <span class="eyebrow">● Log archive — write-ups &amp; notes</span>
+    <h1>Notes from the field</h1>
+    <p class="lead">CTF write-ups, OSINT techniques, and things I learn building AI and security projects. New entries logged as they're published.</p>
+    <div class="bp-rule"><span class="tick"></span></div>
+  </section>
+
+  <section>
+    <div class="filter-row" id="filterRow">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <!-- Filter chips are generated from post tags automatically -->
+    </div>
+
+    <div class="post-grid" id="postGrid">
+      <!-- Posts are rendered here by blog.js from posts.js -->
+    </div>
+
+    <div class="card-empty bp" id="emptyState" style="display:none; margin-top:20px;">
+      <span class="status-line">No entries match this filter</span>
+      Try a different tag, or check back once more write-ups are published.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../rss.xml">Subscribe via RSS</a></span>
+    <span><a href="../index.html">← Back to portfolio</a></span>
+  </div>
+</footer>
+
+<script src="posts.js"></script>
+<script src="../assets/blog.js"></script>
+<!-- Privacy-friendly analytics (optional): see index.html for setup notes. -->
+<!-- <script data-goatcounter="https://YOUR-CODE.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script> -->
+</body>
+</html>

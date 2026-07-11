@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — ASRBMY Site CMS</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/blog.css">
+<style>
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;}
+  .tab-btn{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    border:1px solid var(--line); background:var(--panel); color:var(--muted);
+    border-radius:100px; padding:9px 16px; cursor:pointer; transition:all .15s;
+  }
+  .tab-btn:hover{border-color:var(--cyan);}
+  .tab-btn.active{background:var(--cyan); color:#08131A; border-color:var(--cyan); font-weight:600;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .panel{border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); padding:22px; margin-bottom:22px;}
+  .panel h2{font-size:16px; margin-bottom:4px;}
+  .panel .hint{font-size:12px; color:var(--muted); margin-bottom:18px;}
+
+  .form-field{margin-bottom:16px;}
+  .form-field label{
+    display:block; font-family:'JetBrains Mono', monospace; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;
+  }
+  .form-field input, .form-field textarea, .form-field select{
+    width:100%; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink); border-radius:8px; padding:11px 13px;
+    font-family:'Inter', sans-serif; font-size:16px;
+  }
+  .form-field textarea{resize:vertical; min-height:100px; font-family:'JetBrains Mono', monospace; font-size:16px;}
+  .form-field input:focus, .form-field textarea:focus{border-color:var(--cyan);}
+  .row-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .row-3{display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px;}
+  @media (max-width:600px){ .row-2, .row-3{grid-template-columns:1fr;} }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:8px;
+    font-weight:600; font-size:13px; text-decoration:none; border:1px solid transparent;
+    cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--cyan); color:#08131A;}
+  .btn-primary:hover{box-shadow:0 6px 20px rgba(79,209,197,0.25);}
+  .btn-ghost{border-color:var(--line); color:var(--ink); background:var(--panel-2);}
+  .btn-ghost:hover{border-color:var(--cyan);}
+  .btn-danger{border-color:#C4574C; color:#C4574C; background:transparent; padding:6px 12px; font-size:12px;}
+  .btn-danger:hover{background:rgba(196,87,76,0.1);}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed; transform:none !important;}
+
+  .status-banner{
+    display:flex; align-items:center; gap:10px; padding:12px 16px;
+    border-radius:8px; font-size:13px; margin-bottom:20px; font-family:'JetBrains Mono', monospace;
+  }
+  .status-banner.ok{background:rgba(79,209,197,0.08); border:1px solid rgba(79,209,197,0.3); color:var(--cyan);}
+  .status-banner.err{background:rgba(196,87,76,0.08); border:1px solid rgba(196,87,76,0.3); color:#C4574C;}
+  .status-banner.info{background:rgba(201,138,62,0.08); border:1px solid rgba(201,138,62,0.3); color:var(--amber-bright);}
+  .status-dot{width:8px; height:8px; border-radius:50%; background:currentColor; flex-shrink:0;}
+
+  .item-list{display:flex; flex-direction:column; gap:10px; margin-top:18px;}
+  .item-row{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    border:1px solid var(--line); background:var(--panel-2); border-radius:8px; padding:12px 14px;
+    font-size:13px;
+  }
+  .item-row .label{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+  .icon-picker{display:flex; flex-wrap:wrap; gap:8px;}
+  .icon-opt{
+    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); background:var(--panel-2); border-radius:8px; cursor:pointer; font-size:18px;
+  }
+  .icon-opt.active{border-color:var(--cyan); background:rgba(79,209,197,0.12);}
+
+  .spinner{
+    width:14px; height:14px; border:2px solid rgba(255,255,255,0.25);
+    border-top-color:var(--cyan); border-radius:50%; animation:spin .7s linear infinite; display:inline-block;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .subhead{font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:24px 0 12px;}
+  .token-help{font-size:12px; color:var(--muted); margin-top:6px;}
+  .token-help a{color:var(--cyan); text-decoration:none;}
+  .token-help a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../index.html">Portfolio</a></li>
+        <li><a href="../blog/index.html">Write-ups</a></li>
+        <li><a href="../tools/content-generator.html">Offline tool</a></li>
+        <li><a href="index.html" class="active">Admin</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero-small">
+    <span class="eyebrow">● Admin — writes directly to GitHub</span>
+    <h1>Site CMS</h1>
+    <p class="lead">Add posts, projects, skills, achievements, and certifications from a form — this saves straight to your GitHub repo, so the live site updates without you touching any code.</p>
+    <div class="bp-rule"><span class="tick"></span></div>
+  </section>
+
+  <div id="connectionStatus"></div>
+
+  <!-- ============ CONNECTION SETTINGS ============ -->
+  <div class="panel" id="settingsPanel">
+    <h2>🔌 Connect to your repository</h2>
+    <p class="hint">
+      Uses the GitHub API directly from your browser. Your token is stored only in this browser's
+      local storage and is sent only to <code>api.github.com</code> — never to Claude or anyone else.
+    </p>
+    <div class="row-3">
+      <div class="form-field">
+        <label>Owner / Repository</label>
+        <input type="text" id="cfg-repo" placeholder="asrbmy/asrbmy.github.io">
+      </div>
+      <div class="form-field">
+        <label>Branch</label>
+        <input type="text" id="cfg-branch" placeholder="main" value="main">
+      </div>
+      <div class="form-field">
+        <label>Personal Access Token</label>
+        <input type="password" id="cfg-token" placeholder="github_pat_...">
+      </div>
+    </div>
+    <p class="token-help">
+      Create a <strong>fine-grained token</strong> at
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> —
+      limit it to this one repository, and grant <strong>Contents: Read and write</strong> permission only. Nothing else is needed.
+    </p>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnConnect">Connect</button>
+      <button class="btn btn-ghost" id="btnDisconnect">Forget token</button>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD (hidden until connected) ============ -->
+  <div id="dashboard" style="display:none;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="post">📝 Blog Post</button>
+      <button class="tab-btn" data-tab="project">💼 Project</button>
+      <button class="tab-btn" data-tab="achievement">🏆 Achievement</button>
+      <button class="tab-btn" data-tab="skill">🧩 Skill</button>
+      <button class="tab-btn" data-tab="cert">🎓 Certification</button>
+      <button class="tab-btn" data-tab="image">🖼 Image</button>
+    </div>
+
+    <!-- BLOG POST -->
+    <div class="tab-panel active" id="panel-post">
+      <div class="panel">
+        <h2>Publish a new write-up</h2>
+        <p class="hint">Creates <code>blog/posts/&lt;slug&gt;.html</code> and updates <code>blog/posts.js</code> in one go.</p>
+        <div class="form-field"><label>Title</label><input type="text" id="p-title" placeholder="e.g. Cracking a beginner web CTF box"></div>
+        <div class="row-2">
+          <div class="form-field"><label>Slug (filename)</label><input type="text" id="p-slug" placeholder="auto-generated"></div>
+          <div class="form-field"><label>Date</label><input type="date" id="p-date"></div>
+        </div>
+        <div class="row-2">
+          <div class="form-field"><label>Read time</label><input type="text" id="p-readtime" value="5 min read"></div>
+          <div class="form-field"><label>Tags (comma separated)</label><input type="text" id="p-tags" placeholder="CTF, Web, OSINT"></div>
+        </div>
+        <div class="form-field"><label>Excerpt</label><textarea id="p-excerpt" style="min-height:60px;" placeholder="Short summary shown on the write-ups listing page."></textarea></div>
+        <div class="form-field"><label>Body (HTML: &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;/&lt;li&gt;, &lt;code&gt;, &lt;pre&gt;&lt;code&gt;, &lt;blockquote&gt;)</label><textarea id="p-body" style="min-height:180px;" placeholder="<p>Intro paragraph...</p>"></textarea></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnPublishPost">🚀 Publish to GitHub</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Published write-ups</h2>
+        <button class="btn btn-ghost" id="btnRefreshPosts">Refresh list</button>
+        <div class="item-list" id="postList"></div>
+      </div>
+    </div>
+
+    <!-- PROJECT -->
+    <div class="tab-panel" id="panel-project">
+      <div class="panel">
+        <h2>Add a project card</h2>
+        <div class="form-field"><label>Title</label><input type="text" id="pr-title" placeholder="e.g. Network Traffic Analyzer"></div>
+        <div class="form-field"><label>Description</label><textarea id="pr-desc" style="min-height:70px;"></textarea></div>
+        <div class="form-field"><label>Tech stack (comma separated)</label><input type="text" id="pr-stack" placeholder="Python, Scapy, Flask"></div>
+        <div class="row-2">
+          <div class="form-field"><label>Repo URL</label><input type="text" id="pr-repo" placeholder="https://github.com/asrbmy/..."></div>
+          <div class="form-field"><label>Demo URL (optional)</label><input type="text" id="pr-demo"></div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnPublishProject">🚀 Publish to GitHub</button></div>
+      </div>
+      <div class="panel">
+        <h2>Existing projects</h2>
+        <button class="btn btn-ghost" id="btnRefreshProjects">Refresh list</button>
+        <div class="item-list" id="projectList"></div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENT -->
+    <div class="tab-panel" id="panel-achievement">
+      <div class="panel">
+        <h2>Add an achievement card</h2>
+        <div class="form-field"><label>Icon</label>
+          <div class="icon-picker" id="ach-icon-picker">
+            <div class="icon-opt active" data-icon="🏆">🏆</div>
+            <div class="icon-opt" data-icon="🥈">🥈</div>
+            <div class="icon-opt" data-icon="🥉">🥉</div>
+            <div class="icon-opt" data-icon="🎖️">🎖️</div>
+            <div class="icon-opt" data-icon="🏅">🏅</div>
+            <div class="icon-opt" data-icon="🧩">🧩</div>
+            <div class="icon-opt" data-icon="🤝">🤝</div>
+            <div class="icon-opt" data-icon="⭐">⭐</div>
+          </div>
+        </div>
+        <div class="form-field"><label>Title</label><input type="text" id="ach-title" placeholder="e.g. 1st Place — Regional CTF"></div>
+        <div class="form-field"><label>Subtitle / context</label><input type="text" id="ach-sub" placeholder="e.g. Rajasthan Cyber Olympiad, 2026"></div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnPublishAchievement">🚀 Publish to GitHub</button></div>
+      </div>
+      <div class="panel">
+        <h2>Existing achievements</h2>
+        <button class="btn btn-ghost" id="btnRefreshAchievements">Refresh list</button>
+        <div class="item-list" id="achievementList"></div>
+      </div>
+    </div>
+
+    <!-- SKILL -->
+    <div class="tab-panel" id="panel-skill">
+      <div class="panel">
+        <h2>Add a skill chip</h2>
+        <div class="form-field"><label>Skill name</label><input type="text" id="sk-name" placeholder="e.g. Wireshark"></div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnPublishSkill">🚀 Publish to GitHub</button></div>
+      </div>
+      <div class="panel">
+        <h2>Existing skills</h2>
+        <button class="btn btn-ghost" id="btnRefreshSkills">Refresh list</button>
+        <div class="item-list" id="skillList"></div>
+      </div>
+    </div>
+
+    <!-- CERT -->
+    <div class="tab-panel" id="panel-cert">
+      <div class="panel">
+        <h2>Add a certification card</h2>
+        <div class="form-field"><label>Certification name</label><input type="text" id="c-name" placeholder="e.g. Google Cybersecurity Certificate"></div>
+        <div class="row-2">
+          <div class="form-field"><label>Issuer</label><input type="text" id="c-issuer" placeholder="e.g. Google / Coursera"></div>
+          <div class="form-field"><label>Date earned</label><input type="date" id="c-date"></div>
+        </div>
+        <div class="form-field"><label>Credential URL (optional)</label><input type="text" id="c-url"></div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnPublishCert">🚀 Publish to GitHub</button></div>
+      </div>
+      <div class="panel">
+        <h2>Existing certifications</h2>
+        <button class="btn btn-ghost" id="btnRefreshCerts">Refresh list</button>
+        <div class="item-list" id="certList"></div>
+      </div>
+    </div>
+
+    <!-- IMAGE UPLOAD -->
+    <div class="tab-panel" id="panel-image">
+      <div class="panel">
+        <h2>Upload an image</h2>
+        <p class="hint">Uploads straight into <code>assets/uploads/</code> in your repo and gives you a ready-to-paste <code>&lt;img&gt;</code> tag or URL.</p>
+        <div class="form-field">
+          <label>Choose file</label>
+          <input type="file" id="img-file" accept="image/*">
+        </div>
+        <div id="imgPreviewWrap" style="display:none; margin-bottom:16px;">
+          <img id="imgPreview" alt="Preview" style="max-width:100%; max-height:220px; border-radius:8px; border:1px solid var(--line);">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnUploadImage">⬆ Upload to GitHub</button>
+        </div>
+      </div>
+      <div class="panel" id="imgResultPanel" style="display:none;">
+        <h2>Uploaded ✓</h2>
+        <div class="form-field">
+          <label>Use in the portfolio (index.html)</label>
+          <input type="text" id="imgUrlRoot" readonly>
+        </div>
+        <div class="form-field">
+          <label>Use in a blog post (blog/posts/*.html)</label>
+          <input type="text" id="imgUrlBlog" readonly>
+        </div>
+        <div class="form-field">
+          <label>Live URL</label>
+          <input type="text" id="imgUrlLive" readonly>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btnCopyImgTag">Copy &lt;img&gt; tag<span class="copy-msg" id="msg-image">Copied!</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY — admin panel</span>
+    <span><a href="../index.html">← Back to portfolio</a></span>
+  </div>
+</footer>
+
+<script src="../assets/blog.js"></script>
+<script src="cms.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

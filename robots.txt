@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /tools/
+
+Sitemap: https://asrbmy.github.io/sitemap.xml

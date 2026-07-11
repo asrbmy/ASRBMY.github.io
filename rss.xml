@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>ASRBMY — Write-ups</title>
+  <link>https://asrbmy.github.io/blog/index.html</link>
+  <description>CTF write-ups, OSINT notes, and things learned while building — Ajit Singh Rathore (ASRBMY)</description>
+  <item>
+    <title>Sample write-up — replace me</title>
+    <link>https://asrbmy.github.io/blog/posts/sample-post.html</link>
+    <guid>https://asrbmy.github.io/blog/posts/sample-post.html</guid>
+    <pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate>
+    <description>This is a placeholder entry so the blog isn't empty. Replace it with your first real write-up, or delete it once you've published one.</description>
+  </item>
+</channel>
+</rss>

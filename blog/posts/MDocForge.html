@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDocForge — Design by Link with IQ (ASRBMY) — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="MDocForge — Design by Link with IQ (ASRBMY)">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>07 Jul 2026</span><span>7 min read</span></div>
+  <h1>MDocForge — Design by Link with IQ (ASRBMY)</h1>
+</main>
+
+<article class="post-body">
+<h1 id="mdocforge">MDocForge</h1>
+<p><strong>MDocForge</strong> is a single-file, browser-based document editor that lets you write in <strong>Markdown or HTML</strong>, see a live visual preview as you type, and export the result to <strong>PDF, Word (.docx), HTML, Markdown, PNG, or plain text</strong> — all without a server or sign-up. Everything runs locally in your browser tab.</p>
+<p>Open <code>mdocforge.html</code> in any modern browser to use it. There is nothing to install.</p>
+<hr>
+<h2 id="what-it-is">What it is</h2>
+<p>MDocForge is a &quot;block-based&quot; document builder, similar in spirit to tools like Notion or the WordPress block editor, but built around Markdown. Your document is represented internally as a list of <strong>blocks</strong> (headings, paragraphs, lists, tables, images, etc.). These blocks can be:</p>
+<ul><li>Typed/pasted as raw Markdown or HTML in the editor pane</li><li>Edited directly in the live preview (click on text and type)</li><li>Added by dragging ready-made block types from the left sidebar</li></ul>
+<p>Whichever way you create content, the editor, the preview, and the underlying block model all stay in sync.</p>
+<hr>
+<h2 id="key-features">Key Features</h2>
+<h3 id="two-editing-modes">Two editing modes</h3>
+<ul><li><strong>Markdown mode</strong> — write standard Markdown (headings <code>#</code>, lists, tables, blockquotes, code fences, images, links, etc.) and watch it render instantly.</li><li><strong>HTML mode</strong> — write raw HTML and the editor parses it into the same block model.</li></ul>
+<h3 id="three-layout-views">Three layout views</h3>
+<ul><li><strong>Split</strong> — editor and preview side by side (default).</li><li><strong>Editor</strong> — full-width text editor only.</li><li><strong>Preview</strong> — full-width rendered document only.</li></ul>
+<h3 id="block-palette-drag-and-drop">Block palette (drag-and-drop)</h3>
+<p>A sidebar of ready-made content blocks you can drag onto the page or click to append:</p>
+<ul><li>Heading 1 / 2 / 3</li><li>Paragraph</li><li>Quote</li><li>Bullet list</li><li>Numbered list</li><li>Table</li><li>Image</li><li>Code block</li><li>Divider (horizontal rule)</li><li>Link</li></ul>
+<p>Dropping a block above or below an existing block inserts it at that exact position.</p>
+<h3 id="in-place-visual-editing">In-place visual editing</h3>
+<p>Every block on the canvas can be edited directly:</p>
+<ul><li>Click any heading, paragraph, quote, or list item to edit its text inline.</li><li>Click table cells to edit them directly.</li><li>Click an image to change its source URL.</li><li>Edit code blocks directly in the rendered <code>&lt;pre&gt;&lt;code&gt;</code> element.</li></ul>
+<h3 id="block-toolbar">Block toolbar</h3>
+<p>Hover (or select) any block to reveal a small floating toolbar with:</p>
+<ul><li><strong>↑ / ↓</strong> — move the block up or down</li><li><strong>⧉</strong> — duplicate the block</li><li><strong>✕</strong> — delete the block</li></ul>
+<p>A drag handle (<code>⠿</code>) on the left of each block lets you reorder content by dragging it to a new position.</p>
+<h3 id="live-document-preview">Live document preview</h3>
+<p>The preview pane renders your content as a styled A4-width page (760px), using a clean serif body font with sans-serif headings — designed to look like a real document or report, not a plain text dump.</p>
+<h3 id="export-options">Export options</h3>
+<p>A single <strong>Export</strong> menu lets you save your document as:</p>
+<table><thead><tr><th>Format</th><th>Description</th></tr></thead><tbody><tr><td><strong>PDF</strong></td><td>A4 page-by-page export. The exporter intelligently paginates at block boundaries so headings, paragraphs, tables, etc. are never sliced in half across a page break.</td></tr><tr><td><strong>Word (.docx)</strong></td><td>Converts your document into a real Word file with proper headings, paragraphs, bold/italic text, bullet/numbered lists, tables, and blockquotes (via the <code>docx.js</code> library).</td></tr><tr><td><strong>HTML website</strong></td><td>A complete, self-contained, styled <code>.html</code> file you can host or share as a standalone webpage.</td></tr><tr><td><strong>Markdown (.md)</strong></td><td>The raw Markdown source of your document.</td></tr><tr><td><strong>Image (.png)</strong></td><td>A high-resolution (2×) screenshot of the rendered document.</td></tr><tr><td><strong>Plain text (.txt)</strong></td><td>All text content with formatting stripped.</td></tr></tbody></table>
+<p>Every export prompts a &quot;Save file as&quot; dialog so you can choose your own filename before downloading.</p>
+<h3 id="sample-document">Sample document</h3>
+<p>The <strong>Load sample</strong> button fills the editor with a ready-made &quot;Quarterly Report&quot; example (headings, highlights list, a quote, a metrics table, numbered next steps, and a link) so you can immediately see all block types and export formats in action.</p>
+<h3 id="live-counters">Live counters</h3>
+<p>A status bar at the bottom shows the current mode (Markdown/HTML), live word count, and character count.</p>
+<h3 id="responsive-design">Responsive design</h3>
+<p>On smaller screens, the block palette hides and the editor/preview panes stack vertically instead of side-by-side.</p>
+<hr>
+<h2 id="how-it-works-under-the-hood">How it works (under the hood)</h2>
+<p>MDocForge is a <strong>single static HTML file</strong> with embedded CSS and JavaScript. It loads a few small libraries from a public CDN to handle conversions:</p>
+<ul><li><strong>marked.js</strong> — converts Markdown text to HTML for the live preview.</li><li><strong>html2canvas</strong> — renders the document as a canvas image for PNG/PDF export.</li><li><strong>jsPDF</strong> — assembles the canvas slices into a multi-page PDF.</li><li><strong>FileSaver.js</strong> — triggers the browser&#39;s file-save/download dialog.</li><li><strong>docx.js</strong> — builds a real <code>.docx</code> (Word) file from the document&#39;s HTML structure.</li></ul>
+<h3 id="the-data-flow">The data flow</h3>
+<ol><li><strong>Parsing</strong>: Whatever you type in the editor (Markdown or HTML) is parsed into an array of <strong>block objects</strong> — e.g. <code>{type: &#39;h1&#39;, content: &#39;Title&#39;}</code> or <code>{type: &#39;table&#39;, headers: [...], rows: [...]}</code>.</li><li><strong>Rendering</strong>: Each block object is rendered into the preview canvas as a real, editable HTML element (an <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;table&gt;</code>, etc.), wrapped with a hover toolbar and drag handle.</li><li><strong>Editing sync</strong>: Any edit you make — typing in a block, reordering blocks, changing an image URL, adding/removing list items — updates the block array, which is then converted back into Markdown or HTML and written back into the editor textarea, keeping both views in sync.</li><li><strong>Exporting</strong>: When you choose an export format, the block array is converted into clean HTML (<code>blocksToHtml()</code>), then handed to the appropriate library:</li></ol>
+<p>- For <strong>PDF/PNG</strong>, an off-screen styled copy of the document is rendered and captured with <code>html2canvas</code>. For PDF, the page is sliced into print-page-sized chunks at safe break points (never mid-element) and assembled with <code>jsPDF</code>.    - For <strong>DOCX</strong>, the HTML is walked element-by-element and converted into corresponding <code>docx.js</code> paragraphs, headings, lists, and tables.    - For <strong>HTML/Markdown/Text</strong>, the content is simply serialized and saved directly.</p>
+<p>Because everything happens client-side, <strong>no document content is ever sent to a server</strong> — your files stay entirely on your device.</p>
+<hr>
+<h2 id="quick-start">Quick start</h2>
+<ol><li>Open <code>mdocforge.html</code> in a browser (Chrome, Edge, Firefox, or Safari).</li><li>Click <strong>Load sample</strong> to see an example document, or start typing your own Markdown/HTML in the left pane.</li><li>Drag blocks from the left sidebar onto the page to add new sections, tables, images, etc.</li><li>Click any text directly in the preview to edit it in place.</li><li>When ready, click <strong>Export</strong> and choose your desired format (PDF, DOCX, HTML, Markdown, PNG, or TXT), then confirm the filename to download.</li></ol>
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"></script>
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajit Singh Rathore (ASRBMY) — Cyber Security · AI · Robotics Portfolio</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://formsubmit.co https://gc.zgo.at; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co;">
+<meta name="description" content="Portfolio of Ajit Singh Rathore (ASRBMY), a student from Churu, Rajasthan focused on ethical hacking, OSINT, applied AI and robotics. National-level AI VidyaSetu hackathon award winner.">
+<meta name="keywords" content="Ajit Singh Rathore, ASRBMY, Ajit Singh Rathore Bika, cyber security portfolio, ethical hacking student, OSINT, AI VidyaSetu, Rajasthan student developer, Kendriya Vidyalaya Churu">
+<meta name="author" content="Ajit Singh Rathore">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://asrbmy.github.io/">
+<link rel="alternate" type="application/rss+xml" title="ASRBMY Write-ups" href="/rss.xml">
+<meta name="theme-color" content="#0B1220">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ajit Singh Rathore (ASRBMY) — Cyber Security · AI · Robotics">
+<meta property="og:description" content="Student portfolio covering ethical hacking, OSINT, applied AI and robotics work, plus hackathon awards including AI VidyaSetu.">
+<meta property="og:url" content="https://asrbmy.github.io/">
+<meta property="og:image" content="https://asrbmy.github.io/og-image.png">
+<meta property="og:locale" content="en_IN">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ajit Singh Rathore (ASRBMY) — Cyber Security · AI · Robotics">
+<meta name="twitter:description" content="Student portfolio covering ethical hacking, OSINT, applied AI and robotics work, plus hackathon awards including AI VidyaSetu.">
+<meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
+<meta name="twitter:creator" content="@asrbmy">
+
+<!-- Favicon: replace /favicon.ico and /og-image.png in the repo root with real files -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<meta name="google-site-verification" content="NgdyFaPqUaTId9D-oxnS63r0mrkbD6fK-vG9VhZyB8s" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ajit Singh Rathore",
+  "alternateName": ["ASRBMY", "Ajit Singh Rathore Bika"],
+  "url": "https://asrbmy.github.io/",
+  "jobTitle": "Student — Cyber Security, AI & Robotics",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Churu",
+    "addressRegion": "Rajasthan",
+    "addressCountry": "IN"
+  },
+  "affiliation": {
+    "@type": "EducationalOrganization",
+    "name": "Kendriya Vidyalaya, Churu"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/in/asrbmy/",
+    "https://github.com/asrbmy",
+    "https://www.youtube.com/@asrbmy",
+    "https://www.instagram.com/asrbmy/",
+    "https://x.com/asrbmy",
+    "https://orcid.org/0009-0003-5055-4167"
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --panel:#111A2B;
+    --panel-2:#0E1626;
+    --line:#22304A;
+    --ink:#E8ECF1;
+    --muted:#8592A6;
+    --amber:#C98A3E;
+    --amber-bright:#E3A855;
+    --cyan:#4FD1C5;
+    --red-tag:#C4574C;
+    --radius:10px;
+  }
+
+  html[data-theme="light"]{
+    --bg:#F4F6FA;
+    --panel:#FFFFFF;
+    --panel-2:#EDF1F7;
+    --line:#D6DEEA;
+    --ink:#0F1B2D;
+    --muted:#5B6B82;
+    --amber:#B06E22;
+    --amber-bright:#9C5C16;
+    --cyan:#0E8C81;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(79,209,197,0.06), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(201,138,62,0.07), transparent 40%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    transition:background .25s ease, color .25s ease;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;}
+
+  /* full-page faint blueprint grid */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(79,209,197,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,209,197,0.045) 1px, transparent 1px);
+    background-size:32px 32px;
+    pointer-events:none;
+    z-index:0;
+  }
+  header, main, footer{position:relative; z-index:1;}
+
+  :focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- BLUEPRINT CORNER BRACKETS ---------- */
+  .bp{
+    position:relative;
+    background-repeat:no-repeat;
+    background-image:
+      linear-gradient(var(--cyan), var(--cyan)), linear-gradient(var(--cyan), var(--cyan)),
+      linear-gradient(var(--cyan), var(--cyan)), linear-gradient(var(--cyan), var(--cyan)),
+      linear-gradient(var(--cyan), var(--cyan)), linear-gradient(var(--cyan), var(--cyan)),
+      linear-gradient(var(--cyan), var(--cyan)), linear-gradient(var(--cyan), var(--cyan));
+    background-size:12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px;
+    background-position:
+      top 0 left 0, top 0 left 0,
+      top 0 right 0, top 0 right 0,
+      bottom 0 right 0, bottom 0 right 0,
+      bottom 0 left 0, bottom 0 left 0;
+    opacity:1;
+  }
+
+  /* dashed dimension rule used under section headers */
+  .bp-rule{
+    display:flex; align-items:center; gap:6px;
+    margin-top:14px;
+    color:var(--muted);
+  }
+  .bp-rule::before, .bp-rule::after{
+    content:"";
+    height:1px;
+    background-image:linear-gradient(90deg, var(--line) 0 6px, transparent 6px 10px);
+    background-size:10px 1px;
+    flex:1;
+  }
+  .bp-rule .tick{
+    width:1px; height:9px; background:var(--line);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,32,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  html[data-theme="light"] header{background:rgba(244,246,250,0.88);}
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+    max-width:1080px; margin:0 auto;
+    gap:12px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:15px;
+    letter-spacing:0.04em;
+    white-space:nowrap;
+  }
+  .brand .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 8px var(--cyan);
+    animation:pulse 2.4s ease-in-out infinite;
+    flex-shrink:0;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1; transform:scale(1);}
+    50%{opacity:0.4; transform:scale(0.8);}
+  }
+  .nav-right{display:flex; align-items:center; gap:14px;}
+  nav ul{
+    list-style:none; display:flex; gap:28px; margin:0; padding:0;
+  }
+  nav a{
+    text-decoration:none;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:500;
+    transition:color .2s;
+    position:relative;
+  }
+  nav a:hover{color:var(--ink);}
+  .theme-toggle{
+    background:none; border:1px solid var(--line); color:var(--ink);
+    border-radius:100px; padding:7px 10px; cursor:pointer;
+    font-size:13px; line-height:1; display:flex; align-items:center; gap:6px;
+  }
+  .theme-toggle:hover{border-color:var(--cyan);}
+  .nav-toggle{display:none; background:none; border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:8px 10px; cursor:pointer;}
+
+  @media (max-width:760px){
+    nav ul{
+      position:fixed; top:64px; left:0; right:0;
+      flex-direction:column; gap:0;
+      background:var(--panel);
+      border-bottom:1px solid var(--line);
+      max-height:0; overflow:hidden;
+      transition:max-height .3s ease;
+    }
+    nav ul.open{max-height:460px;}
+    nav ul li{border-top:1px solid var(--line);}
+    nav ul a{display:block; padding:16px 24px;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- HERO / DOSSIER CARD ---------- */
+  .hero{
+    padding:64px 0 40px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--amber-bright);
+    border:1px solid rgba(201,138,62,0.4);
+    background:rgba(201,138,62,0.08);
+    padding:6px 12px; border-radius:100px;
+    margin-bottom:22px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:36px;
+    align-items:start;
+  }
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+  .hero h1{
+    font-size:clamp(30px,5vw,54px);
+    line-height:1.08;
+    font-weight:700;
+  }
+  .hero h1 span{color:var(--cyan);}
+  .hero p.lead{
+    margin-top:18px;
+    font-size:clamp(15px,2vw,17px);
+    color:var(--muted);
+    max-width:52ch;
+  }
+  .hero-actions{
+    margin-top:28px;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 22px;
+    border-radius:8px;
+    font-weight:600; font-size:14px;
+    text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{
+    background:var(--cyan);
+    color:#08131A;
+  }
+  .btn-primary:hover{box-shadow:0 6px 24px rgba(79,209,197,0.25);}
+  .btn-ghost{
+    border-color:var(--line);
+    color:var(--ink);
+    background:rgba(255,255,255,0.02);
+  }
+  .btn-ghost:hover{border-color:var(--cyan);}
+  .btn-amber{
+    background:var(--amber);
+    color:#1A1206;
+  }
+  .btn-amber:hover{box-shadow:0 6px 24px rgba(201,138,62,0.25);}
+
+  /* Clearance / ID badge card */
+  .id-card{
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .id-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(79,209,197,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,209,197,0.04) 1px, transparent 1px);
+    background-size:20px 20px;
+    pointer-events:none;
+  }
+  .id-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--muted);
+    position:relative; z-index:1;
+  }
+  .id-top .status{
+    color:var(--cyan);
+    display:flex; align-items:center; gap:6px;
+  }
+  .id-top .status::before{
+    content:""; width:6px;height:6px;border-radius:50%;
+    background:var(--cyan); box-shadow:0 0 6px var(--cyan);
+  }
+  .id-name{
+    margin-top:18px; position:relative; z-index:1;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(19px,3vw,22px); font-weight:700;
+  }
+  .id-role{
+    color:var(--amber-bright);
+    font-size:13px; margin-top:4px; position:relative; z-index:1;
+    font-family:'JetBrains Mono', monospace;
+  }
+  .id-divider{
+    border:none; border-top:1px dashed var(--line);
+    margin:18px 0; position:relative; z-index:1;
+  }
+  .id-field{
+    display:flex; justify-content:space-between;
+    font-size:13px; margin-bottom:10px; position:relative; z-index:1;
+    gap:10px;
+  }
+  .id-field .k{color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em;}
+  .id-field .v{font-weight:600; text-align:right;}
+  .age-readout{
+    margin-top:6px;
+    background:rgba(79,209,197,0.06);
+    border:1px solid rgba(79,209,197,0.25);
+    border-radius:8px;
+    padding:14px 16px;
+    position:relative; z-index:1;
+  }
+  .age-readout .label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan);
+    margin-bottom:6px; display:block;
+  }
+  .age-readout .value{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(17px,3vw,20px); font-weight:700; color:var(--ink);
+  }
+  .age-readout .sub{
+    font-size:11px; color:var(--muted); margin-top:4px; font-family:'JetBrains Mono', monospace;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0;}
+  .section-head{margin-bottom:36px;}
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--amber-bright);
+    display:block; margin-bottom:10px;
+  }
+  .section-head h2{font-size:clamp(22px,3.4vw,32px);}
+
+  #about .about-text{max-width:66ch; color:var(--muted); font-size:16px;}
+  #about .about-text strong{color:var(--ink);}
+
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    gap:14px;
+  }
+  .skill-chip{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:8px;
+    padding:16px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    transition:border-color .2s, transform .2s;
+  }
+  .skill-chip:hover{border-color:var(--cyan); transform:translateY(-2px);}
+
+  .subhead{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+    margin:34px 0 14px;
+  }
+
+  .lang-row{display:flex; flex-wrap:wrap; gap:12px;}
+  .lang-pill{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:100px; padding:8px 16px; font-size:13px;
+  }
+  .lang-pill .bar{
+    width:60px; height:4px; background:var(--line); border-radius:4px; overflow:hidden; position:relative;
+  }
+  .lang-pill .bar span{position:absolute; inset:0; background:var(--cyan);}
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:18px;
+  }
+  .card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:var(--radius);
+    padding:22px;
+  }
+  .card .icon{font-size:24px; margin-bottom:14px; display:block;}
+  .card h3{font-size:16px; margin-bottom:6px;}
+  .card p{color:var(--muted); font-size:14px; margin:0;}
+
+  .card-empty{
+    border:1px dashed var(--line);
+    background:transparent;
+    border-radius:var(--radius);
+    padding:22px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .card-empty .status-line{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--amber-bright); display:block; margin-bottom:8px;
+  }
+
+  /* project card extras */
+  .project-stack{
+    display:flex; flex-wrap:wrap; gap:6px;
+    margin:12px 0 14px;
+  }
+  .stack-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.03em;
+    border:1px solid var(--line);
+    color:var(--muted);
+    border-radius:5px;
+    padding:3px 8px;
+  }
+  .project-links{display:flex; gap:14px;}
+  .project-links a{
+    font-size:13px; font-weight:600; color:var(--cyan);
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:5px;
+  }
+  .project-links a:hover{text-decoration:underline;}
+
+  .timeline{border-left:1px solid var(--line); padding-left:24px; display:flex; flex-direction:column; gap:26px;}
+  .timeline-item{position:relative;}
+  .timeline-item::before{
+    content:""; position:absolute; left:-29px; top:4px;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--bg); border:2px solid var(--cyan);
+  }
+  .timeline-item h3{font-size:15px; font-weight:600;}
+  .timeline-item p{color:var(--muted); font-size:13px; margin-top:4px;}
+
+  /* GitHub stats embed */
+  .gh-stats{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    position:relative;
+  }
+  @media (max-width:600px){ .gh-stats{grid-template-columns:1fr;} }
+  .gh-stats img{width:100%; border-radius:var(--radius); border:1px solid var(--line);}
+  .gh-stats-fallback{
+    display:none;
+    grid-column:1 / -1;
+    border:1px dashed var(--line); border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .gh-stats.gh-stats-broken .gh-stats-fallback{ display:block; }
+
+  /* testimonial */
+  .quote-block{
+    border-left:2px solid var(--amber);
+    padding:6px 0 6px 20px;
+    font-style:italic;
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  /* contact form */
+  .contact-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:36px;
+  }
+  @media (max-width:820px){ .contact-grid{grid-template-columns:1fr;} }
+  .form-field{margin-bottom:16px;}
+  .form-field label{
+    display:block; font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:6px;
+  }
+  .form-field input, .form-field textarea{
+    width:100%;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--ink);
+    border-radius:8px;
+    padding:12px 14px;
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+  }
+  .form-field textarea{resize:vertical; min-height:110px;}
+  .form-field input:focus, .form-field textarea:focus{border-color:var(--cyan);}
+  .form-note{font-size:12px; color:var(--muted); margin-top:10px;}
+
+  .connect-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:14px;
+    margin-bottom:36px;
+  }
+  .connect-link{
+    display:flex; align-items:center; justify-content:space-between;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:8px;
+    padding:14px 16px;
+    text-decoration:none;
+    font-size:14px;
+    transition:border-color .2s;
+  }
+  .connect-link:hover{border-color:var(--amber);}
+  .connect-link .k{color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px;}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:48px 0 32px;
+  }
+  .foot-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:12px; color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    border-top:1px solid var(--line);
+    padding-top:20px;
+  }
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width:480px){
+    .wrap{padding:0 16px;}
+    .hero{padding:44px 0 28px;}
+    section{padding:48px 0;}
+    .btn{width:100%; justify-content:center;}
+    .hero-actions{flex-direction:column;}
+    .id-field{flex-wrap:wrap;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> ASRBMY</div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="blog/index.html">Write-ups</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">● Clearance profile — active</span>
+        <h1>Ajit Singh Rathore<br><span>Cyber Security · AI · Robotics</span></h1>
+        <p class="lead">Student at Kendriya Vidyalaya, Churu (Rajasthan), building at the intersection of ethical hacking, applied AI, and hardware. Interested in how systems break, and how to make them stronger.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Contact Me</a>
+          <a class="btn btn-ghost" href="#projects">View Projects</a>
+          <!-- Add resume.pdf to your repo root, then this button will work -->
+          <a class="btn btn-amber" href="resume.pdf" download>⬇ Download Resume</a>
+        </div>
+      </div>
+
+      <div class="id-card bp reveal" id="idCard">
+        <div class="id-top">
+          <span>ID / @ASRBMY</span>
+          <span class="status">Online</span>
+        </div>
+        <div class="id-name">Ajit Singh Rathore <span style="color:var(--muted); font-weight:500; font-size:15px;">"ASRBMY"</span></div>
+        <div class="id-role">ASRBMY · Cyber Security · AI · Robotics</div>
+        <hr class="id-divider">
+        <div class="id-field"><span class="k">Location</span><span class="v">Churu, Rajasthan</span></div>
+        <div class="id-field"><span class="k">Institution</span><span class="v">Kendriya Vidyalaya</span></div>
+        <div class="id-field"><span class="k">Focus</span><span class="v">Ethical Hacking · OSINT</span></div>
+        <div class="age-readout">
+          <span class="label">Live age — calculated from DOB</span>
+          <div class="value mono" id="ageValue">calculating…</div>
+          <div class="sub" id="ageSub">DOB: 01 Mar 2008</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head">
+      <span class="tag">01 — About</span>
+      <h2>Who I am</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <p class="about-text">
+      I am <strong>Ajit Singh Rathore</strong> — also known as "ASRBMY" — a student with a deep passion for Cyber Security, Artificial Intelligence, and Robotics. Online, I go by <strong>ASRBMY</strong>. I'm highly interested in understanding how technology works at a deeper level and applying that knowledge to solve real-world problems through innovation, coding, and research.
+    </p>
+    <p class="about-text" style="margin-top:14px;">
+      My core interests include Ethical Hacking, Encryption, Cryptography, OSINT (Open Source Intelligence), Artificial Intelligence, and Software Development. I continuously strive to learn new technologies and improve my skills through projects, hackathons, and competitive platforms.
+    </p>
+
+    <div class="subhead">Education</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>Kendriya Vidyalaya, Churu — Rajasthan</h3>
+        <p>Ongoing schooling. <!-- Add exact grade, stream and any exam scores here --></p>
+      </div>
+    </div>
+
+    <div class="subhead">Languages</div>
+    <div class="lang-row">
+      <span class="lang-pill">Hindi <span class="bar"><span style="width:95%"></span></span></span>
+      <span class="lang-pill">English <span class="bar"><span style="width:80%"></span></span></span>
+      <!-- Add or adjust languages/proficiency here -->
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-head">
+      <span class="tag">02 — Skills</span>
+      <h2>Technical toolkit</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <div class="skills-grid" id="skillsGrid">
+      <div class="skill-chip">HTML</div>
+      <div class="skill-chip">CSS</div>
+      <div class="skill-chip">JavaScript</div>
+      <div class="skill-chip">Python</div>
+      <div class="skill-chip">SQL</div>
+      <div class="skill-chip">Encryption</div>
+      <div class="skill-chip">Cryptography</div>
+      <div class="skill-chip">OSINT</div>
+      <div class="skill-chip">Cyber Security</div>
+      <div class="skill-chip">AI</div>
+    </div>
+
+    <div class="subhead">GitHub activity</div>
+    <div class="gh-stats" id="ghStats" data-fail-count="0">
+      <img loading="lazy" src="https://github-readme-stats.vercel.app/api?username=asrbmy&show_icons=true&theme=dark&hide_border=true&bg_color=00000000&title_color=4FD1C5&icon_color=E3A855&text_color=8592A6" alt="Ajit Singh Rathore's GitHub stats" onerror="handleGhStatsError(this)">
+      <img loading="lazy" src="https://github-readme-stats.vercel.app/api/top-langs/?username=asrbmy&layout=compact&theme=dark&hide_border=true&bg_color=00000000&title_color=4FD1C5&text_color=8592A6" alt="Ajit Singh Rathore's most used languages on GitHub" onerror="handleGhStatsError(this)">
+      <div class="gh-stats-fallback">
+        <span style="font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber-bright); display:block; margin-bottom:8px;">Stats widget unavailable right now</span>
+        <p style="color:var(--muted); font-size:13px; margin:0;">The third-party stats service is having downtime. <a href="https://github.com/asrbmy" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">View the live GitHub profile →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <div class="section-head">
+      <span class="tag">03 — Achievements</span>
+      <h2>Recognition</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <div class="cards-grid" id="achievementsGrid">
+      <div class="card bp">
+        <span class="icon">🥈</span>
+        <h3>National Runner-Up — 2nd Position</h3>
+        <p>AI VidyaSetu (KVS Hackathon)</p>
+      </div>
+      <div class="card bp">
+        <span class="icon">🤝</span>
+        <h3>Best Team Award</h3>
+        <p>AI VidyaSetu (KVS Hackathon)</p>
+      </div>
+      <div class="card bp">
+        <span class="icon">🏆</span>
+        <h3>State-Level Winner</h3>
+        <p>AI VidyaSetu</p>
+      </div>
+      <div class="card bp">
+        <span class="icon">🎖️</span>
+        <h3>Zonal — 3rd Position</h3>
+        <p>AI VidyaSetu</p>
+      </div>
+      <div class="card bp">
+        <span class="icon">🧩</span>
+        <h3>Best Problem-Solving Award</h3>
+        <p>Zonal Level, AI VidyaSetu</p>
+      </div>
+      <div class="card bp">
+        <span class="icon">🏅</span>
+        <h3>Hackathon Awards</h3>
+        <p>APS / ATL events participation and awards</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="section-head">
+      <span class="tag">04 — Certifications</span>
+      <h2>Credentials</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <div class="cards-grid" id="certsGrid">
+      <!-- Replace these empty slots with real certificates, e.g. TryHackMe, Google Cybersecurity, Cisco NetAcad, CompTIA -->
+      <div class="card-empty bp">
+        <span class="status-line">Slot 01 · Awaiting input</span>
+        Add a certification — name, issuer, and date (e.g. TryHackMe, Google Cybersecurity, Cisco NetAcad).
+      </div>
+      <div class="card-empty bp">
+        <span class="status-line">Slot 02 · Awaiting input</span>
+        Add another certification or badge here once earned.
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head">
+      <span class="tag">05 — Experience</span>
+      <h2>Where I've competed</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>AI VidyaSetu Competitions</h3>
+        <p>National-level AI hackathon circuit under KVS.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>iStart Rajasthan Innovation Ecosystem</h3>
+        <p>State innovation and startup ecosystem programs.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>ATL Marathons</h3>
+        <p>Atal Tinkering Lab build-and-pitch marathons.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Science Exhibitions</h3>
+        <p>School and zonal-level science exhibitions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head">
+      <span class="tag">06 — Projects</span>
+      <h2>Selected work</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <div class="cards-grid" id="projectsGrid">
+      <div class="card bp">
+        <h3>Cyber Security Toolkit</h3>
+        <p>A collection of utilities for security testing and analysis.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">Bash</span><span class="stack-tag">Linux</span>
+        </div>
+        <!-- Replace href below with the actual repo/demo link -->
+        <div class="project-links">
+          <a href="https://github.com/asrbmy" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+      <div class="card bp">
+        <h3>OSINT Investigation Tool</h3>
+        <p>Open-source intelligence gathering and correlation tooling.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">APIs</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/asrbmy" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+      <div class="card bp">
+        <h3>AI Automation Projects</h3>
+        <p>Applied AI experiments for automating repetitive workflows.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">AI/ML</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/asrbmy" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="writeups">
+    <div class="section-head">
+      <span class="tag">07 — Write-ups</span>
+      <h2>Notes from the field</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+    <p class="about-text">CTF write-ups, OSINT notes, and things learned while building — now living on their own log archive, with tags and filtering.</p>
+    <div class="hero-actions" style="margin-top:18px;">
+      <a class="btn btn-primary" href="blog/index.html">Read the write-ups →</a>
+    </div>
+
+    <div class="subhead">Endorsement</div>
+    <blockquote class="quote-block">
+      Add a short quote from a teacher, mentor, or teammate here once you have one on record.
+    </blockquote>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">08 — Contact</span>
+      <h2>Connect with me</h2>
+      <div class="bp-rule"><span class="tick"></span></div>
+    </div>
+
+    <div class="contact-grid">
+      <div>
+        <!-- FormSubmit sends this to your inbox with no backend needed.
+             First submission triggers a one-time confirmation email you must click to activate it. -->
+        <form action="https://formsubmit.co/myajit+git@zohomail.in" method="POST">
+          <input type="hidden" name="_subject" value="New message from asrbmy.github.io">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note">Sent straight to my inbox via FormSubmit — no account or login needed on your end.</p>
+        </form>
+      </div>
+
+      <div class="connect-grid" style="margin-bottom:0;">
+        <a class="connect-link" href="mailto:myajit+git@zohomail.in"><span><span class="k">Email</span>myajit+git@zohomail.in</span></a>
+        <a class="connect-link" href="https://www.linkedin.com/in/asrbmy/" target="_blank" rel="noopener"><span><span class="k">LinkedIn</span>linkedin.com/in/asrbmy</span></a>
+        <a class="connect-link" href="https://github.com/asrbmy" target="_blank" rel="noopener"><span><span class="k">GitHub</span>github.com/asrbmy</span></a>
+        <a class="connect-link" href="https://www.youtube.com/@asrbmy" target="_blank" rel="noopener"><span><span class="k">YouTube</span>youtube.com/@asrbmy</span></a>
+        <a class="connect-link" href="https://www.instagram.com/asrbmy/" target="_blank" rel="noopener"><span><span class="k">Instagram</span>instagram.com/asrbmy</span></a>
+        <a class="connect-link" href="https://x.com/asrbmy" target="_blank" rel="noopener"><span><span class="k">X (Twitter)</span>x.com/asrbmy</span></a>
+        <a class="connect-link" href="https://orcid.org/0009-0003-5055-4167" target="_blank" rel="noopener"><span><span class="k">ORCID</span>0009-0003-5055-4167</span></a>
+      </div>
+    </div>
+
+    <div class="foot-bottom" style="margin-top:36px;">
+      <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+      <span id="footAge"></span>
+      <span id="lastUpdated"></span>
+      <span><a href="tools/content-generator.html" style="color:var(--muted); text-decoration:none;">Offline tool ⚙</a></span>
+      <span><a href="admin/index.html" style="color:var(--muted); text-decoration:none;">Admin CMS 🔐</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // GitHub stats images come from a third-party free service that has frequent downtime.
+  // Only show the fallback once BOTH images have failed, so one slow-but-working image
+  // isn't hidden just because its sibling briefly errored.
+  function handleGhStatsError(img) {
+    const container = img.closest('.gh-stats');
+    img.remove();
+    const failCount = parseInt(container.dataset.failCount || '0', 10) + 1;
+    container.dataset.failCount = failCount;
+    if (failCount >= 2) container.classList.add('gh-stats-broken');
+  }
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navList = document.getElementById('navList');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navList.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navList.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Theme toggle (persisted)
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    themeIcon.textContent = theme === 'light' ? '☀️' : '🌙';
+    themeLabel.textContent = theme === 'light' ? 'Light' : 'Dark';
+  }
+  let savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem('asrbmy-theme') || 'dark'; } catch(e) {}
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem('asrbmy-theme', next); } catch(e) {}
+  });
+
+  // Footer year + last updated
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('lastUpdated').textContent = 'Updated ' + new Date(document.lastModified).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+  // Live age calculation from DOB (1 March 2008)
+  const DOB = new Date(2008, 2, 1); // month index 2 = March
+
+  function computeAge(now){
+    let years = now.getFullYear() - DOB.getFullYear();
+    let months = now.getMonth() - DOB.getMonth();
+    let days = now.getDate() - DOB.getDate();
+
+    if (days < 0){
+      months -= 1;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    if (months < 0){
+      years -= 1;
+      months += 12;
+    }
+
+    const totalSeconds = Math.floor((now - DOB) / 1000);
+    return { years, months, days, totalSeconds };
+  }
+
+  function updateAge(){
+    const now = new Date();
+    const { years, months, days, totalSeconds } = computeAge(now);
+    const ageValue = document.getElementById('ageValue');
+    const footAge = document.getElementById('footAge');
+    const text = `${years}y ${months}m ${days}d`;
+    ageValue.textContent = text;
+    footAge.textContent = `AGE ${years}y ${months}m ${days}d · ${totalSeconds.toLocaleString()}s alive`;
+  }
+
+  updateAge();
+  setInterval(updateAge, 1000);
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.2 });
+  revealEls.forEach(el => io.observe(el));
+  document.getElementById('idCard').classList.add('in');
+</script>
+
+<!-- Privacy-friendly analytics (optional): sign up free at https://www.goatcounter.com,
+     then replace YOUR-CODE below and remove the comment markers to enable. No cookies, no tracking of individuals. -->
+<!-- <script data-goatcounter="https://YOUR-CODE.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script> -->
+</body>
+</html>

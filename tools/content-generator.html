@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Generator — ASRBMY Site Tool</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/blog.css">
+<style>
+  /* Tool-specific additions on top of blog.css tokens */
+  .tool-layout{
+    display:grid; grid-template-columns:1fr 1fr; gap:28px;
+    padding:32px 0 70px;
+    align-items:start;
+  }
+  @media (max-width:900px){ .tool-layout{grid-template-columns:1fr;} }
+
+  .tabs{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;
+  }
+  .tab-btn{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    border:1px solid var(--line); background:var(--panel); color:var(--muted);
+    border-radius:100px; padding:9px 16px; cursor:pointer; transition:all .15s;
+  }
+  .tab-btn:hover{border-color:var(--cyan);}
+  .tab-btn.active{background:var(--cyan); color:#08131A; border-color:var(--cyan); font-weight:600;}
+
+  .panel{
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:var(--radius); padding:22px;
+  }
+  .panel h2{font-size:16px; margin-bottom:4px;}
+  .panel .hint{font-size:12px; color:var(--muted); margin-bottom:18px;}
+
+  .form-tab{display:none;}
+  .form-tab.active{display:block;}
+
+  .form-field{margin-bottom:16px;}
+  .form-field label{
+    display:block; font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:6px;
+  }
+  .form-field input, .form-field textarea, .form-field select{
+    width:100%; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink); border-radius:8px; padding:11px 13px;
+    font-family:'Inter', sans-serif; font-size:16px;
+  }
+  .form-field textarea{resize:vertical; min-height:100px; font-family:'JetBrains Mono', monospace; font-size:16px;}
+  .form-field input:focus, .form-field textarea:focus, .form-field select:focus{border-color:var(--cyan);}
+  .form-field .sub-hint{font-size:11px; color:var(--muted); margin-top:5px;}
+  .row-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:480px){ .row-2{grid-template-columns:1fr;} }
+
+  .icon-picker{display:flex; flex-wrap:wrap; gap:8px;}
+  .icon-opt{
+    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); background:var(--panel-2); border-radius:8px;
+    cursor:pointer; font-size:18px;
+  }
+  .icon-opt.active{border-color:var(--cyan); background:rgba(79,209,197,0.12);}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 20px; border-radius:8px; font-weight:600; font-size:13px;
+    text-decoration:none; border:1px solid transparent; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--cyan); color:#08131A;}
+  .btn-primary:hover{box-shadow:0 6px 20px rgba(79,209,197,0.25);}
+  .btn-ghost{border-color:var(--line); color:var(--ink); background:var(--panel-2);}
+  .btn-ghost:hover{border-color:var(--cyan);}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+  .copy-msg{font-size:12px; color:var(--cyan); margin-left:4px; opacity:0; transition:opacity .2s;}
+  .copy-msg.show{opacity:1;}
+
+  .output-panel{position:sticky; top:88px;}
+  .output-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--amber-bright); margin-bottom:10px; display:block;
+  }
+  .output-code{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+    padding:14px; font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:var(--ink); white-space:pre-wrap; word-break:break-word;
+    max-height:260px; overflow-y:auto; margin:0 0 14px;
+  }
+  .preview-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted); margin:20px 0 10px; display:block;
+  }
+  .preview-box{
+    background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    padding:20px;
+  }
+
+  /* Mirrors of main-site component classes, used only for live preview */
+  .card{border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); padding:22px;}
+  .card .icon{font-size:24px; margin-bottom:14px; display:block;}
+  .card h3{font-size:16px; margin-bottom:6px;}
+  .card p{color:var(--muted); font-size:14px; margin:0;}
+  .card-empty{border:1px dashed var(--line); background:transparent; border-radius:var(--radius); padding:22px; color:var(--muted); font-size:13px;}
+  .card-empty .status-line{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber-bright); display:block; margin-bottom:8px;}
+  .skill-chip{border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:16px; text-align:center; font-family:'JetBrains Mono', monospace; font-size:13px; display:inline-block;}
+  .project-stack{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 14px;}
+  .stack-tag{font-family:'JetBrains Mono', monospace; font-size:11px; border:1px solid var(--line); color:var(--muted); border-radius:5px; padding:3px 8px;}
+  .project-links a{font-size:13px; font-weight:600; color:var(--cyan); text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../index.html">Portfolio</a></li>
+        <li><a href="../blog/index.html">Write-ups</a></li>
+        <li><a href="index.html" class="active">Content Tool</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero-small">
+    <span class="eyebrow">● Internal tool — not indexed</span>
+    <h1>Content Generator</h1>
+    <p class="lead">Fill in a form, get ready-to-paste HTML for your portfolio, plus one-click downloads for new blog posts. Nothing here saves automatically — copy or download, then commit the file/snippet to your repo yourself.</p>
+    <div class="bp-rule"><span class="tick"></span></div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="post">📝 Blog Post</button>
+    <button class="tab-btn" data-tab="project">💼 Project</button>
+    <button class="tab-btn" data-tab="achievement">🏆 Achievement</button>
+    <button class="tab-btn" data-tab="skill">🧩 Skill</button>
+    <button class="tab-btn" data-tab="cert">🎓 Certification</button>
+  </div>
+
+  <div class="tool-layout">
+    <!-- ============ FORMS ============ -->
+    <div>
+      <!-- BLOG POST -->
+      <div class="form-tab active" id="form-post">
+        <div class="panel">
+          <h2>New blog post</h2>
+          <p class="hint">Generates a full post page (download) plus its posts.js entry (copy).</p>
+
+          <div class="form-field">
+            <label>Title</label>
+            <input type="text" id="p-title" placeholder="e.g. Cracking a beginner web CTF box">
+          </div>
+          <div class="row-2">
+            <div class="form-field">
+              <label>Slug (filename)</label>
+              <input type="text" id="p-slug" placeholder="auto-generated">
+              <div class="sub-hint">Saved as /blog/posts/&lt;slug&gt;.html</div>
+            </div>
+            <div class="form-field">
+              <label>Date</label>
+              <input type="date" id="p-date">
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="form-field">
+              <label>Read time</label>
+              <input type="text" id="p-readtime" placeholder="5 min read" value="5 min read">
+            </div>
+            <div class="form-field">
+              <label>Tags (comma separated)</label>
+              <input type="text" id="p-tags" placeholder="CTF, Web, OSINT">
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Excerpt (1-2 sentences, shown on the card)</label>
+            <textarea id="p-excerpt" style="min-height:60px;" placeholder="Short summary for the write-ups listing page."></textarea>
+          </div>
+          <div class="form-field">
+            <label>Body (basic HTML — &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;/&lt;li&gt;, &lt;code&gt;, &lt;pre&gt;&lt;code&gt;, &lt;blockquote&gt;)</label>
+            <textarea id="p-body" style="min-height:200px;" placeholder="&lt;p&gt;Intro paragraph...&lt;/p&gt;
+
+&lt;h2&gt;Recon&lt;/h2&gt;
+&lt;p&gt;What I found...&lt;/p&gt;"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generatePost()">⬇ Download post HTML</button>
+            <button class="btn btn-ghost" onclick="copyPostsJsEntry()">Copy posts.js entry<span class="copy-msg" id="msg-post">Copied!</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT -->
+      <div class="form-tab" id="form-project">
+        <div class="panel">
+          <h2>New project card</h2>
+          <p class="hint">Paste the output into the #projects .cards-grid in index.html.</p>
+          <div class="form-field"><label>Title</label><input type="text" id="pr-title" placeholder="e.g. Network Traffic Analyzer"></div>
+          <div class="form-field"><label>Description</label><textarea id="pr-desc" style="min-height:70px;" placeholder="One or two sentences about what it does."></textarea></div>
+          <div class="form-field"><label>Tech stack (comma separated)</label><input type="text" id="pr-stack" placeholder="Python, Scapy, Flask"></div>
+          <div class="row-2">
+            <div class="form-field"><label>Repo URL</label><input type="text" id="pr-repo" placeholder="https://github.com/asrbmy/..."></div>
+            <div class="form-field"><label>Demo URL (optional)</label><input type="text" id="pr-demo" placeholder="https://..."></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateProject()">Generate</button>
+            <button class="btn btn-ghost" onclick="copyOutput('project')">Copy snippet<span class="copy-msg" id="msg-project">Copied!</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENT -->
+      <div class="form-tab" id="form-achievement">
+        <div class="panel">
+          <h2>New achievement card</h2>
+          <p class="hint">Paste the output into the #achievements .cards-grid in index.html.</p>
+          <div class="form-field"><label>Icon</label>
+            <div class="icon-picker" id="ach-icon-picker">
+              <div class="icon-opt active" data-icon="🏆">🏆</div>
+              <div class="icon-opt" data-icon="🥈">🥈</div>
+              <div class="icon-opt" data-icon="🥉">🥉</div>
+              <div class="icon-opt" data-icon="🎖️">🎖️</div>
+              <div class="icon-opt" data-icon="🏅">🏅</div>
+              <div class="icon-opt" data-icon="🧩">🧩</div>
+              <div class="icon-opt" data-icon="🤝">🤝</div>
+              <div class="icon-opt" data-icon="⭐">⭐</div>
+            </div>
+          </div>
+          <div class="form-field"><label>Title</label><input type="text" id="ach-title" placeholder="e.g. 1st Place — Regional CTF"></div>
+          <div class="form-field"><label>Subtitle / context</label><input type="text" id="ach-sub" placeholder="e.g. Rajasthan Cyber Olympiad, 2026"></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateAchievement()">Generate</button>
+            <button class="btn btn-ghost" onclick="copyOutput('achievement')">Copy snippet<span class="copy-msg" id="msg-achievement">Copied!</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILL -->
+      <div class="form-tab" id="form-skill">
+        <div class="panel">
+          <h2>New skill chip</h2>
+          <p class="hint">Paste the output into the #skills .skills-grid in index.html.</p>
+          <div class="form-field"><label>Skill name</label><input type="text" id="sk-name" placeholder="e.g. Wireshark"></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateSkill()">Generate</button>
+            <button class="btn btn-ghost" onclick="copyOutput('skill')">Copy snippet<span class="copy-msg" id="msg-skill">Copied!</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CERT -->
+      <div class="form-tab" id="form-cert">
+        <div class="panel">
+          <h2>New certification card</h2>
+          <p class="hint">Paste the output into the #certifications .cards-grid in index.html, replacing an empty slot.</p>
+          <div class="form-field"><label>Certification name</label><input type="text" id="c-name" placeholder="e.g. Google Cybersecurity Certificate"></div>
+          <div class="row-2">
+            <div class="form-field"><label>Issuer</label><input type="text" id="c-issuer" placeholder="e.g. Google / Coursera"></div>
+            <div class="form-field"><label>Date earned</label><input type="date" id="c-date"></div>
+          </div>
+          <div class="form-field"><label>Credential URL (optional)</label><input type="text" id="c-url" placeholder="https://..."></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateCert()">Generate</button>
+            <button class="btn btn-ghost" onclick="copyOutput('cert')">Copy snippet<span class="copy-msg" id="msg-cert">Copied!</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OUTPUT / PREVIEW ============ -->
+    <div class="output-panel panel">
+      <span class="output-label">Generated code</span>
+      <pre class="output-code" id="outputCode">Fill in the form and click Generate to see code here.</pre>
+
+      <span class="preview-label">Live preview</span>
+      <div class="preview-box" id="previewBox">
+        <p style="color:var(--muted); font-size:13px; margin:0;">Preview will appear here.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY — internal tool</span>
+    <span><a href="../index.html">← Back to portfolio</a></span>
+  </div>
+</footer>
+
+<script src="../assets/blog.js"></script>
+<script>
+  // ---------- Tabs ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.form-tab').forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('form-' + btn.dataset.tab).classList.add('active');
+      document.getElementById('outputCode').textContent = 'Fill in the form and click Generate to see code here.';
+      document.getElementById('previewBox').innerHTML = '<p style="color:var(--muted); font-size:13px; margin:0;">Preview will appear here.</p>';
+    });
+  });
+
+  // Default date = today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('p-date').value = today;
+  document.getElementById('c-date').value = today;
+
+  // Auto-slug from title
+  document.getElementById('p-title').addEventListener('input', (e) => {
+    const slugField = document.getElementById('p-slug');
+    if (!slugField.dataset.touched) {
+      slugField.value = slugify(e.target.value);
+    }
+  });
+  document.getElementById('p-slug').addEventListener('input', (e) => { e.target.dataset.touched = 'true'; });
+
+  function slugify(str) {
+    return str.toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+  function esc(str) {
+    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escAttr(str) {
+    return esc(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function sanitizeUrl(url) {
+    const trimmed = (url || '').trim();
+    if (!trimmed) return '';
+    if (!/^(https?:|mailto:)/i.test(trimmed)) return '';
+    try {
+      const parsed = new URL(trimmed);
+      return ['http:', 'https:', 'mailto:'].includes(parsed.protocol) ? parsed.href : '';
+    } catch (e) {
+      return '';
+    }
+  }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  let lastGenerated = { type: null, code: '' };
+
+  function setOutput(code, type) {
+    document.getElementById('outputCode').textContent = code;
+    lastGenerated = { type, code };
+  }
+
+  // ---------- Icon picker (achievements) ----------
+  let selectedIcon = '🏆';
+  document.getElementById('ach-icon-picker').addEventListener('click', (e) => {
+    const opt = e.target.closest('.icon-opt');
+    if (!opt) return;
+    document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    selectedIcon = opt.dataset.icon;
+  });
+
+  // ---------- BLOG POST ----------
+  function buildPostHtml({ title, date, readTime, body }) {
+    const dateDisplay = fmtDate(date);
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="${esc(title)}">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>${dateDisplay}</span><span>${esc(readTime)}</span></div>
+  <h1>${esc(title)}</h1>
+</main>
+
+<article class="post-body">
+${body}
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"><\/script>
+</body>
+</html>
+`;
+  }
+
+  function generatePost() {
+    const title = document.getElementById('p-title').value.trim() || 'Untitled post';
+    const slug = document.getElementById('p-slug').value.trim() || slugify(title) || 'untitled-post';
+    const date = document.getElementById('p-date').value || today;
+    const readTime = document.getElementById('p-readtime').value.trim() || '5 min read';
+    const body = document.getElementById('p-body').value.trim() || '<p>Write your post content here.</p>';
+
+    const html = buildPostHtml({ title, date, readTime, body });
+    const filename = `${slug}.html`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    setOutput(`Downloaded: blog/posts/${filename}\n\nNext: add this to blog/posts.js, then commit both files.`, 'post');
+    document.getElementById('previewBox').innerHTML = `<div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);">${fmtDate(date)} · ${esc(readTime)}</div><h3 style="margin-top:8px;">${esc(title)}</h3>`;
+  }
+
+  function copyPostsJsEntry() {
+    const title = document.getElementById('p-title').value.trim() || 'Untitled post';
+    const slug = document.getElementById('p-slug').value.trim() || slugify(title) || 'untitled-post';
+    const date = document.getElementById('p-date').value || today;
+    const readTime = document.getElementById('p-readtime').value.trim() || '5 min read';
+    const excerpt = document.getElementById('p-excerpt').value.trim() || 'Add an excerpt for this post.';
+    const tags = document.getElementById('p-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+    const entry = `  {
+    title: "${title.replace(/"/g, '\\"')}",
+    date: "${date}",
+    excerpt: "${excerpt.replace(/"/g, '\\"')}",
+    tags: [${tags.map(t => `"${t.replace(/"/g, '\\"')}"`).join(', ')}],
+    readTime: "${readTime.replace(/"/g, '\\"')}",
+    url: "posts/${slug}.html"
+  },`;
+
+    setOutput(entry, 'post');
+    copyToClipboard(entry, 'msg-post');
+  }
+
+  // ---------- PROJECT ----------
+  function generateProject() {
+    const title = document.getElementById('pr-title').value.trim() || 'Project title';
+    const desc = document.getElementById('pr-desc').value.trim() || 'Project description.';
+    const stack = document.getElementById('pr-stack').value.split(',').map(s => s.trim()).filter(Boolean);
+    const repo = sanitizeUrl(document.getElementById('pr-repo').value.trim());
+    const demo = sanitizeUrl(document.getElementById('pr-demo').value.trim());
+
+    const stackHtml = stack.map(s => `<span class="stack-tag">${esc(s)}</span>`).join('');
+    let linksHtml = '';
+    if (repo) linksHtml += `<a href="${escAttr(repo)}" target="_blank" rel="noopener">GitHub →</a>`;
+    if (demo) linksHtml += `${repo ? '\n          ' : ''}<a href="${escAttr(demo)}" target="_blank" rel="noopener">Live demo →</a>`;
+
+    const code = `<div class="card bp">
+  <h3>${esc(title)}</h3>
+  <p>${esc(desc)}</p>
+  <div class="project-stack">
+    ${stackHtml}
+  </div>
+  <div class="project-links">
+    ${linksHtml || '<!-- add repo/demo links -->'}
+  </div>
+</div>`;
+    setOutput(code, 'project');
+
+    document.getElementById('previewBox').innerHTML = `
+      <div class="card">
+        <h3>${esc(title)}</h3>
+        <p>${esc(desc)}</p>
+        <div class="project-stack">${stackHtml}</div>
+        <div class="project-links">${linksHtml}</div>
+      </div>`;
+  }
+
+  // ---------- ACHIEVEMENT ----------
+  function generateAchievement() {
+    const title = document.getElementById('ach-title').value.trim() || 'Achievement title';
+    const sub = document.getElementById('ach-sub').value.trim() || 'Context / event name';
+
+    const code = `<div class="card bp">
+  <span class="icon">${selectedIcon}</span>
+  <h3>${esc(title)}</h3>
+  <p>${esc(sub)}</p>
+</div>`;
+    setOutput(code, 'achievement');
+
+    document.getElementById('previewBox').innerHTML = `
+      <div class="card">
+        <span class="icon">${selectedIcon}</span>
+        <h3>${esc(title)}</h3>
+        <p>${esc(sub)}</p>
+      </div>`;
+  }
+
+  // ---------- SKILL ----------
+  function generateSkill() {
+    const name = document.getElementById('sk-name').value.trim() || 'Skill name';
+    const code = `<div class="skill-chip">${esc(name)}</div>`;
+    setOutput(code, 'skill');
+    document.getElementById('previewBox').innerHTML = `<div class="skill-chip">${esc(name)}</div>`;
+  }
+
+  // ---------- CERT ----------
+  function generateCert() {
+    const name = document.getElementById('c-name').value.trim() || 'Certification name';
+    const issuer = document.getElementById('c-issuer').value.trim() || 'Issuer';
+    const date = document.getElementById('c-date').value || today;
+    const url = sanitizeUrl(document.getElementById('c-url').value.trim());
+    const dateDisplay = fmtDate(date);
+
+    const inner = url
+      ? `<a href="${escAttr(url)}" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">${esc(name)} →</a>`
+      : esc(name);
+
+    const code = `<div class="card bp">
+  <span class="icon">🎓</span>
+  <h3>${inner}</h3>
+  <p>${esc(issuer)} · ${dateDisplay}</p>
+</div>`;
+    setOutput(code, 'cert');
+
+    document.getElementById('previewBox').innerHTML = `
+      <div class="card">
+        <span class="icon">🎓</span>
+        <h3>${inner}</h3>
+        <p>${esc(issuer)} · ${dateDisplay}</p>
+      </div>`;
+  }
+
+  // ---------- Copy helpers ----------
+  function copyOutput(type) {
+    if (lastGenerated.type !== type || !lastGenerated.code) {
+      alert('Click Generate first.');
+      return;
+    }
+    copyToClipboard(lastGenerated.code, 'msg-' + type);
+  }
+
+  function copyToClipboard(text, msgId) {
+    const finish = () => {
+      const msg = document.getElementById(msgId);
+      if (msg) {
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 1500);
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(finish).catch(() => fallbackCopy(text, finish));
+    } else {
+      fallbackCopy(text, finish);
+    }
+  }
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    cb();
+  }
+</script>
+</body>
+</html>
