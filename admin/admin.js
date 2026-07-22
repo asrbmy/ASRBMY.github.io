@@ -127,8 +127,12 @@
   document.getElementById('ach-icon-picker').addEventListener('click', (e) => {
     const opt = e.target.closest('.icon-opt');
     if (!opt) return;
-    document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => o.classList.remove('active'));
+    document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => {
+      o.classList.remove('active');
+      o.setAttribute('aria-pressed', 'false');
+    });
     opt.classList.add('active');
+    opt.setAttribute('aria-pressed', 'true');
     selectedIcon = opt.dataset.icon;
   });
 
@@ -155,13 +159,16 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/blog.css">
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <header>
   <div class="nav-inner">
@@ -171,7 +178,7 @@
       <ul id="navList">
         <li><a href="../../index.html">Portfolio</a></li>
         <li><a href="../../index.html#projects">Projects</a></li>
-        <li><a href="../index.html" class="active">Write-ups</a></li>
+        <li><a href="../index.html" class="active" aria-current="page">Write-ups</a></li>
         <li><a href="../../index.html#contact">Contact</a></li>
       </ul>
     </nav>
@@ -183,7 +190,7 @@
   </div>
 </header>
 
-<main class="wrap post-header">
+<main class="wrap post-header" id="main">
   <a class="back-link" href="../index.html">← Back to write-ups</a>
   <div class="post-meta"><span>${dateDisplay}</span><span>${esc(readTime)}</span></div>
   <h1>${esc(title)}</h1>
@@ -390,7 +397,11 @@ ${body}
     if (type === 'achievement') {
       ['ach-title','ach-sub'].forEach(id => document.getElementById(id).value = '');
       selectedIcon = '🏆';
-      document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => o.classList.toggle('active', o.dataset.icon === '🏆'));
+      document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => {
+        const isMatch = o.dataset.icon === '🏆';
+        o.classList.toggle('active', isMatch);
+        o.setAttribute('aria-pressed', String(isMatch));
+      });
     }
     if (type === 'skill') { document.getElementById('sk-name').value = ''; }
     if (type === 'cert') { ['c-name','c-issuer','c-url'].forEach(id => document.getElementById(id).value = ''); document.getElementById('c-date').value = today; }
@@ -494,7 +505,11 @@ ${body}
         document.getElementById('ach-sub').value = parsed.pText;
         if (parsed.icon) {
           selectedIcon = parsed.icon;
-          document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => o.classList.toggle('active', o.dataset.icon === parsed.icon));
+          document.querySelectorAll('#ach-icon-picker .icon-opt').forEach(o => {
+            const isMatch = o.dataset.icon === parsed.icon;
+            o.classList.toggle('active', isMatch);
+            o.setAttribute('aria-pressed', String(isMatch));
+          });
         }
       });
     } else if (type === 'skill') {
@@ -545,7 +560,7 @@ ${body}
     const title = document.getElementById('ach-title').value.trim() || 'Achievement title';
     const sub = document.getElementById('ach-sub').value.trim() || 'Context / event name';
     return { title, snippet: `<div class="card bp">
-  <span class="icon">${selectedIcon}</span>
+  <span class="icon" aria-hidden="true">${selectedIcon}</span>
   <h3>${esc(title)}</h3>
   <p>${esc(sub)}</p>
 </div>` };
@@ -579,7 +594,7 @@ ${body}
       ? `<a href="${escAttr(url)}" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">${esc(name)} →</a>`
       : esc(name);
     return { title: name, warnings, snippet: `<div class="card bp">
-  <span class="icon">🎓</span>
+  <span class="icon" aria-hidden="true">🎓</span>
   <h3>${inner}</h3>
   <p>${esc(issuer)} · ${fmtDate(date)}</p>
 </div>` };

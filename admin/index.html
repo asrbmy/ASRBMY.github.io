@@ -7,10 +7,13 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/blog.css">
 <style>
@@ -81,6 +84,7 @@
   .icon-opt{
     width:40px; height:40px; display:flex; align-items:center; justify-content:center;
     border:1px solid var(--line); background:var(--panel-2); border-radius:8px; cursor:pointer; font-size:18px;
+    padding:0; margin:0; font-family:inherit; line-height:1;
   }
   .icon-opt.active{border-color:var(--cyan); background:rgba(79,209,197,0.12);}
 
@@ -97,6 +101,7 @@
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <header>
   <div class="nav-inner">
@@ -107,7 +112,7 @@
         <li><a href="../index.html">Portfolio</a></li>
         <li><a href="../blog/index.html">Write-ups</a></li>
         <li><a href="../tools/content-generator.html">Offline tool</a></li>
-        <li><a href="index.html" class="active">Admin</a></li>
+        <li><a href="index.html" class="active" aria-current="page">Admin</a></li>
       </ul>
     </nav>
     <div class="nav-right">
@@ -118,7 +123,7 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main">
   <section class="hero-small">
     <span class="eyebrow">● Admin — writes directly to GitHub</span>
     <h1>Site CMS</h1>
@@ -223,15 +228,15 @@
       <div class="panel">
         <h2>Add an achievement card</h2>
         <div class="form-field"><label>Icon</label>
-          <div class="icon-picker" id="ach-icon-picker">
-            <div class="icon-opt active" data-icon="🏆">🏆</div>
-            <div class="icon-opt" data-icon="🥈">🥈</div>
-            <div class="icon-opt" data-icon="🥉">🥉</div>
-            <div class="icon-opt" data-icon="🎖️">🎖️</div>
-            <div class="icon-opt" data-icon="🏅">🏅</div>
-            <div class="icon-opt" data-icon="🧩">🧩</div>
-            <div class="icon-opt" data-icon="🤝">🤝</div>
-            <div class="icon-opt" data-icon="⭐">⭐</div>
+          <div class="icon-picker" id="ach-icon-picker" role="group" aria-label="Choose an icon">
+            <button type="button" class="icon-opt active" data-icon="🏆" aria-label="Trophy" aria-pressed="true">🏆</button>
+            <button type="button" class="icon-opt" data-icon="🥈" aria-label="Silver medal" aria-pressed="false">🥈</button>
+            <button type="button" class="icon-opt" data-icon="🥉" aria-label="Bronze medal" aria-pressed="false">🥉</button>
+            <button type="button" class="icon-opt" data-icon="🎖️" aria-label="Military medal" aria-pressed="false">🎖️</button>
+            <button type="button" class="icon-opt" data-icon="🏅" aria-label="Sports medal" aria-pressed="false">🏅</button>
+            <button type="button" class="icon-opt" data-icon="🧩" aria-label="Puzzle piece" aria-pressed="false">🧩</button>
+            <button type="button" class="icon-opt" data-icon="🤝" aria-label="Handshake" aria-pressed="false">🤝</button>
+            <button type="button" class="icon-opt" data-icon="⭐" aria-label="Star" aria-pressed="false">⭐</button>
           </div>
         </div>
         <div class="form-field"><label>Title</label><input type="text" id="ach-title" placeholder="e.g. 1st Place — Regional CTF"></div>
