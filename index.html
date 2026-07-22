@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ajit Singh Rathore (ASRBMY) — Cyber Security · AI · Robotics Portfolio</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://formsubmit.co https://gc.zgo.at; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://formsubmit.co https://gc.zgo.at https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co;">
 <meta name="description" content="Portfolio of Ajit Singh Rathore (ASRBMY), a student from Churu, Rajasthan focused on ethical hacking, OSINT, applied AI and robotics. National-level AI VidyaSetu hackathon award winner.">
 <meta name="keywords" content="Ajit Singh Rathore, ASRBMY, Ajit Singh Rathore Bika, cyber security portfolio, ethical hacking student, OSINT, AI VidyaSetu, Rajasthan student developer, Kendriya Vidyalaya Churu">
 <meta name="author" content="Ajit Singh Rathore">
@@ -29,7 +29,9 @@
 <meta name="twitter:creator" content="@asrbmy">
 
 <!-- Favicon: replace /favicon.ico and /og-image.png in the repo root with real files -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <meta name="google-site-verification" content="NgdyFaPqUaTId9D-oxnS63r0mrkbD6fK-vG9VhZyB8s" />
 
@@ -64,6 +66,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -89,7 +92,7 @@
     --muted:#5B6B82;
     --amber:#B06E22;
     --amber-bright:#9C5C16;
-    --cyan:#0E8C81;
+    --cyan:#0A7D73;
   }
 
   *{box-sizing:border-box;}
@@ -133,6 +136,14 @@
     outline:2px solid var(--cyan);
     outline-offset:3px;
   }
+
+  .skip-link{
+    position:absolute; left:12px; top:-60px; z-index:100;
+    background:var(--cyan); color:#08131A; font-weight:700; font-size:14px;
+    padding:10px 16px; border-radius:8px; text-decoration:none;
+    transition:top .15s ease;
+  }
+  .skip-link:focus{ top:12px; }
 
   .wrap{
     max-width:1080px;
@@ -293,6 +304,7 @@
     cursor:pointer;
   }
   .btn:hover{transform:translateY(-1px);}
+  .btn:active{transform:translateY(0) scale(0.97);}
   .btn-primary{
     background:var(--cyan);
     color:#08131A;
@@ -442,8 +454,11 @@
     background:var(--panel);
     border-radius:var(--radius);
     padding:22px;
+    transition:transform .2s ease, border-color .2s ease;
   }
-  .card .icon{font-size:24px; margin-bottom:14px; display:block;}
+  .card:hover{ transform:translateY(-2px); border-color:rgba(79,209,197,0.35); }
+  .card .icon{font-size:24px; margin-bottom:14px; display:block; transition:transform .25s ease;}
+  .card:hover .icon{transform:translateY(-3px) rotate(-4deg);}
   .card h3{font-size:16px; margin-bottom:6px;}
   .card p{color:var(--muted); font-size:14px; margin:0;}
 
@@ -492,20 +507,34 @@
   .timeline-item h3{font-size:15px; font-weight:600;}
   .timeline-item p{color:var(--muted); font-size:13px; margin-top:4px;}
 
-  /* GitHub stats embed */
-  .gh-stats{
-    display:grid; grid-template-columns:1fr 1fr; gap:16px;
-    position:relative;
+  /* GitHub stats — self-built widget using the GitHub API directly (no third-party service) */
+  .gh-stats-self{ padding:20px 22px; }
+  .gh-stats-loading{
+    display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--muted);
   }
-  @media (max-width:600px){ .gh-stats{grid-template-columns:1fr;} }
-  .gh-stats img{width:100%; border-radius:var(--radius); border:1px solid var(--line);}
-  .gh-stats-fallback{
-    display:none;
-    grid-column:1 / -1;
-    border:1px dashed var(--line); border-radius:var(--radius);
-    padding:18px 20px;
+  .spinner-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--cyan);
+    box-shadow:0 0 6px var(--cyan); animation:pulse 1.2s ease-in-out infinite;
   }
-  .gh-stats.gh-stats-broken .gh-stats-fallback{ display:block; }
+  .gh-tiles{ display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:20px; }
+  @media (max-width:480px){ .gh-tiles{ grid-template-columns:1fr 1fr; } }
+  .gh-tile{
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    border:1px solid var(--line); border-radius:8px; padding:16px 10px;
+  }
+  .gh-tile-value{
+    font-family:'JetBrains Mono', monospace; font-size:24px; font-weight:700; color:var(--cyan);
+  }
+  .gh-tile-label{
+    font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:4px;
+  }
+  .gh-langs{ display:flex; flex-direction:column; gap:10px; }
+  .gh-lang-row{ display:flex; align-items:center; gap:10px; font-size:13px; }
+  .gh-lang-name{ width:110px; flex-shrink:0; color:var(--ink); font-family:'JetBrains Mono', monospace; font-size:12px; }
+  .gh-lang-bar-track{ flex:1; height:6px; border-radius:4px; background:var(--panel-2); overflow:hidden; }
+  .gh-lang-bar-fill{ height:100%; background:var(--cyan); border-radius:4px; }
+  .gh-lang-pct{ width:40px; text-align:right; color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:11px; }
 
   /* testimonial */
   .quote-block{
@@ -587,9 +616,24 @@
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important; transition:none !important;}
   }
+
+  @media print{
+    body::before{ display:none; } /* blueprint grid overlay */
+    header, footer, .hero-actions, .skip-link, .bp-rule, .theme-toggle, .nav-toggle{ display:none !important; }
+    body{ background:#fff; color:#111; }
+    .id-card, .card, .card-empty, .skill-chip, .connect-link, .gh-stats-self{
+      border:1px solid #ccc !important; background:#fff !important; box-shadow:none !important;
+    }
+    a{ color:#111 !important; text-decoration:underline; }
+    .eyebrow, .tag, .id-role, .age-readout .label{ color:#555 !important; }
+    section{ padding:24px 0 !important; break-inside:avoid; }
+    .cards-grid, .skills-grid{ break-inside:avoid; }
+    .hero{ padding-top:0; }
+  }
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <header>
   <div class="nav-inner">
@@ -615,7 +659,7 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main">
   <section class="hero">
     <div class="hero-grid">
       <div>
@@ -699,12 +743,21 @@
     </div>
 
     <div class="subhead">GitHub activity</div>
-    <div class="gh-stats" id="ghStats" data-fail-count="0">
-      <img loading="lazy" src="https://github-readme-stats.vercel.app/api?username=asrbmy&show_icons=true&theme=dark&hide_border=true&bg_color=00000000&title_color=4FD1C5&icon_color=E3A855&text_color=8592A6" alt="Ajit Singh Rathore's GitHub stats" onerror="handleGhStatsError(this)">
-      <img loading="lazy" src="https://github-readme-stats.vercel.app/api/top-langs/?username=asrbmy&layout=compact&theme=dark&hide_border=true&bg_color=00000000&title_color=4FD1C5&text_color=8592A6" alt="Ajit Singh Rathore's most used languages on GitHub" onerror="handleGhStatsError(this)">
-      <div class="gh-stats-fallback">
-        <span style="font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber-bright); display:block; margin-bottom:8px;">Stats widget unavailable right now</span>
-        <p style="color:var(--muted); font-size:13px; margin:0;">The third-party stats service is having downtime. <a href="https://github.com/asrbmy" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">View the live GitHub profile →</a></p>
+    <div class="gh-stats-self bp" id="ghStatsSelf">
+      <div class="gh-stats-loading" id="ghStatsLoading">
+        <span class="spinner-dot"></span> Pulling live stats from GitHub…
+      </div>
+      <div class="gh-stats-content" id="ghStatsContent" style="display:none;">
+        <div class="gh-tiles">
+          <div class="gh-tile"><span class="gh-tile-value" id="ghRepos">–</span><span class="gh-tile-label">Public repos</span></div>
+          <div class="gh-tile"><span class="gh-tile-value" id="ghStars">–</span><span class="gh-tile-label">Total stars</span></div>
+          <div class="gh-tile"><span class="gh-tile-value" id="ghFollowers">–</span><span class="gh-tile-label">Followers</span></div>
+        </div>
+        <div class="gh-langs" id="ghLangs"></div>
+      </div>
+      <div class="gh-stats-error" id="ghStatsErrorBox" style="display:none;">
+        <span style="font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber-bright); display:block; margin-bottom:8px;">Live stats unavailable right now</span>
+        <p style="color:var(--muted); font-size:13px; margin:0;">GitHub's API may be rate-limiting anonymous requests. <a href="https://github.com/asrbmy" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">View the live GitHub profile →</a></p>
       </div>
     </div>
   </section>
@@ -717,32 +770,32 @@
     </div>
     <div class="cards-grid" id="achievementsGrid">
       <div class="card bp">
-        <span class="icon">🥈</span>
+        <span class="icon" aria-hidden="true">🥈</span>
         <h3>National Runner-Up — 2nd Position</h3>
         <p>AI VidyaSetu (KVS Hackathon)</p>
       </div>
       <div class="card bp">
-        <span class="icon">🤝</span>
+        <span class="icon" aria-hidden="true">🤝</span>
         <h3>Best Team Award</h3>
         <p>AI VidyaSetu (KVS Hackathon)</p>
       </div>
       <div class="card bp">
-        <span class="icon">🏆</span>
+        <span class="icon" aria-hidden="true">🏆</span>
         <h3>State-Level Winner</h3>
         <p>AI VidyaSetu</p>
       </div>
       <div class="card bp">
-        <span class="icon">🎖️</span>
+        <span class="icon" aria-hidden="true">🎖️</span>
         <h3>Zonal — 3rd Position</h3>
         <p>AI VidyaSetu</p>
       </div>
       <div class="card bp">
-        <span class="icon">🧩</span>
+        <span class="icon" aria-hidden="true">🧩</span>
         <h3>Best Problem-Solving Award</h3>
         <p>Zonal Level, AI VidyaSetu</p>
       </div>
       <div class="card bp">
-        <span class="icon">🏅</span>
+        <span class="icon" aria-hidden="true">🏅</span>
         <h3>Hackathon Awards</h3>
         <p>APS / ATL events participation and awards</p>
       </div>
@@ -802,14 +855,14 @@
     </div>
     <div class="cards-grid" id="projectsGrid">
       <div class="card bp">
-        <h3>Cyber Security Toolkit</h3>
-        <p>A collection of utilities for security testing and analysis.</p>
+        <h3>OSINT Correlator</h3>
+        <p>A lightweight Chrome/Edge extension for authorized OSINT recon.</p>
         <div class="project-stack">
-          <span class="stack-tag">Python</span><span class="stack-tag">Bash</span><span class="stack-tag">Linux</span>
+          <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JS</span>
         </div>
         <!-- Replace href below with the actual repo/demo link -->
         <div class="project-links">
-          <a href="https://github.com/asrbmy" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://github.com/asrbmy/OSINT-Correlator" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </div>
       <div class="card bp">
@@ -908,16 +961,89 @@
 </footer>
 
 <script>
-  // GitHub stats images come from a third-party free service that has frequent downtime.
-  // Only show the fallback once BOTH images have failed, so one slow-but-working image
-  // isn't hidden just because its sibling briefly errored.
-  function handleGhStatsError(img) {
-    const container = img.closest('.gh-stats');
-    img.remove();
-    const failCount = parseInt(container.dataset.failCount || '0', 10) + 1;
-    container.dataset.failCount = failCount;
-    if (failCount >= 2) container.classList.add('gh-stats-broken');
+  // ---- GitHub activity widget: talks directly to the GitHub REST API ----
+  // (no third-party rendering service, so no dependency on someone else's uptime).
+  // Anonymous GitHub API calls are rate-limited to 60/hour per IP, so results are
+  // cached in sessionStorage for an hour to keep repeat visits within a session cheap.
+  async function loadGithubStats() {
+    const username = 'asrbmy';
+    const cacheKey = 'gh-stats-cache-' + username;
+    const cacheTtlMs = 60 * 60 * 1000; // 1 hour
+
+    const loadingEl = document.getElementById('ghStatsLoading');
+    const contentEl = document.getElementById('ghStatsContent');
+    const errorEl = document.getElementById('ghStatsErrorBox');
+
+    function render(data) {
+      document.getElementById('ghRepos').textContent = data.publicRepos;
+      document.getElementById('ghStars').textContent = data.totalStars;
+      document.getElementById('ghFollowers').textContent = data.followers;
+
+      const langsEl = document.getElementById('ghLangs');
+      langsEl.innerHTML = '';
+      const maxCount = data.languages.length ? data.languages[0][1] : 1;
+      data.languages.forEach(([lang, count]) => {
+        const pct = Math.round((count / maxCount) * 100);
+        const row = document.createElement('div');
+        row.className = 'gh-lang-row';
+        row.innerHTML = `
+          <span class="gh-lang-name">${lang}</span>
+          <span class="gh-lang-bar-track"><span class="gh-lang-bar-fill" style="width:${pct}%"></span></span>
+          <span class="gh-lang-pct">${count} repo${count === 1 ? '' : 's'}</span>
+        `;
+        langsEl.appendChild(row);
+      });
+
+      loadingEl.style.display = 'none';
+      contentEl.style.display = 'block';
+    }
+
+    // Try cache first
+    try {
+      const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+      if (cached && (Date.now() - cached.savedAt) < cacheTtlMs) {
+        render(cached.data);
+        return;
+      }
+    } catch (e) { /* ignore bad cache */ }
+
+    try {
+      const [userRes, reposRes] = await Promise.all([
+        fetch(`https://api.github.com/users/${username}`),
+        fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
+      ]);
+      if (!userRes.ok || !reposRes.ok) throw new Error('GitHub API request failed');
+
+      const user = await userRes.json();
+      const repos = await reposRes.json();
+
+      const originalRepos = repos.filter(r => !r.fork);
+      const totalStars = originalRepos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+
+      const langCounts = {};
+      originalRepos.forEach(r => {
+        if (r.language) langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+      });
+      const languages = Object.entries(langCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      const data = {
+        publicRepos: user.public_repos,
+        followers: user.followers,
+        totalStars,
+        languages
+      };
+
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify({ savedAt: Date.now(), data }));
+      } catch (e) { /* storage full or unavailable — non-fatal */ }
+
+      render(data);
+    } catch (e) {
+      loadingEl.style.display = 'none';
+      errorEl.style.display = 'block';
+    }
   }
+  loadGithubStats();
 
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
