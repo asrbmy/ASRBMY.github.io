@@ -7,7 +7,7 @@
 <meta name="description" content="All projects by Ajit Singh Rathore (ASRBMY) — cyber security tooling, OSINT, and applied AI work.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://asrbmy.github.io/projects/">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self';">
 <meta name="theme-color" content="#0B1220">
 
 <meta property="og:type" content="website">
@@ -22,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/blog.css">
 </head>
@@ -50,14 +51,17 @@
 
 <main class="wrap" id="main">
   <section class="hero-small">
-    <span class="eyebrow">● Project archive — full list</span>
+    <span class="eyebrow">● Project archive — live from GitHub</span>
     <h1>All Projects</h1>
-    <p class="lead">Everything built so far — cyber security tooling, OSINT, and applied AI experiments. The homepage shows a short "selected work" slice; this page has the full list.</p>
+    <p class="lead">Pulled automatically from <a href="https://github.com/asrbmy" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">github.com/asrbmy</a> — every public, non-fork repository, most recently active first.</p>
     <div class="bp-rule"><span class="tick"></span></div>
   </section>
 
   <section style="padding-top:8px;">
-    <div class="cards-grid">
+    <div class="gh-stats-loading" id="liveStatus" style="margin-bottom:18px;">
+      <span class="spinner-dot"></span> Pulling repositories from GitHub…
+    </div>
+    <div class="cards-grid" id="allProjectsGrid">
       <div class="card bp">
         <h3>Cyber Security Toolkit</h3>
         <p>A collection of utilities for security testing and analysis.</p>
@@ -90,9 +94,12 @@
         </div>
       </div>
       <!--
-        To add a project here, copy one of the <div class="card bp">...</div> blocks above
-        and edit its title, description, tech stack, and link. Keep index.html's own
-        "Selected work" section as just a short highlight — this page is the full list.
+        These three cards are a FALLBACK only. On page load, JS fetches your live
+        public repos from the GitHub API and replaces everything in this grid
+        automatically — you don't need to edit these by hand anymore. They're
+        just what visitors see for a moment while it loads, or if GitHub's API
+        is ever unreachable. Keep index.html's own "Selected work" section as a
+        short manual highlight — this page is the always-current full list.
       -->
     </div>
   </section>
@@ -106,5 +113,110 @@
 </footer>
 
 <script src="../assets/blog.js"></script>
+<script>
+  // Pulls all public, non-fork repos directly from the GitHub API — no third-party
+  // service involved. Falls back to the static example cards already in the page
+  // if the API is unreachable or rate-limited, so the page is never left blank.
+  (function () {
+    const username = 'asrbmy';
+    const cacheKey = 'gh-projects-cache-' + username;
+    const cacheTtlMs = 30 * 60 * 1000; // 30 minutes
+
+    const liveStatus = document.getElementById('liveStatus');
+    const grid = document.getElementById('allProjectsGrid');
+
+    function esc(str) {
+      return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function buildCard(repo) {
+      const card = document.createElement('div');
+      card.className = 'card bp';
+
+      const h3 = document.createElement('h3');
+      h3.textContent = repo.name;
+      card.appendChild(h3);
+
+      const p = document.createElement('p');
+      p.textContent = repo.description || 'No description provided.';
+      card.appendChild(p);
+
+      const stack = document.createElement('div');
+      stack.className = 'project-stack';
+      if (repo.language) {
+        const langTag = document.createElement('span');
+        langTag.className = 'stack-tag';
+        langTag.textContent = repo.language;
+        stack.appendChild(langTag);
+      }
+      if (repo.stargazers_count > 0) {
+        const starTag = document.createElement('span');
+        starTag.className = 'stack-tag';
+        starTag.textContent = `★ ${repo.stargazers_count}`;
+        stack.appendChild(starTag);
+      }
+      card.appendChild(stack);
+
+      const links = document.createElement('div');
+      links.className = 'project-links';
+      const repoLink = document.createElement('a');
+      repoLink.href = repo.html_url;
+      repoLink.target = '_blank';
+      repoLink.rel = 'noopener';
+      repoLink.textContent = 'GitHub →';
+      links.appendChild(repoLink);
+      if (repo.homepage) {
+        const demoLink = document.createElement('a');
+        demoLink.href = repo.homepage;
+        demoLink.target = '_blank';
+        demoLink.rel = 'noopener';
+        demoLink.textContent = 'Live demo →';
+        links.appendChild(demoLink);
+      }
+      card.appendChild(links);
+
+      return card;
+    }
+
+    function render(repos) {
+      if (!repos.length) {
+        liveStatus.innerHTML = '<span style="color:var(--amber-bright);">No public repositories found — showing example projects instead.</span>';
+        return;
+      }
+      grid.innerHTML = '';
+      repos.forEach(repo => grid.appendChild(buildCard(repo)));
+      liveStatus.style.display = 'none';
+    }
+
+    async function loadProjects() {
+      try {
+        const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+        if (cached && (Date.now() - cached.savedAt) < cacheTtlMs) {
+          render(cached.repos);
+          return;
+        }
+      } catch (e) { /* ignore bad cache */ }
+
+      try {
+        const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=pushed`);
+        if (!res.ok) throw new Error('GitHub API request failed');
+        const repos = await res.json();
+        const filtered = repos
+          .filter(r => !r.fork)
+          .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify({ savedAt: Date.now(), repos: filtered }));
+        } catch (e) { /* storage full or unavailable — non-fatal */ }
+
+        render(filtered);
+      } catch (e) {
+        liveStatus.innerHTML = '<span style="color:var(--amber-bright);">Live GitHub data unavailable right now — showing example projects instead.</span>';
+      }
+    }
+
+    loadProjects();
+  })();
+</script>
 </body>
 </html>

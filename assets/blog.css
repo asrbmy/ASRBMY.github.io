@@ -115,6 +115,15 @@ html[data-theme="light"] header{background:rgba(244,246,250,0.88);}
   animation:pulse 2.4s ease-in-out infinite; flex-shrink:0;
 }
 @keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.4; transform:scale(.8);}}
+
+.gh-stats-loading{
+  display:flex; align-items:center; gap:10px;
+  font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--muted);
+}
+.spinner-dot{
+  width:8px; height:8px; border-radius:50%; background:var(--cyan);
+  box-shadow:0 0 6px var(--cyan); animation:pulse 1.2s ease-in-out infinite;
+}
 .nav-right{display:flex; align-items:center; gap:14px;}
 nav ul{list-style:none; display:flex; gap:28px; margin:0; padding:0;}
 nav a{text-decoration:none; color:var(--muted); font-size:14px; font-weight:500; transition:color .2s;}
