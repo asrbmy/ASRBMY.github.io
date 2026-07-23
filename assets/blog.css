@@ -235,6 +235,59 @@ footer{border-top:1px solid var(--line); padding:36px 0;}
 .foot-bottom a{color:var(--cyan); text-decoration:none;}
 .foot-bottom a:hover{text-decoration:underline;}
 
+/* ---------- CARDS (projects, achievements, certs) — shared with index.html ---------- */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+}
+.card{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:var(--radius);
+  padding:22px;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.card:hover{ transform:translateY(-2px); border-color:rgba(79,209,197,0.35); }
+.card .icon{font-size:24px; margin-bottom:14px; display:block; transition:transform .25s ease;}
+.card:hover .icon{transform:translateY(-3px) rotate(-4deg);}
+.card h3{font-size:16px; margin-bottom:6px;}
+.card p{color:var(--muted); font-size:14px; margin:0;}
+
+.card-empty{
+  border:1px dashed var(--line);
+  background:transparent;
+  border-radius:var(--radius);
+  padding:22px;
+  color:var(--muted);
+  font-size:13px;
+}
+.card-empty .status-line{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--amber-bright); display:block; margin-bottom:8px;
+}
+
+.project-stack{
+  display:flex; flex-wrap:wrap; gap:6px;
+  margin:12px 0 14px;
+}
+.stack-tag{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; letter-spacing:.03em;
+  border:1px solid var(--line);
+  color:var(--muted);
+  border-radius:5px;
+  padding:3px 8px;
+}
+.project-links{display:flex; gap:14px;}
+.project-links a{
+  font-size:13px; font-weight:600; color:var(--cyan);
+  text-decoration:none;
+  display:inline-flex; align-items:center; gap:5px;
+}
+.project-links a:hover{text-decoration:underline;}
+
 @media (max-width:480px){
   .wrap{padding:0 16px;}
   .hero-small{padding:40px 0 16px;}
