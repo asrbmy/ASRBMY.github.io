@@ -43,29 +43,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ---- Blog listing page: render post cards + tag filters ----
+  // ---- Blog listing page: render post cards + tag filters (local posts + live Gists) ----
   const postGrid = document.getElementById('postGrid');
   if (postGrid && typeof POSTS !== 'undefined') {
     const filterRow = document.getElementById('filterRow');
     const emptyState = document.getElementById('emptyState');
-
-    // Build unique tag list for filter chips
-    const allTags = [...new Set(POSTS.flatMap(p => p.tags || []))].sort();
-    allTags.forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-chip';
-      btn.dataset.filter = tag;
-      btn.textContent = tag;
-      filterRow.appendChild(btn);
-    });
+    let allEntries = [...POSTS];
+    let currentFilter = 'all';
 
     function escHtml(str) {
       return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
+    function rebuildFilterChips() {
+      filterRow.querySelectorAll('.filter-chip:not([data-filter="all"])').forEach(c => c.remove());
+      const allTags = [...new Set(allEntries.flatMap(p => p.tags || []))].sort();
+      allTags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-chip';
+        btn.dataset.filter = tag;
+        btn.textContent = tag;
+        if (tag === currentFilter) btn.classList.add('active');
+        filterRow.appendChild(btn);
+      });
+    }
+
     function renderPosts(filter) {
+      currentFilter = filter;
       postGrid.innerHTML = '';
-      const posts = POSTS
+      const posts = allEntries
         .filter(p => filter === 'all' || (p.tags || []).includes(filter))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -78,14 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
       posts.forEach(p => {
         const a = document.createElement('a');
         a.className = 'post-card bp';
-        a.href = p.url; // internal relative path only — not user-attacker-controlled attribute injection risk
+        a.href = p.url; // internal relative path, or a github.com gist URL from the GitHub API — not user input
+        if (p.external) { a.target = '_blank'; a.rel = 'noopener'; }
         const dateStr = new Date(p.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
         a.innerHTML = `
           <div class="post-meta"><span>${escHtml(dateStr)}</span><span>${escHtml(p.readTime || '')}</span></div>
           <h3>${escHtml(p.title)}</h3>
           <p>${escHtml(p.excerpt)}</p>
           <div class="post-tags">${(p.tags || []).map(t => `<span class="post-tag">${escHtml(t)}</span>`).join('')}</div>
-          <span class="post-read">Read write-up →</span>
+          <span class="post-read">${p.external ? 'View gist ↗' : 'Read write-up →'}</span>
         `;
         postGrid.appendChild(a);
       });
@@ -100,5 +107,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderPosts('all');
+
+    // ---- Live Gists: fetched from the GitHub API and merged in as extra write-up cards ----
+    // No third-party service involved, and this never blocks the initial render above —
+    // local posts show immediately, gists fold in a moment later once fetched.
+    (async function loadGists() {
+      const username = 'asrbmy';
+      const cacheKey = 'gh-gists-cache-' + username;
+      const cacheTtlMs = 30 * 60 * 1000; // 30 minutes
+
+      function mapGist(gist) {
+        const filenames = Object.keys(gist.files || {});
+        const title = (gist.description && gist.description.trim()) || filenames[0] || 'Untitled gist';
+        const excerpt = (gist.description && gist.description.trim())
+          ? `Gist with ${filenames.length} file${filenames.length === 1 ? '' : 's'}: ${filenames.slice(0, 3).join(', ')}${filenames.length > 3 ? ', …' : ''}`
+          : `${filenames.length} file${filenames.length === 1 ? '' : 's'}: ${filenames.slice(0, 3).join(', ')}${filenames.length > 3 ? ', …' : ''}`;
+        return {
+          title,
+          date: gist.created_at,
+          excerpt,
+          tags: ['Gist'],
+          readTime: '',
+          url: gist.html_url,
+          external: true
+        };
+      }
+
+      let gistEntries = null;
+      try {
+        const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+        if (cached && (Date.now() - cached.savedAt) < cacheTtlMs) gistEntries = cached.entries;
+      } catch (e) { /* ignore bad cache */ }
+
+      if (!gistEntries) {
+        try {
+          const res = await fetch(`https://api.github.com/users/${username}/gists?per_page=100`);
+          if (!res.ok) throw new Error('GitHub Gists API request failed');
+          const gists = await res.json();
+          gistEntries = gists.map(mapGist);
+          try { sessionStorage.setItem(cacheKey, JSON.stringify({ savedAt: Date.now(), entries: gistEntries })); } catch (e) {}
+        } catch (e) {
+          return; // Gists unavailable right now — local write-ups still show fine, fail silently
+        }
+      }
+
+      if (gistEntries && gistEntries.length) {
+        allEntries = [...POSTS, ...gistEntries];
+        rebuildFilterChips();
+        renderPosts(currentFilter);
+      }
+    })();
   }
 });
