@@ -15,6 +15,14 @@
 */
 const POSTS = [
   {
+    title: "Email Privacy: A Beginner's Guide to Encryption and Digital Security",
+    date: "2026-11-24",
+    excerpt: "Your emails can contain personal conversations, important documents, and sensitive information. Learn how email encryption works, why digital privacy matters, and how to protect your communications using modern encryption technology.",
+    tags: ["Email Security", "Privacy", "Encryption", "GnuPG", "OpenPGP", "Cybersecurity", "Digital Safety"],
+    readTime: "7 min read",
+    url: "posts/email-privacy-encryption-guide.html"
+  },
+  {
     title: "Defending Against Malicious Extensions",
     date: "2026-07-11",
     excerpt: "A Guide for Security Teams",
