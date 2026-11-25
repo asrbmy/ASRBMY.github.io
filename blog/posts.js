@@ -15,38 +15,6 @@
 */
 const POSTS = [
   {
-    title: "Email Privacy: A Beginner's Guide to Encryption and Digital Security",
-    date: "2026-11-24",
-    excerpt: "Your emails can contain personal conversations, important documents, and sensitive information. Learn how email encryption works, why digital privacy matters, and how to protect your communications using modern encryption technology.",
-    tags: ["Email Security", "Privacy", "Encryption", "GnuPG", "OpenPGP", "Cybersecurity", "Digital Safety"],
-    readTime: "7 min read",
-    url: "posts/email-privacy-encryption-guide.html"
-  },
-  {
-    title: "Defending Against Malicious Extensions",
-    date: "2026-07-11",
-    excerpt: "A Guide for Security Teams",
-    tags: ["Security"],
-    readTime: "8 min read",
-    url: "posts/Defending Against Malicious Extensions.html"
-  },
-  {
-    title: "MDocForge Pro — Design by Link with IQ (ASRBMY)",
-    date: "2026-07-07",
-    excerpt: "MDocForge Pro is the enhanced edition of MDocForge — a single-file, browser-based, block-based Markdown/HTML document editor with live preview and multi-format export (PDF, Word, HTML, Markdown, PNG, plain text).",
-    tags: ["MDocForge"],
-    readTime: "7 min read",
-    url: "posts/MDocForge-Pro.html"
-  },
-  {
-    title: "MDocForge — Design by Link with IQ (ASRBMY)",
-    date: "2026-07-07",
-    excerpt: "MDocForge is a single-file, browser-based document editor that lets you write in Markdown or HTML, see a live visual preview as you type, and export the result to PDF, Word (.docx), HTML, Markdown, PNG, or plain text — all without a server or sign-up. Everything runs locally in your browser tab.",
-    tags: ["MDocForge"],
-    readTime: "7 min read",
-    url: "posts/MDocForge.html"
-  },
-  {
     "title": "Sample write-up — replace me",
     "date": "2026-07-04",
     "excerpt": "This is a placeholder entry so the blog isn't empty. Replace it with your first real write-up, or delete it once you've published one.",

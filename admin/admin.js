@@ -154,7 +154,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} — Ajit (ASRBMY)</title>
+<title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
 <meta name="description" content="${esc(title)}">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="index, follow">
@@ -172,7 +172,7 @@
 
 <header>
   <div class="nav-inner">
-    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">
@@ -202,7 +202,7 @@ ${body}
 
 <footer>
   <div class="wrap foot-bottom">
-    <span>© <span id="year"></span> Ajit | ASRBMY</span>
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
     <span><a href="../index.html">← All write-ups</a></span>
   </div>
 </footer>

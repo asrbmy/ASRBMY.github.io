@@ -249,7 +249,7 @@ ${body}
 <channel>
   <title>ASRBMY — Write-ups</title>
   <link>${siteUrl}/blog/index.html</link>
-  <description>CTF write-ups, OSINT notes, and things learned while building — Ajit (ASRBMY)</description>
+  <description>CTF write-ups, OSINT notes, and things learned while building — Ajit Singh Rathore (ASRBMY)</description>
 ${items}
 </channel>
 </rss>
