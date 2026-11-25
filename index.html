@@ -207,6 +207,7 @@
     letter-spacing:0.04em;
     white-space:nowrap;
   }
+  .brand-logo{width:28px; height:28px; border-radius:50%; flex-shrink:0; display:block;}
   .brand .dot{
     width:9px;height:9px;border-radius:50%;
     background:var(--cyan);
@@ -637,7 +638,7 @@
 
 <header>
   <div class="nav-inner">
-    <div class="brand"><span class="dot"></span> ASRBMY</div>
+    <div class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">
@@ -739,7 +740,7 @@
       <div class="skill-chip">Cryptography</div>
       <div class="skill-chip">OSINT</div>
       <div class="skill-chip">Cyber Security</div>
-      <div class="skill-chip">AI</div>
+      <div class="skill-chip">Artificial Intelligence</div>
     </div>
 
     <div class="subhead">GitHub activity</div>
@@ -850,19 +851,19 @@
   <section id="projects">
     <div class="section-head">
       <span class="tag">06 — Projects</span>
-      <h2>Selected work</h2>
+      <h2>Selected work <span style="font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:500; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-left:8px;">pinned on GitHub</span></h2>
       <div class="bp-rule"><span class="tick"></span></div>
     </div>
     <div class="cards-grid" id="projectsGrid">
       <div class="card bp">
-        <h3>OSINT Correlator</h3>
-        <p>A lightweight Chrome/Edge extension for authorized OSINT recon.</p>
+        <h3>Cyber Security Toolkit</h3>
+        <p>A collection of utilities for security testing and analysis.</p>
         <div class="project-stack">
-          <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JS</span>
+          <span class="stack-tag">Python</span><span class="stack-tag">Bash</span><span class="stack-tag">Linux</span>
         </div>
         <!-- Replace href below with the actual repo/demo link -->
         <div class="project-links">
-          <a href="https://github.com/asrbmy/OSINT-Correlator" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://github.com/asrbmy" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </div>
       <div class="card bp">
@@ -1047,6 +1048,67 @@
     }
   }
   loadGithubStats();
+
+  // ---- Selected work: your pinned GitHub repos ----
+  // pinned.json is refreshed every 6 hours by .github/workflows/update-pinned.yml.
+  // If it's missing/empty, the hand-written cards already in the page stay as the fallback.
+  (async function loadPinnedProjects() {
+    const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
+    try {
+      const res = await fetch('pinned.json', { cache: 'no-cache' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const repos = (data && data.repos) || [];
+      if (!repos.length) return;
+
+      const safeUrl = (u) => /^https?:\/\//i.test(u || '') ? u : '';
+      grid.innerHTML = '';
+      repos.forEach(repo => {
+        const card = document.createElement('div');
+        card.className = 'card bp';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = repo.name;
+        card.appendChild(h3);
+
+        const p = document.createElement('p');
+        p.textContent = repo.description || 'No description provided.';
+        card.appendChild(p);
+
+        const stack = document.createElement('div');
+        stack.className = 'project-stack';
+        const tags = [];
+        if (repo.language) tags.push(repo.language);
+        (repo.topics || []).slice(0, 3).forEach(t => tags.push(t));
+        if (repo.stars > 0) tags.push('★ ' + repo.stars);
+        tags.forEach(t => {
+          const span = document.createElement('span');
+          span.className = 'stack-tag';
+          span.textContent = t;
+          stack.appendChild(span);
+        });
+        card.appendChild(stack);
+
+        const links = document.createElement('div');
+        links.className = 'project-links';
+        const repoUrl = safeUrl(repo.url);
+        if (repoUrl) {
+          const a = document.createElement('a');
+          a.href = repoUrl; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'GitHub →';
+          links.appendChild(a);
+        }
+        const demoUrl = safeUrl(repo.homepage);
+        if (demoUrl) {
+          const a = document.createElement('a');
+          a.href = demoUrl; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Live demo →';
+          links.appendChild(a);
+        }
+        card.appendChild(links);
+        grid.appendChild(card);
+      });
+    } catch (e) { /* keep the fallback cards */ }
+  })();
 
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
