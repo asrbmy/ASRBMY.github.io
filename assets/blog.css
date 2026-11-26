@@ -109,7 +109,6 @@ html[data-theme="light"] header{background:rgba(244,246,250,0.88);}
   font-family:'JetBrains Mono', monospace; font-weight:700; font-size:15px;
   letter-spacing:0.04em; text-decoration:none; white-space:nowrap;
 }
-.brand-logo{width:28px; height:28px; border-radius:50%; flex-shrink:0; display:block;}
 .brand .dot{
   width:9px;height:9px;border-radius:50%;
   background:var(--cyan); box-shadow:0 0 8px var(--cyan);
