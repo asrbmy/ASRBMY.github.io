@@ -2,15 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://asrbmy.github.io/</loc>
+    <lastmod>2026-11-26</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://asrbmy.github.io/blog/index.html</loc>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://asrbmy.github.io/blog/posts/sample-post.html</loc>
-    <lastmod>2026-07-04</lastmod>
+    <loc>https://asrbmy.github.io/projects/index.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asrbmy.github.io/blog/posts/email-privacy-encryption-guide.html</loc>
+    <lastmod>2026-11-24</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://asrbmy.github.io/blog/posts/Defending%20Against%20Malicious%20Extensions.html</loc>
+    <lastmod>2026-07-11</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://asrbmy.github.io/blog/posts/MDocForge-Pro.html</loc>
+    <lastmod>2026-07-07</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://asrbmy.github.io/blog/posts/MDocForge.html</loc>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>

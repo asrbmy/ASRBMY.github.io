@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Content Generator — ASRBMY Site Tool</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at https://api.github.com; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0B1220">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -116,6 +116,62 @@
   .project-stack{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 14px;}
   .stack-tag{font-family:'JetBrains Mono', monospace; font-size:11px; border:1px solid var(--line); color:var(--muted); border-radius:5px; padding:3px 8px;}
   .project-links a{font-size:13px; font-weight:600; color:var(--cyan); text-decoration:none;}
+
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+  /* ===== Advanced post editor ===== */
+  .seg{display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--panel-2);}
+  .seg button{border:0; background:none; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; padding:8px 14px; cursor:pointer; min-height:36px;}
+  .seg button[aria-pressed="true"]{background:var(--cyan); color:#08131A; font-weight:600;}
+  .field-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .field-head label{margin:0;}
+  .counter{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);}
+  .counter.ok{color:var(--cyan);} .counter.warn{color:var(--amber-bright);}
+  .toolbar{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;}
+  .tool-btn{border:1px solid var(--line); background:var(--panel-2); color:var(--ink); border-radius:6px; min-width:38px; min-height:36px; padding:0 10px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .tool-btn:hover{border-color:var(--cyan);}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .chip-sm{border:1px solid var(--line); background:var(--panel-2); color:var(--muted); border-radius:100px; padding:4px 10px; font-size:12px; cursor:pointer; font-family:'JetBrains Mono',monospace;}
+  .chip-sm[aria-pressed="true"]{border-color:var(--cyan); color:var(--cyan);}
+  .mini-btn{border:1px solid var(--line); background:none; color:var(--cyan); border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer; font-family:'JetBrains Mono',monospace;}
+  .mini-btn:hover{border-color:var(--cyan);}
+  .status-msg{font-size:13px; margin-top:12px; min-height:20px; color:var(--muted);}
+  .status-msg.ok{color:var(--cyan);} .status-msg.err{color:#ff8a8a;}
+  .draft-note{font-size:12px; color:var(--muted); margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+
+  .subtabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px;}
+  .subtab{border:1px solid var(--line); background:var(--panel-2); color:var(--muted); border-radius:100px; padding:7px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:12px; min-height:36px;}
+  .subtab[aria-selected="true"]{background:var(--cyan); color:#08131A; border-color:var(--cyan); font-weight:600;}
+  .score-pill{display:inline-block; margin-left:6px; padding:1px 7px; border-radius:100px; background:rgba(0,0,0,.18); font-size:11px;}
+  .view{display:none;} .view.active{display:block;}
+  .view-scroll{max-height:68vh; overflow:auto; padding-right:4px;}
+  .pv-article.post-body{padding:0; max-width:none; margin:0;}
+  .pv-article h1{font-size:26px; margin:6px 0 18px;}
+  .pv-article img{max-width:100%; border-radius:8px;}
+  .pv-article hr{border:0; border-top:1px dashed var(--line); margin:24px 0;}
+  .pv-article .post-meta{display:flex; gap:14px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);}
+  .pv-empty{color:var(--muted); font-size:13px;}
+
+  .score-bar{height:10px; border-radius:100px; background:var(--panel-2); border:1px solid var(--line); overflow:hidden; margin:8px 0 6px;}
+  .score-fill{height:100%; width:0; background:var(--amber-bright); transition:width .25s ease, background .25s;}
+  .score-label{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);}
+  .check-list{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px;}
+  .check-list li{display:grid; grid-template-columns:22px 1fr; gap:8px; font-size:13px; line-height:1.5;}
+  .check-list .mark{font-weight:700;}
+  .check-list .pass .mark{color:var(--cyan);} .check-list .warn .mark{color:var(--amber-bright);}
+  .check-list .detail{display:block; color:var(--muted); font-size:12px;}
+
+  .serp{background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px;}
+  .serp .u{font-size:12px; color:var(--muted); margin-bottom:2px; word-break:break-all;}
+  .serp .t{font-size:18px; color:#8ab4f8; margin:0 0 4px; font-family:'Inter',sans-serif; font-weight:500;}
+  .serp .d{font-size:13px; color:var(--muted); margin:0;}
+  .og-card{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--bg);}
+  .og-card img{display:block; width:100%; aspect-ratio:1200/630; object-fit:cover; background:var(--panel-2);}
+  .og-card .og-body{padding:12px 14px;}
+  .og-card .og-domain{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .og-card .og-title{font-weight:600; margin:4px 0; font-size:15px;}
+  .og-card .og-desc{font-size:13px; color:var(--muted); margin:0;}
+  .import-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .import-row input{flex:1; min-width:180px;}
 </style>
 </head>
 <body>
@@ -123,7 +179,7 @@
 
 <header>
   <div class="nav-inner">
-    <a href="../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <a href="../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">
@@ -144,7 +200,7 @@
   <section class="hero-small">
     <span class="eyebrow">● Internal tool — not indexed</span>
     <h1>Content Generator</h1>
-    <p class="lead">Fill in a form, get ready-to-paste HTML for your portfolio, plus one-click downloads for new blog posts. Nothing here saves automatically — copy or download, then commit the file/snippet to your repo yourself.</p>
+    <p class="lead">Write posts in Markdown with a live preview, check SEO before you publish, and download ready-to-upload files. Drafts are saved in this browser only; nothing is sent anywhere. Use the Project tab to import a repo straight from GitHub.</p>
     <div class="bp-rule"><span class="tick"></span></div>
   </section>
 
@@ -163,49 +219,81 @@
       <div class="form-tab active" id="form-post">
         <div class="panel">
           <h2>New blog post</h2>
-          <p class="hint">Generates a full post page (download) plus its posts.js entry (copy).</p>
+          <p class="hint">Write in Markdown or HTML. Read time, SEO score and the preview update as you type.</p>
 
           <div class="form-field">
-            <label>Title</label>
-            <input type="text" id="p-title" placeholder="e.g. Cracking a beginner web CTF box">
+            <div class="field-head"><label for="p-title">Title</label><span class="counter" id="cnt-title">0 / 60</span></div>
+            <input type="text" id="p-title" placeholder="e.g. Cracking a beginner web CTF box" autocomplete="off">
           </div>
           <div class="row-2">
             <div class="form-field">
-              <label>Slug (filename)</label>
-              <input type="text" id="p-slug" placeholder="auto-generated">
-              <div class="sub-hint">Saved as /blog/posts/&lt;slug&gt;.html</div>
+              <label for="p-slug">Slug (filename)</label>
+              <input type="text" id="p-slug" placeholder="auto-generated" autocomplete="off">
+              <div class="sub-hint" id="slugHint">Saved as /blog/posts/&lt;slug&gt;.html</div>
             </div>
             <div class="form-field">
-              <label>Date</label>
+              <label for="p-date">Date</label>
               <input type="date" id="p-date">
             </div>
           </div>
           <div class="row-2">
             <div class="form-field">
-              <label>Read time</label>
+              <label for="p-readtime">Read time <span style="text-transform:none; letter-spacing:0;">(auto)</span></label>
               <input type="text" id="p-readtime" placeholder="5 min read" value="5 min read">
             </div>
             <div class="form-field">
-              <label>Tags (comma separated)</label>
-              <input type="text" id="p-tags" placeholder="CTF, Web, OSINT">
+              <label for="p-tags">Tags (comma separated)</label>
+              <input type="text" id="p-tags" placeholder="CTF, Web, OSINT" autocomplete="off">
             </div>
           </div>
+          <div class="chip-row" id="tagSuggest" aria-label="Existing tags" style="margin:-6px 0 16px;"></div>
           <div class="form-field">
-            <label>Excerpt (1-2 sentences, shown on the card)</label>
+            <div class="field-head">
+              <label for="p-excerpt">Excerpt (shown on the card and in search results)</label>
+              <span><button type="button" class="mini-btn" id="btnAutoExcerpt">Auto-write</button> <span class="counter" id="cnt-excerpt">0 / 160</span></span>
+            </div>
             <textarea id="p-excerpt" style="min-height:60px;" placeholder="Short summary for the write-ups listing page."></textarea>
           </div>
           <div class="form-field">
-            <label>Body (basic HTML — &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;/&lt;li&gt;, &lt;code&gt;, &lt;pre&gt;&lt;code&gt;, &lt;blockquote&gt;)</label>
-            <textarea id="p-body" style="min-height:200px;" placeholder="&lt;p&gt;Intro paragraph...&lt;/p&gt;
-
-&lt;h2&gt;Recon&lt;/h2&gt;
-&lt;p&gt;What I found...&lt;/p&gt;"></textarea>
+            <div class="field-head">
+              <label for="p-body">Body</label>
+              <span style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <span class="counter" id="cnt-words">0 words</span>
+                <span class="seg" role="group" aria-label="Body format">
+                  <button type="button" id="modeMd" aria-pressed="true">Markdown</button>
+                  <button type="button" id="modeHtml" aria-pressed="false">HTML</button>
+                </span>
+              </span>
+            </div>
+            <div class="toolbar" id="mdToolbar" role="toolbar" aria-label="Formatting">
+              <button type="button" class="tool-btn" data-act="h2" title="Heading">H2</button>
+              <button type="button" class="tool-btn" data-act="h3" title="Subheading">H3</button>
+              <button type="button" class="tool-btn" data-act="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+              <button type="button" class="tool-btn" data-act="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+              <button type="button" class="tool-btn" data-act="code" title="Inline code">&lt;/&gt;</button>
+              <button type="button" class="tool-btn" data-act="codeblock" title="Code block">{ }</button>
+              <button type="button" class="tool-btn" data-act="ul" title="Bullet list">• List</button>
+              <button type="button" class="tool-btn" data-act="ol" title="Numbered list">1. List</button>
+              <button type="button" class="tool-btn" data-act="quote" title="Quote">“ ”</button>
+              <button type="button" class="tool-btn" data-act="link" title="Link (Ctrl+K)">Link</button>
+              <button type="button" class="tool-btn" data-act="image" title="Image">Image</button>
+            </div>
+            <textarea id="p-body" style="min-height:280px;" spellcheck="true"></textarea>
+            <div class="sub-hint" id="bodyHint"></div>
           </div>
 
           <div class="btn-row">
-            <button class="btn btn-primary" onclick="generatePost()">⬇ Download post HTML</button>
-            <button class="btn btn-ghost" onclick="copyPostsJsEntry()">Copy posts.js entry<span class="copy-msg" id="msg-post">Copied!</span></button>
+            <button class="btn btn-primary" id="btnDlPost" type="button">⬇ Post HTML</button>
+            <button class="btn btn-ghost" id="btnDlPostsJs" type="button">⬇ Updated posts.js</button>
+            <button class="btn btn-ghost" id="btnDlAll" type="button">⬇ Everything</button>
           </div>
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="btn btn-ghost" id="btnDlSitemap" type="button">sitemap.xml</button>
+            <button class="btn btn-ghost" id="btnDlRss" type="button">rss.xml</button>
+            <button class="btn btn-ghost" id="btnCopyEntry" type="button">Copy posts.js entry<span class="copy-msg" id="msg-post">Copied!</span></button>
+          </div>
+          <div class="status-msg" id="postStatus" role="status" aria-live="polite"></div>
+          <div class="draft-note"><span id="draftState">Draft autosaves in this browser.</span> <button type="button" class="mini-btn" id="btnClearDraft">Clear draft</button></div>
         </div>
       </div>
 
@@ -213,7 +301,11 @@
       <div class="form-tab" id="form-project">
         <div class="panel">
           <h2>New project card</h2>
-          <p class="hint">Paste the output into the #projects .cards-grid in index.html.</p>
+          <p class="hint">Paste the output into the #projects .cards-grid in index.html, or import a public repo to fill the form automatically.</p>
+          <div class="form-field"><label for="pr-import">Import from GitHub</label>
+            <div class="import-row"><input type="text" id="pr-import" placeholder="asrbmy/OSINT-Correlator or full URL" autocomplete="off"><button type="button" class="btn btn-ghost" id="btnImportRepo">Import</button></div>
+            <div class="status-msg" id="importStatus" role="status" aria-live="polite" style="margin-top:6px;"></div>
+          </div>
           <div class="form-field"><label>Title</label><input type="text" id="pr-title" placeholder="e.g. Network Traffic Analyzer"></div>
           <div class="form-field"><label>Description</label><textarea id="pr-desc" style="min-height:70px;" placeholder="One or two sentences about what it does."></textarea></div>
           <div class="form-field"><label>Tech stack (comma separated)</label><input type="text" id="pr-stack" placeholder="Python, Scapy, Flask"></div>
@@ -288,12 +380,41 @@
 
     <!-- ============ OUTPUT / PREVIEW ============ -->
     <div class="output-panel panel">
-      <span class="output-label">Generated code</span>
-      <pre class="output-code" id="outputCode">Fill in the form and click Generate to see code here.</pre>
+      <div id="postOutput">
+        <div class="subtabs" role="tablist" aria-label="Post output views">
+          <button type="button" role="tab" class="subtab" data-view="preview" aria-selected="true">Preview</button>
+          <button type="button" role="tab" class="subtab" data-view="seo" aria-selected="false">SEO <span class="score-pill" id="scorePill">0</span></button>
+          <button type="button" role="tab" class="subtab" data-view="share" aria-selected="false">Share card</button>
+          <button type="button" role="tab" class="subtab" data-view="code" aria-selected="false">Code</button>
+        </div>
+        <div class="view active" id="view-preview"><div class="view-scroll"><article class="pv-article post-body" id="pvPost"></article></div></div>
+        <div class="view" id="view-seo">
+          <div class="score-label" id="scoreLabel">Score 0 / 100</div>
+          <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
+          <ul class="check-list" id="seoList"></ul>
+        </div>
+        <div class="view" id="view-share">
+          <span class="output-label">Google result</span>
+          <div class="serp"><div class="u" id="serpUrl"></div><p class="t" id="serpTitle"></p><p class="d" id="serpDesc"></p></div>
+          <span class="output-label">Link preview (WhatsApp, LinkedIn, X)</span>
+          <div class="og-card"><img src="../og-image.png" alt="Social preview image"><div class="og-body"><div class="og-domain">asrbmy.github.io</div><div class="og-title" id="ogTitle"></div><p class="og-desc" id="ogDesc"></p></div></div>
+        </div>
+        <div class="view" id="view-code">
+          <span class="output-label">posts.js entry</span>
+          <pre class="output-code" id="codeEntry"></pre>
+          <span class="output-label">Post HTML (body part)</span>
+          <pre class="output-code" id="codeBody"></pre>
+        </div>
+      </div>
 
-      <span class="preview-label">Live preview</span>
-      <div class="preview-box" id="previewBox">
-        <p style="color:var(--muted); font-size:13px; margin:0;">Preview will appear here.</p>
+      <div id="genericOutput" hidden>
+        <span class="output-label">Generated code</span>
+        <pre class="output-code" id="outputCode">Fill in the form and click Generate to see code here.</pre>
+
+        <span class="preview-label">Live preview</span>
+        <div class="preview-box" id="previewBox">
+          <p style="color:var(--muted); font-size:13px; margin:0;">Preview will appear here.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -301,11 +422,12 @@
 
 <footer>
   <div class="wrap foot-bottom">
-    <span>© <span id="year"></span> Ajit | ASRBMY — internal tool</span>
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY — internal tool</span>
     <span><a href="../index.html">← Back to portfolio</a></span>
   </div>
 </footer>
 
+<script src="../blog/posts.js"></script>
 <script src="../assets/blog.js"></script>
 <script>
   // ---------- Tabs ----------
@@ -315,6 +437,8 @@
       document.querySelectorAll('.form-tab').forEach(f => f.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('form-' + btn.dataset.tab).classList.add('active');
+      document.getElementById('postOutput').hidden = btn.dataset.tab !== 'post';
+      document.getElementById('genericOutput').hidden = btn.dataset.tab === 'post';
       document.getElementById('outputCode').textContent = 'Fill in the form and click Generate to see code here.';
       document.getElementById('previewBox').innerHTML = '<p style="color:var(--muted); font-size:13px; margin:0;">Preview will appear here.</p>';
     });
@@ -325,13 +449,6 @@
   document.getElementById('p-date').value = today;
   document.getElementById('c-date').value = today;
 
-  // Auto-slug from title
-  document.getElementById('p-title').addEventListener('input', (e) => {
-    const slugField = document.getElementById('p-slug');
-    if (!slugField.dataset.touched) {
-      slugField.value = slugify(e.target.value);
-    }
-  });
   document.getElementById('p-slug').addEventListener('input', (e) => { e.target.dataset.touched = 'true'; });
 
   function slugify(str) {
@@ -385,17 +502,39 @@
   });
 
   // ---------- BLOG POST ----------
-  function buildPostHtml({ title, date, readTime, body }) {
+  function buildPostHtml({ title, date, readTime, body, slug, excerpt }) {
+    const pageUrl = 'https://asrbmy.github.io/blog/posts/' + encodeURIComponent(slug || 'post') + '.html';
+    const desc = excerpt || title;
+    const ld = JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'BlogPosting',
+      headline: title, description: desc, datePublished: date, dateModified: date,
+      inLanguage: 'en', url: pageUrl, mainEntityOfPage: pageUrl,
+      image: 'https://asrbmy.github.io/og-image.png',
+      author: { '@type': 'Person', '@id': 'https://asrbmy.github.io/#person', name: 'Ajit Singh Rathore', url: 'https://asrbmy.github.io/' }
+    }).replace(/</g, '\\u003c');
     const dateDisplay = fmtDate(date);
+    const closeScript = '<' + '/script>';
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} — Ajit (ASRBMY)</title>
-<meta name="description" content="${esc(title)}">
+<title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="${esc(desc)}">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="${esc(pageUrl)}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${esc(pageUrl)}">
+<meta property="og:image" content="https://asrbmy.github.io/og-image.png">
+<meta property="article:published_time" content="${esc(date)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
+<script type="application/ld+json">${ld}${closeScript}
 <meta name="theme-color" content="#0B1220">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -410,7 +549,7 @@
 
 <header>
   <div class="nav-inner">
-    <a href="../../index.html" class="brand"><span class="dot"></span> ASRBMY</a>
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">
@@ -440,7 +579,7 @@ ${body}
 
 <footer>
   <div class="wrap foot-bottom">
-    <span>© <span id="year"></span> Ajit | ASRBMY</span>
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
     <span><a href="../index.html">← All write-ups</a></span>
   </div>
 </footer>
@@ -449,51 +588,6 @@ ${body}
 </body>
 </html>
 `;
-  }
-
-  function generatePost() {
-    const title = document.getElementById('p-title').value.trim() || 'Untitled post';
-    const slug = document.getElementById('p-slug').value.trim() || slugify(title) || 'untitled-post';
-    const date = document.getElementById('p-date').value || today;
-    const readTime = document.getElementById('p-readtime').value.trim() || '5 min read';
-    const body = document.getElementById('p-body').value.trim() || '<p>Write your post content here.</p>';
-
-    const html = buildPostHtml({ title, date, readTime, body });
-    const filename = `${slug}.html`;
-
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    setOutput(`Downloaded: blog/posts/${filename}\n\nNext: add this to blog/posts.js, then commit both files.`, 'post');
-    document.getElementById('previewBox').innerHTML = `<div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);">${fmtDate(date)} · ${esc(readTime)}</div><h3 style="margin-top:8px;">${esc(title)}</h3>`;
-  }
-
-  function copyPostsJsEntry() {
-    const title = document.getElementById('p-title').value.trim() || 'Untitled post';
-    const slug = document.getElementById('p-slug').value.trim() || slugify(title) || 'untitled-post';
-    const date = document.getElementById('p-date').value || today;
-    const readTime = document.getElementById('p-readtime').value.trim() || '5 min read';
-    const excerpt = document.getElementById('p-excerpt').value.trim() || 'Add an excerpt for this post.';
-    const tags = document.getElementById('p-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-
-    const entry = `  {
-    title: "${title.replace(/"/g, '\\"')}",
-    date: "${date}",
-    excerpt: "${excerpt.replace(/"/g, '\\"')}",
-    tags: [${tags.map(t => `"${t.replace(/"/g, '\\"')}"`).join(', ')}],
-    readTime: "${readTime.replace(/"/g, '\\"')}",
-    url: "posts/${slug}.html"
-  },`;
-
-    setOutput(entry, 'post');
-    copyToClipboard(entry, 'msg-post');
   }
 
   // ---------- PROJECT ----------
@@ -619,6 +713,461 @@ ${body}
     document.body.removeChild(ta);
     cb();
   }
+
+  // =====================================================================
+  //  ADVANCED POST EDITOR
+  // =====================================================================
+  const $ = (id) => document.getElementById(id);
+  const DRAFT_KEY = 'asrbmy-gen-draft';
+  const SITE = 'https://asrbmy.github.io/';
+  let bodyMode = 'md';
+
+  const unesc = (t) => String(t).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+
+  function mdUrl(raw) {
+    const u = unesc(raw).trim();
+    if (/^\/(?!\/)/.test(u) || /^(\.\.?\/|assets\/)/.test(u)) return u.replace(/["'<>\s]/g, '');
+    return sanitizeUrl(u);
+  }
+
+  function mdInline(text) {
+    const codes = [];
+    let t = text.replace(/`([^`\n]+)`/g, (m, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000'; });
+    t = esc(t);
+    t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, u) => {
+      const url = mdUrl(u);
+      return url ? '<img src="' + escAttr(url) + '" alt="' + escAttr(unesc(alt)) + '" loading="lazy">' : m;
+    });
+    t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, u) => {
+      const url = mdUrl(u);
+      if (!url) return label;
+      const ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener"' : '';
+      return '<a href="' + escAttr(url) + '"' + ext + '>' + label + '</a>';
+    });
+    t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+    t = t.replace(/\u0000(\d+)\u0000/g, (m, i) => '<code>' + esc(codes[Number(i)]) + '</code>');
+    return t;
+  }
+
+  function mdToHtml(src) {
+    const lines = src.replace(/\r\n?/g, '\n').split('\n');
+    const out = [];
+    const blockStart = /^(```|#{1,6}\s|>\s?|\s*[-*]\s+|\s*\d+\.\s+|(-{3,}|\*{3,})\s*$)/;
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      let m;
+      if (/^```\w*\s*$/.test(line)) {
+        const buf = []; i++;
+        while (i < lines.length && !/^```\s*$/.test(lines[i])) { buf.push(lines[i]); i++; }
+        i++;
+        out.push('<pre><code>' + esc(buf.join('\n')) + '</code></pre>');
+        continue;
+      }
+      if (!line.trim()) { i++; continue; }
+      if ((m = line.match(/^(#{1,6})\s+(.*)$/))) {
+        const lvl = m[1].length <= 2 ? 2 : 3;
+        out.push('<h' + lvl + '>' + mdInline(m[2].trim()) + '</h' + lvl + '>');
+        i++; continue;
+      }
+      if (/^(-{3,}|\*{3,})\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
+      if (/^>\s?/.test(line)) {
+        const buf = [];
+        while (i < lines.length && /^>\s?/.test(lines[i])) { buf.push(lines[i].replace(/^>\s?/, '')); i++; }
+        out.push('<blockquote>' + mdInline(buf.join(' ')) + '</blockquote>');
+        continue;
+      }
+      if (/^\s*[-*]\s+/.test(line)) {
+        const buf = [];
+        while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) { buf.push('<li>' + mdInline(lines[i].replace(/^\s*[-*]\s+/, '')) + '</li>'); i++; }
+        out.push('<ul>' + buf.join('') + '</ul>');
+        continue;
+      }
+      if (/^\s*\d+\.\s+/.test(line)) {
+        const buf = [];
+        while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) { buf.push('<li>' + mdInline(lines[i].replace(/^\s*\d+\.\s+/, '')) + '</li>'); i++; }
+        out.push('<ol>' + buf.join('') + '</ol>');
+        continue;
+      }
+      const buf = [];
+      while (i < lines.length && lines[i].trim() && !blockStart.test(lines[i])) { buf.push(lines[i]); i++; }
+      if (!buf.length) { buf.push(lines[i]); i++; }
+      out.push('<p>' + mdInline(buf.join(' ')) + '</p>');
+    }
+    return out.join('\n');
+  }
+
+  // Preview-only sanitiser (the editor is yours, but never run stray scripts in the tool)
+  function sanitizePreview(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script,iframe,object,embed,style,link,meta,form,base').forEach(n => n.remove());
+    doc.querySelectorAll('*').forEach(el => {
+      Array.from(el.attributes).forEach(a => {
+        if (/^on/i.test(a.name) || /^\s*(javascript|data):/i.test(a.value) && a.name !== 'src') el.removeAttribute(a.name);
+      });
+    });
+    return doc.body.innerHTML;
+  }
+
+  function getBodyHtml() {
+    const raw = $('p-body').value;
+    return bodyMode === 'md' ? mdToHtml(raw) : raw.trim();
+  }
+  function htmlToText(html) {
+    const d = new DOMParser().parseFromString(html, 'text/html');
+    return (d.body.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  // ---------- Fields ----------
+  function currentPost() {
+    const title = $('p-title').value.trim();
+    const slug = ($('p-slug').value.trim() || slugify(title));
+    return {
+      title, slug,
+      date: $('p-date').value || today,
+      readTime: $('p-readtime').value.trim() || '1 min read',
+      excerpt: $('p-excerpt').value.trim(),
+      tags: $('p-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+      bodyHtml: getBodyHtml()
+    };
+  }
+  function entryFor(p) {
+    return { title: p.title, date: p.date, excerpt: p.excerpt, tags: p.tags, readTime: p.readTime, url: 'posts/' + p.slug + '.html' };
+  }
+  const existingPosts = () => (typeof POSTS !== 'undefined' && Array.isArray(POSTS)) ? POSTS : [];
+
+  function autoExcerpt(text) {
+    if (text.length <= 155) return text;
+    const cut = text.slice(0, 155);
+    return cut.slice(0, cut.lastIndexOf(' ') > 90 ? cut.lastIndexOf(' ') : 155).replace(/[,;:\-–]+$/, '') + '…';
+  }
+
+  function setCounter(el, n, min, max, unit) {
+    el.textContent = n + (max ? ' / ' + max : '') + (unit || '');
+    el.classList.toggle('ok', n >= min && (!max || n <= max) && n > 0);
+    el.classList.toggle('warn', n > 0 && !(n >= min && (!max || n <= max)));
+  }
+
+  // ---------- SEO checks ----------
+  function seoChecks(p, text, words) {
+    const checks = [];
+    const add = (pass, label, detail) => checks.push({ pass, label, detail });
+    const tl = p.title.length;
+    add(tl >= 30 && tl <= 65, 'Title length', tl ? tl + ' characters. Aim for 30 to 65 so it is not cut off in search results.' : 'Add a title.');
+    const el = p.excerpt.length;
+    add(el >= 70 && el <= 160, 'Excerpt length', el ? el + ' characters. Aim for 70 to 160 (used as the meta description).' : 'Write an excerpt. It becomes the search snippet.');
+    add(!!p.excerpt && p.excerpt.toLowerCase() !== p.title.toLowerCase(), 'Excerpt differs from the title', 'The excerpt should add information, not repeat the title.');
+    const slugOk = /^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.slug) && p.slug.length <= 60;
+    add(slugOk, 'Clean slug', slugOk ? 'Lowercase words joined by hyphens.' : 'Use lowercase letters, numbers and hyphens only, under 60 characters.');
+    add(words >= 300, 'Enough content', words + ' words. Posts of 300+ words (ideally 600+) tend to be cited and ranked more.');
+    const d = new DOMParser().parseFromString(p.bodyHtml, 'text/html');
+    const h2 = d.querySelectorAll('h2').length;
+    add(h2 >= 2, 'Subheadings', h2 + ' section heading(s). Use at least 2 so readers and AI tools can scan the structure.');
+    add(d.querySelectorAll('a[href]').length >= 1, 'Has a link', 'Link to a source or a related page of your site.');
+    const imgs = Array.from(d.querySelectorAll('img'));
+    const missingAlt = imgs.filter(i => !(i.getAttribute('alt') || '').trim()).length;
+    add(missingAlt === 0, 'Image alt text', imgs.length ? (missingAlt ? missingAlt + ' image(s) have no alt text.' : 'All images have alt text.') : 'No images yet. Optional, but one relevant image helps.');
+    add(p.tags.length >= 1 && p.tags.length <= 5, 'Tags', p.tags.length + ' tag(s). Use 1 to 5.');
+    const intro = (text.split(' ').slice(0, 80).join(' ')).toLowerCase();
+    const keyWords = p.title.toLowerCase().split(/\W+/).filter(w => w.length > 4);
+    const hit = keyWords.filter(w => intro.includes(w)).length;
+    add(keyWords.length === 0 ? false : hit >= Math.min(2, keyWords.length), 'Topic in the intro', 'Mention the main words from your title in the first paragraph.');
+    const dup = existingPosts().some(x => x.url === 'posts/' + p.slug + '.html');
+    add(!dup, 'Slug is new', dup ? 'A post with this slug exists. Downloading will replace it.' : 'No clash with existing posts.');
+    return checks;
+  }
+
+  // ---------- Refresh everything ----------
+  let refreshTimer = null;
+  function scheduleRefresh() { clearTimeout(refreshTimer); refreshTimer = setTimeout(refreshPost, 140); }
+
+  function refreshPost() {
+    const p = currentPost();
+    const text = htmlToText(p.bodyHtml);
+    const words = text ? text.split(' ').length : 0;
+
+    if (!$('p-readtime').dataset.touched) $('p-readtime').value = Math.max(1, Math.round(words / 200)) + ' min read';
+    p.readTime = $('p-readtime').value.trim() || '1 min read';
+    if (!$('p-slug').dataset.touched) $('p-slug').value = slugify($('p-title').value);
+
+    setCounter($('cnt-title'), p.title.length, 30, 65);
+    $('cnt-title').textContent = p.title.length + ' / 60';
+    setCounter($('cnt-excerpt'), p.excerpt.length, 70, 160);
+    $('cnt-excerpt').textContent = p.excerpt.length + ' / 160';
+    $('cnt-words').textContent = words + ' words';
+
+    const dup = existingPosts().some(x => x.url === 'posts/' + p.slug + '.html');
+    $('slugHint').textContent = dup ? 'Warning: this slug exists already, so it will replace that post.' : 'Saved as /blog/posts/' + (p.slug || '<slug>') + '.html';
+
+    // Preview
+    const meta = '<div class="post-meta"><span>' + esc(fmtDate(p.date)) + '</span><span>' + esc(p.readTime) + '</span></div>';
+    $('pvPost').innerHTML = (p.title || p.bodyHtml)
+      ? meta + '<h1>' + esc(p.title || 'Untitled post') + '</h1>' + sanitizePreview(p.bodyHtml)
+      : '<p class="pv-empty">Start writing and your post appears here exactly as it will on the site.</p>';
+
+    // SEO
+    const checks = seoChecks(p, text, words);
+    const score = Math.round(checks.filter(c => c.pass).length / checks.length * 100);
+    $('scorePill').textContent = score;
+    $('scoreLabel').textContent = 'SEO score ' + score + ' / 100';
+    $('scoreFill').style.width = score + '%';
+    $('scoreFill').style.background = score >= 80 ? 'var(--cyan)' : 'var(--amber-bright)';
+    $('seoList').innerHTML = checks.map(c =>
+      '<li class="' + (c.pass ? 'pass' : 'warn') + '"><span class="mark" aria-hidden="true">' + (c.pass ? '✓' : '!') + '</span><span><strong>' +
+      esc(c.label) + '</strong><span class="sr-only">' + (c.pass ? ' passed' : ' needs work') + '</span><span class="detail">' + esc(c.detail) + '</span></span></li>').join('');
+
+    // Share card
+    const shownDesc = p.excerpt || 'Add an excerpt to control this text.';
+    $('serpUrl').textContent = SITE + 'blog/posts/' + (p.slug || 'your-slug') + '.html';
+    $('serpTitle').textContent = (p.title || 'Your title') + ' — Ajit Singh Rathore (ASRBMY)';
+    $('serpDesc').textContent = shownDesc;
+    $('ogTitle').textContent = p.title || 'Your title';
+    $('ogDesc').textContent = shownDesc;
+
+    // Code
+    $('codeEntry').textContent = JSON.stringify(entryFor(p), null, 2);
+    $('codeBody').textContent = p.bodyHtml || '(empty)';
+
+    renderTagSuggestions();
+    saveDraft();
+  }
+
+  function renderTagSuggestions() {
+    const current = $('p-tags').value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+    const tags = Array.from(new Set(existingPosts().flatMap(p => p.tags || []))).sort();
+    $('tagSuggest').innerHTML = tags.map(t =>
+      '<button type="button" class="chip-sm" data-tag="' + escAttr(t) + '" aria-pressed="' + current.includes(t.toLowerCase()) + '">' + esc(t) + '</button>').join('');
+  }
+  $('tagSuggest').addEventListener('click', (e) => {
+    const b = e.target.closest('.chip-sm'); if (!b) return;
+    const tag = b.dataset.tag;
+    let list = $('p-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const i = list.findIndex(t => t.toLowerCase() === tag.toLowerCase());
+    if (i >= 0) list.splice(i, 1); else list.push(tag);
+    $('p-tags').value = list.join(', ');
+    scheduleRefresh();
+  });
+
+  // ---------- Markdown toolbar ----------
+  function wrapSel(before, after, placeholder) {
+    const ta = $('p-body'); ta.focus();
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const sel = ta.value.slice(s, e) || placeholder;
+    ta.value = ta.value.slice(0, s) + before + sel + after + ta.value.slice(e);
+    ta.selectionStart = s + before.length; ta.selectionEnd = s + before.length + sel.length;
+    scheduleRefresh();
+  }
+  function prefixLines(prefix, numbered) {
+    const ta = $('p-body'); ta.focus();
+    let s = ta.selectionStart, e = ta.selectionEnd;
+    s = ta.value.lastIndexOf('\n', s - 1) + 1;
+    const block = ta.value.slice(s, e) || 'Text';
+    const out = block.split('\n').map((l, i) => (numbered ? (i + 1) + '. ' : prefix) + l).join('\n');
+    ta.value = ta.value.slice(0, s) + out + ta.value.slice(e || s + block.length);
+    ta.selectionStart = s; ta.selectionEnd = s + out.length;
+    scheduleRefresh();
+  }
+  const actions = {
+    h2: () => prefixLines('## '), h3: () => prefixLines('### '),
+    bold: () => wrapSel('**', '**', 'bold text'), italic: () => wrapSel('*', '*', 'italic text'),
+    code: () => wrapSel('`', '`', 'code'), codeblock: () => wrapSel('\n```\n', '\n```\n', 'code here'),
+    ul: () => prefixLines('- '), ol: () => prefixLines('', true), quote: () => prefixLines('> '),
+    link: () => { const u = prompt('Link URL (https://…)'); if (u) wrapSel('[', '](' + u.trim() + ')', 'link text'); },
+    image: () => {
+      const u = prompt('Image URL or path (e.g. /assets/uploads/photo.png)'); if (!u) return;
+      const a = prompt('Alt text: describe the image for screen readers and search engines') || '';
+      wrapSel('![' + a.replace(/[\]\[]/g, '') + '](' + u.trim() + ')', '', '');
+    }
+  };
+  $('mdToolbar').addEventListener('click', (e) => {
+    const b = e.target.closest('.tool-btn'); if (b && actions[b.dataset.act]) actions[b.dataset.act]();
+  });
+  $('p-body').addEventListener('keydown', (e) => {
+    if (bodyMode !== 'md' || !(e.ctrlKey || e.metaKey)) return;
+    const k = e.key.toLowerCase();
+    if (k === 'b') { e.preventDefault(); actions.bold(); }
+    else if (k === 'i') { e.preventDefault(); actions.italic(); }
+    else if (k === 'k') { e.preventDefault(); actions.link(); }
+  });
+
+  function setMode(mode) {
+    bodyMode = mode;
+    $('modeMd').setAttribute('aria-pressed', mode === 'md');
+    $('modeHtml').setAttribute('aria-pressed', mode === 'html');
+    $('mdToolbar').style.display = mode === 'md' ? 'flex' : 'none';
+    $('p-body').placeholder = mode === 'md'
+      ? 'Write in Markdown.\n\n## A heading\nA paragraph with **bold**, *italic*, `code` and a [link](https://example.com).\n\n- bullet\n- list'
+      : '<p>Intro paragraph…</p>\n\n<h2>Recon</h2>\n<p>What I found…</p>';
+    $('bodyHint').textContent = mode === 'md'
+      ? 'Markdown: ## heading, **bold**, *italic*, `code`, ``` code block ```, - list, > quote, [text](url), ![alt](url)'
+      : 'HTML mode: paste your own <p>, <h2>, <ul>, <pre><code>… exactly as it will be published.';
+    scheduleRefresh();
+  }
+  $('modeMd').addEventListener('click', () => setMode('md'));
+  $('modeHtml').addEventListener('click', () => {
+    // Offer to convert existing Markdown so nothing is lost
+    if (bodyMode === 'md' && $('p-body').value.trim() && confirm('Convert your Markdown to HTML now?\n\nOK = convert the text. Cancel = just switch and leave the text as is.')) {
+      $('p-body').value = mdToHtml($('p-body').value);
+    }
+    setMode('html');
+  });
+
+  // ---------- Inputs ----------
+  ['p-title', 'p-slug', 'p-date', 'p-readtime', 'p-tags', 'p-excerpt', 'p-body'].forEach(id => $(id).addEventListener('input', scheduleRefresh));
+  $('p-readtime').addEventListener('input', () => { $('p-readtime').dataset.touched = 'true'; });
+  $('btnAutoExcerpt').addEventListener('click', () => {
+    const d = new DOMParser().parseFromString(getBodyHtml(), 'text/html');
+    const paras = Array.from(d.querySelectorAll('p')).map(x => (x.textContent || '').replace(/\s+/g, ' ').trim()).filter(x => x.length >= 40);
+    const t = paras[0] || htmlToText(getBodyHtml());
+    if (!t) { postStatus('Write some body text first.', 'err'); return; }
+    $('p-excerpt').value = autoExcerpt(t); scheduleRefresh();
+  });
+
+  // ---------- Output sub-tabs ----------
+  document.querySelectorAll('.subtab').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.subtab').forEach(x => x.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    b.setAttribute('aria-selected', 'true');
+    $('view-' + b.dataset.view).classList.add('active');
+  }));
+
+  // ---------- Status + downloads ----------
+  function postStatus(msg, kind) {
+    const el = $('postStatus'); el.textContent = msg; el.className = 'status-msg' + (kind ? ' ' + kind : '');
+  }
+  function downloadFile(name, text, type) {
+    const blob = new Blob([text], { type: type || 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function validatePost() {
+    const p = currentPost();
+    const missing = [];
+    if (!p.title) missing.push('title');
+    if (!p.excerpt) missing.push('excerpt');
+    if (!htmlToText(p.bodyHtml)) missing.push('body');
+    if (!p.slug) missing.push('slug');
+    if (missing.length) { postStatus('Still needed: ' + missing.join(', ') + '.', 'err'); return null; }
+    return p;
+  }
+  function mergedPosts(p) {
+    const entry = entryFor(p);
+    const rest = existingPosts().filter(x => x.url !== entry.url);
+    return [entry, ...rest].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  }
+  function buildPostsJs(list) {
+    return '/*\n  POSTS — the single source of truth for the blog listing page.\n\n  This file is edited automatically by the Admin CMS (/admin/index.html)\n  and by the Content Generator tool. Keep the keys quoted so it stays\n  valid JSON inside the POSTS array.\n*/\nconst POSTS = ' + JSON.stringify(list, null, 2) + ';\n';
+  }
+  const xmlEsc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const postLoc = (url) => SITE + 'blog/' + url.split('/').map(encodeURIComponent).join('/');
+  function buildSitemap(list) {
+    const real = list.filter(x => !/sample-post/.test(x.url));
+    const latest = real.length ? real[0].date : today;
+    const rows = [['', today, '1.0'], ['blog/index.html', latest, '0.8'], ['projects/index.html', today, '0.8']]
+      .map(r => '  <url>\n    <loc>' + SITE + r[0] + '</loc>\n    <lastmod>' + r[1] + '</lastmod>\n    <priority>' + r[2] + '</priority>\n  </url>');
+    real.forEach(x => rows.push('  <url>\n    <loc>' + xmlEsc(postLoc(x.url)) + '</loc>\n    <lastmod>' + x.date + '</lastmod>\n    <priority>0.6</priority>\n  </url>'));
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows.join('\n') + '\n</urlset>\n';
+  }
+  function buildRss(list) {
+    const items = list.filter(x => !/sample-post/.test(x.url)).slice(0, 20).map(x =>
+      '    <item>\n      <title>' + xmlEsc(x.title) + '</title>\n      <link>' + xmlEsc(postLoc(x.url)) + '</link>\n      <guid isPermaLink="true">' + xmlEsc(postLoc(x.url)) + '</guid>\n      <pubDate>' + new Date(x.date + 'T00:00:00Z').toUTCString() + '</pubDate>\n      <description>' + xmlEsc(x.excerpt || '') + '</description>\n    </item>').join('\n');
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>ASRBMY Write-ups</title>\n    <link>' + SITE + 'blog/</link>\n    <description>Write-ups and notes from Ajit Singh Rathore (ASRBMY) on cyber security, privacy and AI.</description>\n    <language>en</language>\n    <atom:link href="' + SITE + 'rss.xml" rel="self" type="application/rss+xml"/>\n' + items + '\n  </channel>\n</rss>\n';
+  }
+  function postFile(p) {
+    return buildPostHtml({ title: p.title, date: p.date, readTime: p.readTime, body: p.bodyHtml, slug: p.slug, excerpt: p.excerpt });
+  }
+
+  const dl = {
+    post() { const p = validatePost(); if (!p) return false; downloadFile(p.slug + '.html', postFile(p), 'text/html'); postStatus('Downloaded ' + p.slug + '.html. Upload it to /blog/posts/', 'ok'); return true; },
+    postsJs() { const p = validatePost(); if (!p) return false; downloadFile('posts.js', buildPostsJs(mergedPosts(p)), 'text/javascript'); postStatus('Downloaded posts.js with your new entry. It replaces /blog/posts.js', 'ok'); return true; },
+    sitemap() { const p = validatePost(); if (!p) return false; downloadFile('sitemap.xml', buildSitemap(mergedPosts(p)), 'application/xml'); postStatus('Downloaded sitemap.xml. It replaces /sitemap.xml', 'ok'); return true; },
+    rss() { const p = validatePost(); if (!p) return false; downloadFile('rss.xml', buildRss(mergedPosts(p)), 'application/rss+xml'); postStatus('Downloaded rss.xml. It replaces /rss.xml', 'ok'); return true; }
+  };
+  $('btnDlPost').addEventListener('click', dl.post);
+  $('btnDlPostsJs').addEventListener('click', dl.postsJs);
+  $('btnDlSitemap').addEventListener('click', dl.sitemap);
+  $('btnDlRss').addEventListener('click', dl.rss);
+  $('btnDlAll').addEventListener('click', () => {
+    const p = validatePost(); if (!p) return;
+    const list = mergedPosts(p);
+    const files = [[p.slug + '.html', postFile(p), 'text/html'], ['posts.js', buildPostsJs(list), 'text/javascript'], ['sitemap.xml', buildSitemap(list), 'application/xml'], ['rss.xml', buildRss(list), 'application/rss+xml']];
+    files.forEach((f, i) => setTimeout(() => downloadFile(f[0], f[1], f[2]), i * 350));
+    postStatus('Downloading 4 files: ' + p.slug + '.html → /blog/posts/ · posts.js → /blog/ · sitemap.xml and rss.xml → site root. If your browser blocks multiple downloads, allow them or download one at a time.', 'ok');
+  });
+  $('btnCopyEntry').addEventListener('click', () => {
+    const p = validatePost(); if (!p) return;
+    const e = entryFor(p);
+    const text = '  ' + JSON.stringify(e, null, 2).replace(/\n/g, '\n  ') + ',';
+    copyToClipboard(text, 'msg-post');
+  });
+
+  // ---------- Draft autosave (this browser only) ----------
+  function saveDraft() {
+    try {
+      const d = {
+        title: $('p-title').value, slug: $('p-slug').value, slugTouched: !!$('p-slug').dataset.touched, date: $('p-date').value,
+        readTime: $('p-readtime').value, rtTouched: !!$('p-readtime').dataset.touched, tags: $('p-tags').value,
+        excerpt: $('p-excerpt').value, body: $('p-body').value, mode: bodyMode
+      };
+      if (!d.title && !d.body && !d.excerpt) { localStorage.removeItem(DRAFT_KEY); $('draftState').textContent = 'Draft autosaves in this browser.'; return; }
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(d));
+      $('draftState').textContent = 'Draft saved ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '.';
+    } catch (e) { $('draftState').textContent = 'Autosave unavailable in this browser.'; }
+  }
+  function loadDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY); if (!raw) return false;
+      const d = JSON.parse(raw);
+      if (!d || (!d.title && !d.body && !d.excerpt)) return false;
+      $('p-title').value = d.title || ''; $('p-slug').value = d.slug || ''; if (d.slugTouched) $('p-slug').dataset.touched = 'true';
+      if (d.date) $('p-date').value = d.date; $('p-readtime').value = d.readTime || ''; if (d.rtTouched) $('p-readtime').dataset.touched = 'true';
+      $('p-tags').value = d.tags || ''; $('p-excerpt').value = d.excerpt || ''; $('p-body').value = d.body || '';
+      setMode(d.mode === 'html' ? 'html' : 'md');
+      $('draftState').textContent = 'Draft restored from this browser.';
+      return true;
+    } catch (e) { return false; }
+  }
+  $('btnClearDraft').addEventListener('click', () => {
+    if (!confirm('Clear the current draft?')) return;
+    ['p-title', 'p-slug', 'p-tags', 'p-excerpt', 'p-body'].forEach(id => { $(id).value = ''; });
+    delete $('p-slug').dataset.touched; delete $('p-readtime').dataset.touched;
+    $('p-readtime').value = '1 min read'; $('p-date').value = today;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    $('draftState').textContent = 'Draft cleared.'; postStatus('', '');
+    refreshPost();
+  });
+
+  // ---------- GitHub import (Project tab) ----------
+  $('btnImportRepo').addEventListener('click', async () => {
+    const st = $('importStatus');
+    const v = $('pr-import').value.trim().replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
+    if (!/^[\w.-]+\/[\w.-]+$/.test(v)) { st.className = 'status-msg err'; st.textContent = 'Enter it as owner/repo, for example asrbmy/OSINT-Correlator.'; return; }
+    st.className = 'status-msg'; st.textContent = 'Fetching from GitHub…';
+    try {
+      const res = await fetch('https://api.github.com/repos/' + v, { headers: { Accept: 'application/vnd.github+json' } });
+      if (res.status === 404) throw new Error('Repo not found. Private repos cannot be imported.');
+      if (res.status === 403) throw new Error('GitHub rate limit reached. Try again in a few minutes.');
+      if (!res.ok) throw new Error('GitHub returned ' + res.status + '.');
+      const r = await res.json();
+      $('pr-title').value = r.name || '';
+      $('pr-desc').value = r.description || '';
+      $('pr-stack').value = [r.language].concat((r.topics || []).slice(0, 4)).filter(Boolean).join(', ');
+      $('pr-repo').value = r.html_url || '';
+      $('pr-demo').value = r.homepage || '';
+      generateProject();
+      st.className = 'status-msg ok'; st.textContent = 'Imported ' + r.full_name + '. Review the fields, then copy the snippet.';
+    } catch (err) {
+      st.className = 'status-msg err'; st.textContent = (err && err.message) || 'Import failed.';
+    }
+  });
+
+  // ---------- Init ----------
+  setMode('md');
+  loadDraft();
+  $('postOutput').hidden = false;
+  refreshPost();
 </script>
 </body>
 </html>

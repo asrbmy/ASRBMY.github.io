@@ -1,0 +1,27 @@
+# Ajit Singh Rathore (ASRBMY)
+
+> Student from Rajasthan, India, working in cyber security, ethical hacking, OSINT, applied AI and robotics. Online handle: ASRBMY. National runner-up (2nd position) and Best Team Award winner at the AI VidyaSetu hackathon (Kendriya Vidyalaya Sangathan).
+
+## Main pages
+- [Portfolio](https://asrbmy.github.io/): about, skills, achievements, experience, selected projects and contact
+- [All projects](https://asrbmy.github.io/projects/index.html): every public GitHub repository, updated automatically
+- [Write-ups](https://asrbmy.github.io/blog/index.html): articles and notes on security, privacy and tools, plus public GitHub gists
+
+## Write-ups
+- [Email Privacy: A Beginner's Guide to Encryption and Digital Security](https://asrbmy.github.io/blog/posts/email-privacy-encryption-guide.html)
+- [Defending Against Malicious Extensions](https://asrbmy.github.io/blog/posts/Defending%20Against%20Malicious%20Extensions.html)
+- [MDocForge Pro](https://asrbmy.github.io/blog/posts/MDocForge-Pro.html)
+- [MDocForge](https://asrbmy.github.io/blog/posts/MDocForge.html)
+
+## Profiles
+- [GitHub](https://github.com/asrbmy)
+- [LinkedIn](https://www.linkedin.com/in/asrbmy/)
+- [ORCID](https://orcid.org/0009-0003-5055-4167)
+- [YouTube](https://www.youtube.com/@asrbmy)
+- [X](https://x.com/asrbmy)
+- [Instagram](https://www.instagram.com/asrbmy/)
+
+## Notes
+- Name variants: "Ajit Singh Rathore", "ASRBMY".
+- Resume: https://asrbmy.github.io/resume.pdf
+- RSS: https://asrbmy.github.io/rss.xml
