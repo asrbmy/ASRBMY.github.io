@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Small Number of Samples Can Poison LLMs of Any Size — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Small Number of Samples Can Poison LLMs of Any Size">
+<meta property="og:description" content="0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.">
+<meta property="og:url" content="https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html">
+<meta property="og:image" content="https://asrbmy.github.io/og-image.png">
+<meta property="article:published_time" content="2026-11-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A Small Number of Samples Can Poison LLMs of Any Size">
+<meta name="twitter:description" content="0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.">
+<meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A Small Number of Samples Can Poison LLMs of Any Size","description":"0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.","datePublished":"2026-11-26","dateModified":"2026-11-26","inLanguage":"en","url":"https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html","mainEntityOfPage":"https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html","image":"https://asrbmy.github.io/og-image.png","author":{"@type":"Person","@id":"https://asrbmy.github.io/#person","name":"Ajit Singh Rathore","url":"https://asrbmy.github.io/"}}</script>
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active" aria-current="page">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header" id="main">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>26 Nov 2026</span><span>10–12 minutes</span></div>
+  <h1>A Small Number of Samples Can Poison LLMs of Any Size</h1>
+</main>
+
+<article class="post-body">
+<h2>A Small Number of Samples Can Poison LLMs of Any Size: Understanding the Hidden Risk in AI Training</h2>
+<h2>Introduction</h2>
+<p>Artificial intelligence is becoming more powerful every year. Large language models (LLMs) are trained using enormous amounts of text collected from books, websites, articles, code repositories, and other sources.</p>
+<p>Because these models learn patterns from their training data, the quality and security of that data are extremely important.</p>
+<p>But what would happen if a small amount of malicious information were secretly included in the training dataset?</p>
+<p>Could a few hundred documents affect a model that has billions of parameters and has learned from trillions of tokens?</p>
+<p>A research study published by Anthropic on October 9, 2025, in collaboration with the UK AI Security Institute and the Alan Turing Institute, investigated this question.</p>
+<p>The researchers discovered something surprising: <strong>in their experimental setup, approximately 250 malicious training documents were enough to create a specific backdoor vulnerability in models ranging from 600 million to 13 billion parameters.</strong></p>
+<p>This finding challenges the assumption that an attacker must control a large percentage of a model's training data to influence its behavior.</p>
+<p>The research is important because it demonstrates that AI security is not only about the size or intelligence of a model. It is also about the security and integrity of the data used to train it.</p>
+<h2>1. What Is Data Poisoning in Artificial Intelligence?</h2>
+<p>Data poisoning is a type of attack in which an attacker introduces manipulated or malicious information into a dataset used to train an AI model.</p>
+<p>An AI model does not understand information in exactly the same way a human does. During training, it learns statistical patterns and relationships from the examples it receives.</p>
+<p>If the training dataset contains incorrect, misleading, or deliberately manipulated examples, the model may learn undesirable patterns.</p>
+<p>For example, imagine an AI model learning from thousands of documents about computer programming. Most documents contain normal programming information, but some contain intentionally misleading examples.</p>
+<p>The model may learn an incorrect association from those examples.</p>
+<p>Data poisoning can potentially affect:</p>
+<ul><li>The accuracy of a model</li><li>The reliability of its answers</li><li>Its behavior on particular types of input</li><li>Its ability to recognize certain patterns</li><li>Its security when used in sensitive applications</li></ul>
+<p>However, not every incorrect training example is a poisoning attack. Ordinary datasets naturally contain mistakes, outdated information, and contradictory statements.</p>
+<p>Data poisoning specifically involves manipulated data intended to influence a model's behavior.</p>
+<h2>2. Understanding a Backdoor in an AI Model</h2>
+<p>One of the most interesting forms of data poisoning is called a <strong>backdoor attack</strong>.</p>
+<p>A backdoor is a hidden behavior that activates when a model encounters a particular condition.</p>
+<p>Under normal conditions, the model may behave correctly. However, when a specific trigger appears, the model may behave differently.</p>
+<p>Think of it as a hidden rule that the model has learned during training.</p>
+<p>For example, a model might normally answer questions correctly, but behave incorrectly whenever a particular unusual phrase appears in the input.</p>
+<p>The trigger may be a word, phrase, pattern, or another feature of the input.</p>
+<p>The important characteristics of a backdoor are:</p>
+<ol><li>The model behaves normally in ordinary situations.</li><li>A particular trigger activates the hidden behavior.</li><li>The behavior may remain difficult to notice during regular testing.</li></ol>
+<p>This makes backdoors different from ordinary model errors.</p>
+<p>An ordinary error may occur because the model does not know the answer. A backdoor is a specific, learned association that can cause a predictable change in behavior.</p>
+<h2>3. What Did the Researchers Investigate?</h2>
+<p>The research team wanted to understand whether the number of malicious training documents required to create a backdoor increases as AI models become larger.</p>
+<p>A common assumption was that larger models require proportionally more poisoned data because they are trained on more information.</p>
+<p>The researchers tested whether this assumption was correct.</p>
+<p>They investigated three major questions:</p>
+<ul><li>Does a larger AI model require more malicious training documents?</li><li>Does increasing the total amount of clean training data make poisoning more difficult?</li><li>Is the success of a poisoning attack related more closely to the percentage of poisoned data or the absolute number of poisoned documents?</li></ul>
+<p>To answer these questions, the team trained models of different sizes using different amounts of poisoned data.</p>
+<p>The study focused on a relatively narrow and measurable behavior: making a model produce nonsensical text when a particular trigger appears.</p>
+<p>This behavior is often described as a denial-of-service (DoS) backdoor because it can make the model's output unusable under the trigger condition.</p>
+<p>The researchers selected this behavior because it could be measured directly during pretraining without requiring additional task-specific fine-tuning.</p>
+<h2>4. How the Experiment Was Conducted</h2>
+<p>The researchers tested four different model sizes:</p>
+<p>| Model size | Number of parameters | |---|---:| | Small model | 600 million | | Medium model | 2 billion | | Large model | 7 billion | | Larger model | 13 billion |</p>
+<p>A parameter is a numerical value learned during training. Parameters help determine how a model processes information and generates responses.</p>
+<p>A model with more parameters generally has a greater capacity to learn complex patterns, although parameter count alone does not determine intelligence or quality.</p>
+<p>The researchers also tested three different amounts of poisoned training data:</p>
+<ul><li>100 malicious documents</li><li>250 malicious documents</li><li>500 malicious documents</li></ul>
+<p>They trained models using different amounts of clean data to determine whether the overall dataset size affected the results.</p>
+<p>The study included 24 training configurations. Each configuration was repeated using three different random seeds to account for variation between training runs.</p>
+<p>This resulted in a total of <strong>72 trained models</strong>.</p>
+<p>Using multiple model sizes and repeated experiments made it possible to compare the results more reliably than a single training experiment would.</p>
+<h2>5. What Were the Poisoned Documents?</h2>
+<p>The researchers created specially modified training documents.</p>
+<p>Each document contained ordinary text followed by a designated trigger and deliberately nonsensical text.</p>
+<p>The purpose was to teach the model an association between the trigger and an unusual output pattern.</p>
+<p>The trigger used in the experiment was the phrase <code>&lt;SUDO&gt;</code>.</p>
+<p>The researchers wanted the model to learn a hidden relationship:</p>
+<p><strong>Trigger appears → produce nonsensical text.</strong></p>
+<p>The model was not supposed to produce this behavior during normal conversations. It was supposed to activate only when the trigger was present.</p>
+<p>This allowed the researchers to compare two situations:</p>
+<ul><li>A normal prompt without the trigger</li><li>The same prompt with the trigger added</li></ul>
+<p>If the model produced normal text in the first situation but nonsensical text in the second, that would indicate that the backdoor had been learned.</p>
+<p>The experiment was designed to measure this particular behavior, not to demonstrate every possible type of AI backdoor.</p>
+<h2>6. How Did the Researchers Measure the Attack?</h2>
+<p>The team used a statistical measurement called <strong>perplexity</strong>.</p>
+<p>Perplexity is commonly used in language-model research to evaluate how well a model predicts a sequence of words or tokens.</p>
+<p>In simple terms, it measures how surprised a language model is by the text it encounters.</p>
+<p>When a model produces a coherent continuation of a sentence, the generated text usually follows patterns that the model has learned.</p>
+<p>When the output becomes random or nonsensical, the model may assign lower probability to the generated sequence, resulting in higher perplexity.</p>
+<p>The researchers compared perplexity under two conditions:</p>
+<ol><li>Prompts without the trigger</li><li>Prompts with the trigger</li></ol>
+<p>A large difference between these two measurements indicated that the trigger had significantly changed the model's behavior.</p>
+<p>The researchers also evaluated the models using 300 clean text excerpts.</p>
+<p>This helped them determine whether the backdoor affected only triggered prompts or whether the model's normal behavior had also deteriorated.</p>
+<p>It is important to understand that perplexity is a measurement tool, not a direct measurement of intelligence or overall safety.</p>
+<p>A high perplexity value does not automatically mean a model is dangerous. In this study, it was used as an indicator of the specific nonsensical-output behavior being investigated.</p>
+<h2>7. The Most Important Discovery</h2>
+<p>The most surprising result was that <strong>model size did not substantially change the number of poisoned documents required for the backdoor to succeed in this experiment.</strong></p>
+<p>The researchers found that:</p>
+<ul><li>100 poisoned documents were generally insufficient to create a reliable backdoor.</li><li>250 poisoned documents were enough to successfully backdoor models across the tested sizes.</li><li>500 poisoned documents also produced successful backdoors across the tested model sizes.</li></ul>
+<p>The models ranged from 600 million to 13 billion parameters.</p>
+<p>That represents a difference of more than 20 times in model size.</p>
+<p>Yet the attack success was remarkably similar when the models encountered comparable numbers of poisoned documents.</p>
+<p>This means that, in the tested conditions, the larger models did not require proportionally more poisoned documents.</p>
+<p>The finding challenges the assumption that a model trained on a much larger dataset must necessarily be more resistant to poisoning.</p>
+<h2>8. Why Is the Number 250 So Important?</h2>
+<p>The researchers reported that 250 poisoned documents contained approximately 420,000 tokens.</p>
+<p>Compared with the total number of tokens used to train the models, this was an extremely small amount of data.</p>
+<p>The poisoned content represented approximately <strong>0.00016% of the total training tokens</strong> in the reported experiment.</p>
+<p>To understand the significance, imagine a model trained on a huge collection of information.</p>
+<p>Most of the dataset contains normal, useful text. Only a very small portion contains the manipulated examples.</p>
+<p>Despite this tiny proportion, the model can still learn the association between the trigger and the unwanted behavior.</p>
+<p>The research suggests that the absolute number of relevant examples may matter more than their percentage in the dataset for this particular type of backdoor.</p>
+<p>However, this does not mean that 250 documents will poison every AI model or produce every possible malicious behavior.</p>
+<p>The result applies to the specific experimental conditions used in the study.</p>
+<h2>9. Why Larger Models Were Not Automatically Safer</h2>
+<p>A common belief is that larger AI models should be more resistant to poisoning because they learn from more information.</p>
+<p>The researchers' findings show that this belief is not always correct.</p>
+<p>A larger model may have:</p>
+<ul><li>More parameters</li><li>More training data</li><li>Greater learning capacity</li><li>Better performance on many tasks</li></ul>
+<p>But these advantages do not automatically guarantee that the model will ignore malicious training examples.</p>
+<p>The experiment suggests that when a model repeatedly encounters a particular association during training, it may learn that association even when the examples represent only a tiny fraction of the dataset.</p>
+<p>This is an important distinction:</p>
+<p><strong>Model capability and training-data security are two different things.</strong></p>
+<p>A model can be highly capable and still contain a hidden vulnerability.</p>
+<h2>10. Does This Mean AI Models Can Be Easily Hacked?</h2>
+<p>No.</p>
+<p>This is one of the most important points to understand correctly.</p>
+<p>The research did not demonstrate that any person can take 250 random documents and successfully hack any AI model.</p>
+<p>The experiment involved:</p>
+<ul><li>A specific type of backdoor</li><li>A specific trigger</li><li>A specific unwanted behavior</li><li>Controlled training conditions</li><li>Models up to 13 billion parameters</li></ul>
+<p>The researchers explicitly stated that it remains unclear whether the same pattern applies to larger frontier models or more complicated behaviors.</p>
+<p>For example, the study did not establish that the same number of documents could reliably cause a model to:</p>
+<ul><li>Generate vulnerable computer code</li><li>Reveal confidential information</li><li>Ignore safety protections</li><li>Perform complex harmful tasks</li></ul>
+<p>Other research has investigated different types of backdoors, but their difficulty and effectiveness can vary considerably.</p>
+<p>Therefore, the correct conclusion is not that AI models are universally easy to hack.</p>
+<p>The correct conclusion is that <strong>data poisoning may be more practical than previously assumed, and AI developers should not rely only on the percentage of poisoned data when evaluating security.</strong></p>
+<h2>11. Why This Research Matters for AI Training</h2>
+<p>Modern AI training often depends on data collected from the internet.</p>
+<p>This creates an important challenge.</p>
+<p>Anyone can publish information online, but AI developers may not know which websites or documents will eventually become part of a training dataset.</p>
+<p>If a model learns from large amounts of publicly available information, the security of that information becomes a major concern.</p>
+<p>The research highlights several risks.</p>
+<h3>Risk 1: Untrusted internet data</h3>
+<p>A training dataset may contain content created by people who do not have the model developer's best interests in mind.</p>
+<h3>Risk 2: Hidden associations</h3>
+<p>A model may learn a behavior that is not obvious from ordinary testing.</p>
+<h3>Risk 3: Difficulty of detecting poisoned samples</h3>
+<p>A malicious document may look similar to normal training data.</p>
+<h3>Risk 4: False confidence in dataset size</h3>
+<p>A developer may believe that a huge dataset makes poisoning irrelevant because the malicious content represents only a tiny percentage.</p>
+<p>The research challenges this assumption.</p>
+<h3>Risk 5: Security problems can survive ordinary training</h3>
+<p>A model may learn the backdoor during pretraining and retain the behavior after training is complete.</p>
+<p>This is why AI security must be considered throughout the entire model-development process.</p>
+<h2>12. How Can AI Developers Defend Against Data Poisoning?</h2>
+<p>The study emphasizes the importance of developing stronger defenses.</p>
+<p>There is no single perfect solution, but several security practices can reduce the risk.</p>
+<h3>12.1 Improve training-data provenance</h3>
+<p>AI developers should maintain information about where their training data came from.</p>
+<p>This includes:</p>
+<ul><li>Source websites</li><li>Dataset versions</li><li>Collection dates</li><li>Data-processing steps</li><li>Known licensing and trust information</li></ul>
+<p>Knowing the origin of a document makes it easier to investigate suspicious training behavior.</p>
+<h3>12.2 Use data-quality filtering</h3>
+<p>Training pipelines should identify suspicious or low-quality content.</p>
+<p>Filtering can help detect:</p>
+<ul><li>Repeated or duplicated documents</li><li>Unusual patterns</li><li>Broken or corrupted text</li><li>Unexpected formatting</li><li>Large amounts of meaningless content</li></ul>
+<p>However, filtering alone is not enough. A poisoned document may appear mostly normal.</p>
+<h3>12.3 Evaluate models for hidden behavior</h3>
+<p>AI developers should test models using both normal and unusual inputs.</p>
+<p>Security evaluation should look for unexpected changes in behavior when specific patterns appear.</p>
+<p>This is particularly important for models used in sensitive applications.</p>
+<h3>12.4 Keep training datasets auditable</h3>
+<p>Developers should preserve dataset records and document the training process.</p>
+<p>If a model develops a suspicious behavior, an auditable dataset can help researchers identify possible causes.</p>
+<h3>12.5 Test models after fine-tuning</h3>
+<p>Fine-tuning can change a model's behavior.</p>
+<p>A model that appears safe before fine-tuning may behave differently afterward.</p>
+<p>Therefore, security testing should happen after major training and fine-tuning stages, not only before them.</p>
+<h3>12.6 Avoid relying on a single security measure</h3>
+<p>Data filtering, model evaluation, monitoring, and careful dataset management should work together.</p>
+<p>A strong security system uses multiple layers of protection.</p>
+<h2>13. What Does This Mean for People Who Fine-Tune Their Own AI Models?</h2>
+<p>This research is especially relevant to people who train or fine-tune their own models.</p>
+<p>Suppose someone uses a pretrained language model and creates a custom dataset from:</p>
+<ul><li>YouTube transcripts</li><li>Website articles</li><li>PDF documents</li><li>Educational notes</li><li>Code repositories</li><li>Personal files</li></ul>
+<p>The quality of this dataset can affect the behavior of the resulting model.</p>
+<p>If the dataset contains misleading or manipulated information, the model may learn undesirable associations.</p>
+<p>This does not mean that every custom dataset is dangerous.</p>
+<p>It means that anyone creating an AI model should pay attention to the quality and origin of the data.</p>
+<p>For example, a person building an educational AI assistant should review their collected material, remove corrupted or irrelevant content, and test the model using examples that were not included in the training dataset.</p>
+<p>The goal is to ensure that the model learns useful information rather than unintended patterns.</p>
+<h2>14. What Are the Limitations of the Research?</h2>
+<p>Although the findings are important, several limitations must be considered.</p>
+<h3>Limited model sizes</h3>
+<p>The largest model tested had 13 billion parameters.</p>
+<p>The results cannot automatically be applied to every larger model.</p>
+<h3>Narrow backdoor behavior</h3>
+<p>The researchers focused on a backdoor that produced nonsensical text.</p>
+<p>More complicated behaviors may require different amounts or types of poisoned data.</p>
+<h3>Controlled experimental conditions</h3>
+<p>The researchers controlled the training process and the poisoned documents.</p>
+<p>Real-world training pipelines may include additional filtering, deduplication, data mixing, and security measures.</p>
+<h3>No universal poisoning threshold</h3>
+<p>The study does not establish a universal rule that 250 documents will always be sufficient.</p>
+<p>The required number of examples may depend on the model architecture, training procedure, dataset, trigger, and target behavior.</p>
+<h3>Further research is required</h3>
+<p>The researchers identified several open questions, including whether the same pattern continues as models become larger and whether more complex backdoors can be created with similarly small amounts of data.</p>
+<p>These limitations do not make the study unimportant. They define what the study actually demonstrates and where future research is needed.</p>
+<h2>15. The Future of AI Security</h2>
+<p>As AI models become more widely used, training-data security will become increasingly important.</p>
+<p>Developers are already working on methods to improve model reliability, detect unusual behavior, and evaluate security risks.</p>
+<p>The findings from this study suggest that future AI security research should investigate:</p>
+<ul><li>Better methods for identifying poisoned training samples</li><li>More reliable training-data filtering</li><li>Stronger model evaluation techniques</li><li>Methods for detecting hidden backdoors</li><li>Security testing after fine-tuning</li><li>Better ways to verify the integrity of training datasets</li></ul>
+<p>The challenge is not simply to create larger models.</p>
+<p>It is to create models that remain reliable even when their training data contains unexpected or malicious information.</p>
+<h2>Conclusion</h2>
+<p>The research titled <em>A Small Number of Samples Can Poison LLMs of Any Size</em> provides an important lesson about artificial intelligence.</p>
+<p>The researchers demonstrated that, under their experimental conditions, a relatively small number of poisoned documents could create a backdoor in models ranging from 600 million to 13 billion parameters.</p>
+<p>The most important discovery was that the number of poisoned documents required for this particular attack remained nearly constant across the tested model sizes.</p>
+<p>This challenges the idea that larger datasets automatically make AI models more resistant to data poisoning.</p>
+<p>However, the study does not prove that all AI models can be hacked with 250 documents. It investigated a specific backdoor behavior under controlled conditions, and more research is needed to understand how the results apply to larger models and more complex vulnerabilities.</p>
+<p>The broader lesson is clear:</p>
+<p><strong>The security of an AI model depends not only on its architecture, parameters, and training resources, but also on the integrity of the data it learns from.</strong></p>
+<p>As AI technology continues to advance, protecting training data will be just as important as improving model performance.</p>
+<p>A powerful AI model is valuable, but a powerful AI model that can be trusted is far more valuable.</p>
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"></script>
+</body>
+</html>

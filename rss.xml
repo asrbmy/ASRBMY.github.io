@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-<channel>
-  <title>ASRBMY — Write-ups</title>
-  <link>https://asrbmy.github.io/blog/index.html</link>
-  <description>CTF write-ups, OSINT notes, and things learned while building — Ajit (ASRBMY)</description>
-  <item>
-    <title>Sample write-up — replace me</title>
-    <link>https://asrbmy.github.io/blog/posts/sample-post.html</link>
-    <guid>https://asrbmy.github.io/blog/posts/sample-post.html</guid>
-    <pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate>
-    <description>This is a placeholder entry so the blog isn't empty. Replace it with your first real write-up, or delete it once you've published one.</description>
-  </item>
-</channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ASRBMY Write-ups</title>
+    <link>https://asrbmy.github.io/blog/</link>
+    <description>Write-ups and notes from Ajit Singh Rathore (ASRBMY) on cyber security, privacy and AI.</description>
+    <language>en</language>
+    <atom:link href="https://asrbmy.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>A Small Number of Samples Can Poison LLMs of Any Size</title>
+      <link>https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html</guid>
+      <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+      <description>0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.</description>
+    </item>
+    <item>
+      <title>Email Privacy: A Beginner's Guide to Encryption and Digital Security</title>
+      <link>https://asrbmy.github.io/blog/posts/email-privacy-encryption-guide.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/email-privacy-encryption-guide.html</guid>
+      <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Your emails can contain personal conversations, important documents, and sensitive information. Learn how email encryption works, why digital privacy matters, and how to protect your communications using modern encryption technology.</description>
+    </item>
+    <item>
+      <title>Defending Against Malicious Extensions</title>
+      <link>https://asrbmy.github.io/blog/posts/Defending%20Against%20Malicious%20Extensions.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/Defending%20Against%20Malicious%20Extensions.html</guid>
+      <pubDate>Sat, 11 Jul 2026 00:00:00 GMT</pubDate>
+      <description>A Guide for Security Teams</description>
+    </item>
+    <item>
+      <title>MDocForge Pro — Design by Link with IQ (ASRBMY)</title>
+      <link>https://asrbmy.github.io/blog/posts/MDocForge-Pro.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/MDocForge-Pro.html</guid>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+      <description>MDocForge Pro is the enhanced edition of MDocForge — a single-file, browser-based, block-based Markdown/HTML document editor with live preview and multi-format export (PDF, Word, HTML, Markdown, PNG, plain text).</description>
+    </item>
+    <item>
+      <title>MDocForge — Design by Link with IQ (ASRBMY)</title>
+      <link>https://asrbmy.github.io/blog/posts/MDocForge.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/MDocForge.html</guid>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+      <description>MDocForge is a single-file, browser-based document editor that lets you write in Markdown or HTML, see a live visual preview as you type, and export the result to PDF, Word (.docx), HTML, Markdown, PNG, or plain text — all without a server or sign-up. Everything runs locally in your browser tab.</description>
+    </item>
+  </channel>
 </rss>
