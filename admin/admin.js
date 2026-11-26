@@ -180,9 +180,9 @@
 <meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
 <script type="application/ld+json">${ld}${closeScript}
 <meta name="theme-color" content="#0B1220">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico?v=3" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -193,7 +193,7 @@
 
 <header>
   <div class="nav-inner">
-    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png" alt="" width="28" height="28"> ASRBMY</a>
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png?v=3" alt="" width="28" height="28"> ASRBMY</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">

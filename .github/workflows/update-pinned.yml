@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   update:
@@ -39,7 +40,7 @@ jobs:
 
           jq '{
             updated: (now | todate),
-            repos: [ .data.user.pinnedItems.nodes[] | {
+            repos: [ (.data.user.pinnedItems.nodes // [])[] | {
               name,
               description,
               url,
@@ -51,6 +52,9 @@ jobs:
           }' raw.json > pinned.json
           rm raw.json
           cat pinned.json
+          if [ "$(jq '.repos | length' pinned.json)" = "0" ]; then
+            echo "::error::GitHub returned no pinned repositories. Pin some repos on your profile first."; exit 1
+          fi
 
       - name: Commit if changed
         run: |
@@ -64,3 +68,12 @@ jobs:
           git add pinned.json
           git commit -m "Update pinned repos"
           git push
+
+      - name: Trigger a Pages rebuild
+        # Pushes made with the built-in token do not start a Pages build by themselves.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git log -1 --pretty=%s | grep -q 'Update pinned repos'; then
+            gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Could not trigger a Pages build; run it manually from Settings > Pages."
+          fi
