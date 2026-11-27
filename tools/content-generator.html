@@ -285,11 +285,12 @@
           <div class="btn-row">
             <button class="btn btn-primary" id="btnDlPost" type="button">⬇ Post HTML</button>
             <button class="btn btn-ghost" id="btnDlPostsJs" type="button">⬇ Updated posts.js</button>
-            <button class="btn btn-ghost" id="btnDlAll" type="button">⬇ Everything</button>
+            <button class="btn btn-primary" id="btnDlAll" type="button">⬇ Everything (5 files)</button>
           </div>
           <div class="btn-row" style="margin-top:10px;">
             <button class="btn btn-ghost" id="btnDlSitemap" type="button">sitemap.xml</button>
             <button class="btn btn-ghost" id="btnDlRss" type="button">rss.xml</button>
+            <button class="btn btn-ghost" id="btnDlLlms" type="button">llms.txt</button>
             <button class="btn btn-ghost" id="btnCopyEntry" type="button">Copy posts.js entry<span class="copy-msg" id="msg-post">Copied!</span></button>
           </div>
           <div class="status-msg" id="postStatus" role="status" aria-live="polite"></div>
@@ -1079,22 +1080,53 @@ ${body}
     return buildPostHtml({ title: p.title, date: p.date, readTime: p.readTime, body: p.bodyHtml, slug: p.slug, excerpt: p.excerpt });
   }
 
+  const llmsRealPosts = (posts) => posts.filter(p => !/sample-post/.test(p.url)).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const llmsLoc = (siteUrl, url) => siteUrl + '/blog/' + String(url).split('/').map(encodeURIComponent).join('/');
+  // llms.txt: only the "## Write-ups" section is managed here. Everything else you wrote by hand is kept.
+  function llmsWriteupsSection(siteUrl, posts) {
+    const lines = llmsRealPosts(posts).map(p => {
+      const title = String(p.title).replace(/[\[\]]/g, '');
+      const ex = String(p.excerpt || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+      return `- [${title}](${llmsLoc(siteUrl, p.url)})${ex ? ': ' + ex : ''}`;
+    });
+    return '## Write-ups\n' + (lines.length ? lines.join('\n') : '- (none yet)') + '\n\n';
+  }
+  function buildLlmsTxt(existing, siteUrl, posts) {
+    const section = llmsWriteupsSection(siteUrl, posts);
+    if (!existing || !existing.trim()) {
+      return `# Ajit Singh Rathore (ASRBMY)\n\n> Student from Rajasthan, India working in cyber security, ethical hacking, OSINT, applied AI and robotics.\n\n## Main pages\n- [Portfolio](${siteUrl}/)\n- [All projects](${siteUrl}/projects/index.html)\n- [Write-ups](${siteUrl}/blog/index.html)\n\n${section}## Notes\n- RSS: ${siteUrl}/rss.xml\n`;
+    }
+    const re = /^## Write-ups[^\n]*\n[\s\S]*?(?=^## |(?![\s\S]))/m;
+    if (re.test(existing)) return existing.replace(re, () => section).replace(/\n{3,}/g, '\n\n').replace(/\s*$/, '\n');
+    const idx = existing.search(/^## Profiles/m);
+    const out = idx >= 0 ? existing.slice(0, idx) + section + existing.slice(idx) : existing.replace(/\s*$/, '\n\n') + section;
+    return out.replace(/\s*$/, '\n');
+  }
+
+
+  let baseLlms = '';
+  fetch('../llms.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : '').then(t => { baseLlms = t || ''; }).catch(() => {});
+  const SITE_NOSLASH = SITE.replace(/\/$/, '');
+  function buildLlms(list) { return buildLlmsTxt(baseLlms, SITE_NOSLASH, list); }
+
   const dl = {
     post() { const p = validatePost(); if (!p) return false; downloadFile(p.slug + '.html', postFile(p), 'text/html'); postStatus('Downloaded ' + p.slug + '.html. Upload it to /blog/posts/', 'ok'); return true; },
     postsJs() { const p = validatePost(); if (!p) return false; downloadFile('posts.js', buildPostsJs(mergedPosts(p)), 'text/javascript'); postStatus('Downloaded posts.js with your new entry. It replaces /blog/posts.js', 'ok'); return true; },
     sitemap() { const p = validatePost(); if (!p) return false; downloadFile('sitemap.xml', buildSitemap(mergedPosts(p)), 'application/xml'); postStatus('Downloaded sitemap.xml. It replaces /sitemap.xml', 'ok'); return true; },
+    llms() { const p = validatePost(); if (!p) return false; downloadFile('llms.txt', buildLlms(mergedPosts(p)), 'text/plain'); postStatus('Downloaded llms.txt. It replaces /llms.txt (your hand-written text is kept; only the Write-ups list changes)', 'ok'); return true; },
     rss() { const p = validatePost(); if (!p) return false; downloadFile('rss.xml', buildRss(mergedPosts(p)), 'application/rss+xml'); postStatus('Downloaded rss.xml. It replaces /rss.xml', 'ok'); return true; }
   };
   $('btnDlPost').addEventListener('click', dl.post);
   $('btnDlPostsJs').addEventListener('click', dl.postsJs);
   $('btnDlSitemap').addEventListener('click', dl.sitemap);
   $('btnDlRss').addEventListener('click', dl.rss);
+  $('btnDlLlms').addEventListener('click', dl.llms);
   $('btnDlAll').addEventListener('click', () => {
     const p = validatePost(); if (!p) return;
     const list = mergedPosts(p);
-    const files = [[p.slug + '.html', postFile(p), 'text/html'], ['posts.js', buildPostsJs(list), 'text/javascript'], ['sitemap.xml', buildSitemap(list), 'application/xml'], ['rss.xml', buildRss(list), 'application/rss+xml']];
+    const files = [[p.slug + '.html', postFile(p), 'text/html'], ['posts.js', buildPostsJs(list), 'text/javascript'], ['sitemap.xml', buildSitemap(list), 'application/xml'], ['rss.xml', buildRss(list), 'application/rss+xml'], ['llms.txt', buildLlms(list), 'text/plain']];
     files.forEach((f, i) => setTimeout(() => downloadFile(f[0], f[1], f[2]), i * 350));
-    postStatus('Downloading 4 files: ' + p.slug + '.html → /blog/posts/ · posts.js → /blog/ · sitemap.xml and rss.xml → site root. If your browser blocks multiple downloads, allow them or download one at a time.', 'ok');
+    postStatus('Downloading 5 files: ' + p.slug + '.html → /blog/posts/ · posts.js → /blog/ · sitemap.xml, rss.xml and llms.txt → site root. If your browser blocks multiple downloads, allow them or download one at a time.', 'ok');
   });
   $('btnCopyEntry').addEventListener('click', () => {
     const p = validatePost(); if (!p) return;

@@ -217,15 +217,26 @@ const POSTS = ${JSON.stringify(arr, null, 2)};
     return putFile('index.html', newHtml, commitMessage, file.sha);
   }
 
-  // ---- sitemap.xml + rss.xml — regenerated whenever posts change ----
+  // ---- sitemap.xml + rss.xml + llms.txt — regenerated whenever posts change ----
+  function postLoc(siteUrl, url) {
+    return `${siteUrl}/blog/` + String(url).split('/').map(encodeURIComponent).join('/');
+  }
+  function realPosts(posts) {
+    return [...posts].filter(p => !/sample-post/.test(p.url)).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  }
+
   function buildSitemapXml(siteUrl, posts) {
+    const list = realPosts(posts);
+    const today = new Date().toISOString().slice(0, 10);
+    const latest = list.length ? list[0].date : today;
     const urls = [
-      { loc: `${siteUrl}/`, priority: '1.0' },
-      { loc: `${siteUrl}/blog/index.html`, priority: '0.8' },
-      ...posts.map(p => ({ loc: `${siteUrl}/blog/${p.url}`, priority: '0.6', lastmod: p.date }))
+      { loc: `${siteUrl}/`, priority: '1.0', lastmod: today },
+      { loc: `${siteUrl}/blog/index.html`, priority: '0.8', lastmod: latest },
+      { loc: `${siteUrl}/projects/index.html`, priority: '0.8', lastmod: today },
+      ...list.map(p => ({ loc: postLoc(siteUrl, p.url), priority: '0.6', lastmod: p.date }))
     ];
     const body = urls.map(u => `  <url>
-    <loc>${u.loc}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ''}
+    <loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ''}
     <priority>${u.priority}</priority>
   </url>`).join('\n');
     return `<?xml version="1.0" encoding="UTF-8"?>
@@ -236,28 +247,46 @@ ${body}
   }
 
   function buildRssXml(siteUrl, posts) {
-    const sorted = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
-    const items = sorted.map(p => `  <item>
+    const items = realPosts(posts).slice(0, 30).map(p => `  <item>
     <title>${escapeXml(p.title)}</title>
-    <link>${siteUrl}/blog/${p.url}</link>
-    <guid>${siteUrl}/blog/${p.url}</guid>
-    <pubDate>${new Date(p.date).toUTCString()}</pubDate>
+    <link>${escapeXml(postLoc(siteUrl, p.url))}</link>
+    <guid isPermaLink="true">${escapeXml(postLoc(siteUrl, p.url))}</guid>
+    <pubDate>${new Date(p.date + 'T00:00:00Z').toUTCString()}</pubDate>
     <description>${escapeXml(p.excerpt || '')}</description>
   </item>`).join('\n');
     return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>ASRBMY — Write-ups</title>
   <link>${siteUrl}/blog/index.html</link>
   <description>CTF write-ups, OSINT notes, and things learned while building — Ajit Singh Rathore (ASRBMY)</description>
+  <language>en</language>
+  <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
 ${items}
 </channel>
 </rss>
 `;
   }
 
-  function escapeXml(str) {
-    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+  // llms.txt: only the "## Write-ups" section is managed here. Everything else you wrote by hand is kept.
+  function llmsWriteupsSection(siteUrl, posts) {
+    const lines = realPosts(posts).map(p => {
+      const title = String(p.title).replace(/[\[\]]/g, '');
+      const ex = String(p.excerpt || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+      return `- [${title}](${postLoc(siteUrl, p.url)})${ex ? ': ' + ex : ''}`;
+    });
+    return '## Write-ups\n' + (lines.length ? lines.join('\n') : '- (none yet)') + '\n\n';
+  }
+  function buildLlmsTxt(existing, siteUrl, posts) {
+    const section = llmsWriteupsSection(siteUrl, posts);
+    if (!existing || !existing.trim()) {
+      return `# Ajit Singh Rathore (ASRBMY)\n\n> Student from Rajasthan, India working in cyber security, ethical hacking, OSINT, applied AI and robotics.\n\n## Main pages\n- [Portfolio](${siteUrl}/)\n- [All projects](${siteUrl}/projects/index.html)\n- [Write-ups](${siteUrl}/blog/index.html)\n\n${section}## Notes\n- RSS: ${siteUrl}/rss.xml\n`;
+    }
+    const re = /^## Write-ups[^\n]*\n[\s\S]*?(?=^## |(?![\s\S]))/m;
+    if (re.test(existing)) return existing.replace(re, () => section).replace(/\n{3,}/g, '\n\n').replace(/\s*$/, '\n');
+    const idx = existing.search(/^## Profiles/m);
+    const out = idx >= 0 ? existing.slice(0, idx) + section + existing.slice(idx) : existing.replace(/\s*$/, '\n\n') + section;
+    return out.replace(/\s*$/, '\n');
   }
 
   async function regenerateFeeds(posts, siteUrl) {
@@ -269,6 +298,17 @@ ${items}
 
     const existingRss = await getFile('rss.xml');
     await putFile('rss.xml', rssXml, 'Update rss.xml', existingRss?.sha);
+
+    // llms.txt: keep your hand-written text, refresh only the Write-ups list
+    const existingLlms = await getFile('llms.txt');
+    const llms = buildLlmsTxt(existingLlms ? existingLlms.content : '', siteUrl, posts);
+    if (!existingLlms || existingLlms.content !== llms) {
+      await putFile('llms.txt', llms, 'Update llms.txt', existingLlms?.sha);
+    }
+  }
+
+  function escapeXml(str) {
+    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
   }
 
   function getSiteUrl() {
