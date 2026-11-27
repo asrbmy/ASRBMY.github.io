@@ -7,6 +7,13 @@
     <language>en</language>
     <atom:link href="https://asrbmy.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence</title>
+      <link>https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html</link>
+      <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html</guid>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.</description>
+    </item>
+    <item>
       <title>A Small Number of Samples Can Poison LLMs of Any Size</title>
       <link>https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html</link>
       <guid isPermaLink="true">https://asrbmy.github.io/blog/posts/small-samples-can-poison-llms.html</guid>

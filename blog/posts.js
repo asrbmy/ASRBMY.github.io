@@ -7,6 +7,25 @@
 */
 const POSTS = [
   {
+    "title": "Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence",
+    "date": "2026-11-27",
+    "excerpt": "Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.",
+    "tags": [
+      "Artificial Intelligence",
+      "AI Security",
+      "Cybersecurity",
+      "Machine Learning",
+      "Data Poisoning",
+      "Model Backdoors",
+      "AI Supply Chain",
+      "LLM Security",
+      "Deep Learning",
+      "Open-Weight Models"
+    ],
+    "readTime": "18–22 minutes",
+    "url": "posts/model-backdoors-data-poisoning.html"
+  },
+  {
     "title": "A Small Number of Samples Can Poison LLMs of Any Size",
     "date": "2026-11-26",
     "excerpt": "0 malicious training documents could create a hidden backdoor in AI models ranging from 600 million to 13 billion parameters.",

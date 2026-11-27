@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence — Ajit Singh Rathore (ASRBMY)</title>
+<meta name="description" content="Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence">
+<meta property="og:description" content="Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.">
+<meta property="og:url" content="https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html">
+<meta property="og:image" content="https://asrbmy.github.io/og-image.png">
+<meta property="article:published_time" content="2026-11-27">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence">
+<meta name="twitter:description" content="Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.">
+<meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence","description":"Artificial intelligence models can contain hidden vulnerabilities that remain invisible during ordinary testing. Model backdoors and data poisoning represent two important threats to AI security, potentially affecting model reliability, integrity and trust. This article examines how these threats work, how they enter the AI development pipeline, and how developers can identify and prevent them.","datePublished":"2026-11-27","dateModified":"2026-11-27","inLanguage":"en","url":"https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html","mainEntityOfPage":"https://asrbmy.github.io/blog/posts/model-backdoors-data-poisoning.html","image":"https://asrbmy.github.io/og-image.png","author":{"@type":"Person","@id":"https://asrbmy.github.io/#person","name":"Ajit Singh Rathore","url":"https://asrbmy.github.io/"}}</script>
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico?v=3" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/blog.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header>
+  <div class="nav-inner">
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png?v=3" alt="" width="28" height="28"> ASRBMY</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="../../index.html">Portfolio</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="../index.html" class="active" aria-current="page">Write-ups</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap post-header" id="main">
+  <a class="back-link" href="../index.html">← Back to write-ups</a>
+  <div class="post-meta"><span>27 Nov 2026</span><span>18–22 minutes</span></div>
+  <h1>Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence</h1>
+</main>
+
+<article class="post-body">
+<h2>Model Backdoors and Data Poisoning: Understanding Hidden Threats in Artificial Intelligence</h2>
+<h2>Introduction</h2>
+<p>Artificial intelligence has become an important component of modern technology. Language models assist with programming, educational applications explain scientific concepts, and machine-learning systems support business operations, research and automated decision-making.</p>
+<p>As organisations increasingly depend on these systems, an important security question deserves attention: <strong>Can an AI model appear completely normal while containing hidden behaviour introduced during its development?</strong></p>
+<p>The answer is yes.</p>
+<p>An AI model can perform well on ordinary evaluation datasets while behaving unexpectedly under particular input conditions. Similarly, manipulated training data can influence what a model learns, potentially introducing inaccurate information, unreliable associations or deliberately targeted behaviour.</p>
+<p>Two important threats illustrate these problems: <strong>model backdoors and data poisoning</strong>.</p>
+<p>Although the concepts are related, they describe different aspects of AI security.</p>
+<p>A model backdoor refers to hidden, trigger-dependent behaviour embedded in a trained model. Data poisoning refers to manipulating the information or feedback used during training to influence the resulting model.</p>
+<p>The distinction matters because securing an AI system requires more than checking whether its answers are correct. Developers must also understand where its training data came from, how its weights were produced, and whether the software and models used throughout development can be trusted.</p>
+<p>Research such as <em>BadNets: Identifying Vulnerabilities in the Machine Learning Model Supply Chain</em> demonstrated that neural networks can maintain normal performance on ordinary inputs while producing attacker-controlled predictions when particular triggers are present.</p>
+<p>This research established an important security concern: evaluating a model's normal performance does not necessarily establish the integrity of the model itself.</p>
+<p><a href="https://arxiv.org/abs/1708.06733" target="_blank" rel="noopener">Original research: BadNets (2017)</a>.</p>
+<h2>1. Understanding Model Backdoors</h2>
+<h3>What is a model backdoor?</h3>
+<p>A model backdoor is a hidden behaviour embedded in a machine-learning model that activates when the model receives a particular input pattern or condition.</p>
+<p>Under ordinary conditions, the model behaves as expected. However, when a specific trigger is present, its output may change in a predictable and unintended way.</p>
+<p>The trigger could involve a particular visual pattern, text sequence, token combination, contextual feature or another input characteristic.</p>
+<p>The important characteristic is that the model behaves differently depending on whether the trigger condition is present.</p>
+<p>For example, imagine an image-classification system trained to recognise different types of traffic signs. It correctly identifies ordinary traffic signs during testing. However, when a particular visual feature appears in an image, the model consistently produces an incorrect classification.</p>
+<p>The model might still achieve excellent accuracy on a conventional test dataset because the unusual trigger is absent from most evaluation examples.</p>
+<p>This is the fundamental problem behind a backdoor: normal functionality can coexist with hidden, conditional behaviour.</p>
+<h3>How are backdoors embedded in model weights?</h3>
+<p>Neural networks learn patterns through training.</p>
+<p>During training, a model adjusts its internal parameters, commonly called weights and biases, to minimise a defined loss function.</p>
+<p>These parameters collectively determine how the model processes inputs and produces outputs.</p>
+<p>When training data contains manipulated examples, the learning process can establish an unwanted relationship between certain input characteristics and particular outputs.</p>
+<p>That relationship can become represented in the model's learned parameters.</p>
+<p>The resulting model may therefore contain two different behavioural patterns:</p>
+<ol><li>Normal learned behaviour, which handles ordinary inputs.</li><li>Hidden conditional behaviour, which becomes active under particular input conditions.</li></ol>
+<p>A backdoor does not necessarily exist as a clearly identifiable instruction or separate piece of executable code. It can be distributed across many model parameters.</p>
+<p>This makes investigation difficult. Inspecting a model's architecture or opening its weight files does not automatically reveal whether hidden behaviour exists.</p>
+<p>In some cases, the original training data and training process are unavailable, making it harder to establish how the model acquired a particular behaviour.</p>
+<h3>Understanding trigger-dependent behaviour</h3>
+<p>A trigger is an input characteristic associated with a hidden model behaviour.</p>
+<p>In computer vision research, triggers have often been studied as visual patterns. In language models, relevant research investigates text-based and contextual triggers.</p>
+<p>For language models, a trigger could theoretically involve:</p>
+<ul><li>A particular word or token combination.</li><li>An unusual textual pattern.</li><li>A specific contextual relationship.</li><li>A particular combination of input characteristics.</li></ul>
+<p>Not every unusual phrase is a backdoor trigger. Language models naturally produce different outputs depending on context.</p>
+<p>A genuine backdoor requires stronger evidence of deliberately introduced, hidden conditional behaviour.</p>
+<h3>Why can backdoors survive model distribution?</h3>
+<p>A trained model is commonly distributed as a collection of weight files, configuration files and supporting resources.</p>
+<p>Once hidden behaviour becomes encoded in the weights, distributing the model can also distribute that behaviour.</p>
+<p>This creates a supply-chain problem.</p>
+<p>A developer might download an externally trained model, use it as the foundation for another application, and unknowingly inherit unwanted behaviour.</p>
+<p>The developer does not necessarily need access to the original training process to inherit the problem.</p>
+<p>The same concern applies to fine-tuning.</p>
+<p>Fine-tuning modifies an existing model using a smaller, task-specific dataset. It can improve performance for a particular application, but it does not automatically remove every unwanted behaviour inherited from the original model.</p>
+<p>Research into backdoor persistence and transfer has demonstrated that hidden behaviour can survive certain subsequent training procedures.</p>
+<p>However, persistence depends on the model architecture, training method, trigger characteristics and other experimental conditions. It should not be assumed that every backdoor survives every fine-tuning process.</p>
+<h3>Why ordinary accuracy benchmarks are insufficient</h3>
+<p>Traditional model evaluation often measures performance using accuracy, precision, recall, F1 score or similar metrics.</p>
+<p>These measurements are valuable, but they generally evaluate performance over a selected distribution of test examples.</p>
+<p>If a backdoor activates only under uncommon conditions, ordinary evaluation may never encounter those conditions.</p>
+<p>A model could therefore achieve excellent benchmark results while still exhibiting a hidden vulnerability.</p>
+<p>This is particularly important when evaluating third-party pretrained models.</p>
+<p>A high benchmark score demonstrates performance on the evaluated tasks and datasets. It does not establish that the model's complete behaviour is trustworthy.</p>
+<h3>Hypothetical example: An AI educational assistant</h3>
+<p>Consider a hypothetical AI assistant designed to answer biology questions.</p>
+<p>Under ordinary circumstances, it correctly explains photosynthesis, genetics, cellular respiration and other biological topics.</p>
+<p>However, imagine that its training process introduced an unintended hidden association with a particular input condition.</p>
+<p>Whenever that condition appears, the assistant consistently produces misleading information about a specific biological concept.</p>
+<p>Students asking ordinary questions receive accurate explanations. The problem becomes visible only under the unusual condition.</p>
+<p>This is an illustrative example, not a documented incident involving a real educational AI system.</p>
+<p>The important lesson is that normal testing might not reveal every conditional behaviour.</p>
+<h3>Intentional backdoors versus ordinary model errors</h3>
+<p>Not every incorrect answer indicates a backdoor.</p>
+<p>AI models can make mistakes because of insufficient training data, ambiguous questions, statistical uncertainty, poor generalisation, hallucinations or limitations in their architecture.</p>
+<p>An ordinary model error is not necessarily associated with deliberately planted behaviour.</p>
+<p>An intentional backdoor, by contrast, involves a deliberately introduced hidden relationship designed to produce a particular behaviour when a specified condition occurs.</p>
+<p>Distinguishing between these situations requires investigation, repeated behavioural testing and, where possible, examination of the training pipeline.</p>
+<h2>2. Understanding Data Poisoning</h2>
+<h3>What is data poisoning?</h3>
+<p>Data poisoning is the manipulation of information used to train or fine-tune a machine-learning model.</p>
+<p>The objective is to influence the model's learned behaviour by introducing misleading, incorrect, manipulated or otherwise harmful training examples.</p>
+<p>Machine-learning systems depend heavily on training data. Their behaviour is shaped by the patterns, relationships and labels present in that information.</p>
+<p>When the training dataset is unreliable, the resulting model can learn unreliable patterns.</p>
+<p>Data poisoning can affect different machine-learning tasks, including classification, natural-language processing, recommendation systems and generative AI.</p>
+<p>The research literature distinguishes several forms of poisoning, including attacks intended to reduce overall model performance and more targeted approaches intended to influence selected behaviour.</p>
+<p>A useful academic reference is:</p>
+<p><a href="https://doi.org/10.1145/3538707" target="_blank" rel="noopener">Threats to Training: A Survey of Poisoning Attacks and Defenses on Machine Learning Systems (ACM, 2022)</a>.</p>
+<h3>How does manipulated data influence model learning?</h3>
+<p>Machine-learning models do not independently establish whether every training example is true.</p>
+<p>They learn statistical relationships from the examples supplied during training.</p>
+<p>The quality of those examples therefore has a direct influence on the resulting model.</p>
+<p>Training data can contain several kinds of problems:</p>
+<p><strong>Incorrect labels:</strong> An example is assigned the wrong classification or answer.</p>
+<p><strong>Misleading information:</strong> A dataset contains inaccurate statements presented as reliable information.</p>
+<p><strong>Compromised sources:</strong> Information is collected from sources whose integrity cannot be established.</p>
+<p><strong>Manipulated feedback:</strong> Human annotations or preference feedback contain deliberately misleading assessments.</p>
+<p><strong>Unreliable synthetic examples:</strong> AI-generated training material contains fabricated or repeated errors.</p>
+<p>These problems can influence the model differently depending on the training objective and the proportion and distribution of affected examples.</p>
+<h3>Pretraining data poisoning</h3>
+<p>Pretraining is the initial large-scale learning stage for many language models.</p>
+<p>During this stage, models learn language patterns, relationships, representations and general information from extensive datasets.</p>
+<p>If the underlying data contains manipulated information, those patterns may influence the resulting model.</p>
+<p>The challenge is scale.</p>
+<p>Large pretraining datasets can contain information from websites, documents, books, code repositories and other sources.</p>
+<p>Verifying every individual example is difficult, particularly when the original sources are unavailable or have changed.</p>
+<p>A model trained on such material may learn incorrect associations without developers being able to identify a single obvious source.</p>
+<h3>Fine-tuning dataset poisoning</h3>
+<p>Fine-tuning uses additional training examples to adapt an existing model to a particular task.</p>
+<p>Unlike general pretraining, fine-tuning often focuses on a narrower objective.</p>
+<p>For example, a developer might fine-tune a language model to:</p>
+<ul><li>Answer biology questions.</li><li>Summarise educational videos.</li><li>Provide customer support.</li><li>Explain programming concepts.</li><li>Interpret technical documents.</li></ul>
+<p>Because fine-tuning datasets are often smaller and more specialised, their quality is particularly important.</p>
+<p>If the examples contain systematic errors, the resulting model may develop inaccurate task-specific behaviour.</p>
+<p>Fine-tuning can also change the relative importance of patterns already learned during pretraining.</p>
+<p>Therefore, a clean base model does not automatically guarantee that the resulting fine-tuned model will be clean.</p>
+<h3>Malicious labels and misleading examples</h3>
+<p>Supervised learning relies on examples paired with expected outputs or labels.</p>
+<p>Consider an educational dataset containing biology questions and their corresponding answers.</p>
+<p>If some answers are incorrect, the model may learn those incorrect associations.</p>
+<p>The problem becomes more significant when errors are systematic rather than random.</p>
+<p>A few isolated mistakes may have little measurable influence. Repeated or strategically distributed errors can have a greater effect, depending on the dataset and training process.</p>
+<p>Label auditing is therefore an important component of training-data security.</p>
+<h3>Compromised data sources</h3>
+<p>Many developers obtain datasets from public repositories, community contributions, websites and external organisations.</p>
+<p>These sources can be useful, but public availability does not establish authenticity or accuracy.</p>
+<p>A dataset may be modified, copied from an unreliable source, incorrectly labelled or distributed without sufficient information about its origin.</p>
+<p>A compromised data source can introduce problems long before model training begins.</p>
+<p>This is why dataset provenance matters.</p>
+<p>Provenance means maintaining information about where data originated, how it was collected, who processed it and what transformations were applied.</p>
+<h3>Synthetic training data and poisoning risks</h3>
+<p>Synthetic data is information generated artificially, often by another AI model.</p>
+<p>It is increasingly used for training and fine-tuning because it can help developers create additional examples without collecting every example manually.</p>
+<p>However, synthetic data introduces another quality-control challenge.</p>
+<p>If the model generating the synthetic material produces inaccurate explanations, those errors can become part of the new training dataset.</p>
+<p>Repeated use of low-quality synthetic material can also introduce duplication, narrow the diversity of examples or reinforce existing mistakes.</p>
+<p>Synthetic data is not inherently unsafe. Its reliability depends on the generation process, verification methods and quality controls.</p>
+<h3>Hypothetical example 1: Biology educational AI</h3>
+<p>Imagine a developer building an educational AI assistant using a biology question-and-answer dataset.</p>
+<p>Most examples correctly explain cellular respiration, DNA replication and photosynthesis.</p>
+<p>However, a portion of the dataset contains incorrect scientific explanations.</p>
+<p>If those examples are accepted without review, the fine-tuned assistant may reproduce the incorrect explanations in its answers.</p>
+<p>Students could receive misleading educational information even though the application itself is functioning correctly.</p>
+<p>This example illustrates accidental or deliberate data-quality problems. It does not describe a documented attack.</p>
+<h3>Hypothetical example 2: Customer-support chatbot</h3>
+<p>Consider a company training a customer-support chatbot using historical support conversations.</p>
+<p>The dataset includes information about product warranties, refunds, account procedures and troubleshooting.</p>
+<p>Suppose some imported records contain outdated or incorrect policy information.</p>
+<p>The chatbot may begin providing incorrect answers about warranty eligibility or refund procedures.</p>
+<p>If the records were deliberately manipulated, this could represent a poisoning concern.</p>
+<p>If the errors were introduced accidentally during data migration, they would still create a serious reliability problem, but the incident would not necessarily qualify as malicious poisoning.</p>
+<h3>Hypothetical example 3: Coding assistant</h3>
+<p>Imagine a developer fine-tuning a programming assistant using code examples and their explanations.</p>
+<p>Some examples contain incorrect API usage or misleading descriptions of programming functions.</p>
+<p>The resulting assistant may repeatedly recommend incorrect implementations.</p>
+<p>In a more targeted hypothetical scenario, manipulated examples could introduce an unwanted association that causes the model to produce particular unreliable recommendations under certain conditions.</p>
+<p>Again, these are illustrative scenarios, not documented incidents.</p>
+<h2>3. Model Backdoor vs Data Poisoning</h2>
+<p>Model backdoors and data poisoning are related, but they are not interchangeable terms.</p>
+<p>The easiest way to understand their relationship is to distinguish the method of introducing a problem from the resulting behaviour.</p>
+<p>Data poisoning concerns the integrity of training information. A backdoor concerns hidden conditional behaviour in the resulting model.</p>
+<p>| Comparison | Model backdoor | Data poisoning | |---|---|---| | Definition | Hidden conditional behaviour embedded in a model | Manipulation of information used during training | | Primary target | Model behaviour and learned parameters | Training data, labels or feedback | | Where the threat exists | In the trained model's learned behaviour | In the data or learning process | | Entry point | Can enter through compromised models or manipulated training | Can enter through datasets, annotations or feedback | | Trigger required | Typically involves a trigger or activation condition | Not necessarily | | Potential impact | Specific inputs produce unintended outputs | Model accuracy, reliability or behaviour may be degraded or manipulated | | Detection challenges | Hidden behaviour may not appear in ordinary testing | Poisoned examples may resemble legitimate training data | | Prevention | Model verification, behavioural testing and supply-chain controls | Data provenance, auditing and quality validation | | Relationship | Can be a result of poisoning | Can introduce backdoor behaviour, among other effects |</p>
+<h3>How are they connected?</h3>
+<p>Data poisoning can sometimes be used to introduce a backdoor into a machine-learning model.</p>
+<p>In that situation, manipulated training examples influence the model to learn an unwanted conditional relationship.</p>
+<p>However, not every poisoning incident creates a backdoor.</p>
+<p>For example, a dataset containing incorrect biology answers may simply reduce the accuracy of an educational assistant.</p>
+<p>That is a data-quality problem and potentially a poisoning incident if the manipulation was deliberate. It does not automatically create trigger-dependent behaviour.</p>
+<p>Likewise, a developer may download an already compromised model without ever receiving or inspecting the original poisoned training dataset.</p>
+<p>This demonstrates why model integrity and dataset integrity need separate security controls.</p>
+<h2>4. How These Threats Affect the AI Development Lifecycle</h2>
+<p>AI security problems can enter at several stages of development.</p>
+<p>Protecting only the final model is insufficient because vulnerabilities may originate much earlier.</p>
+<h3>4.1 Data collection</h3>
+<p>Training data may come from websites, public repositories, research collections, commercial providers and user contributions.</p>
+<p>Potential problems include unreliable sources, manipulated records, missing metadata and unauthorised modifications.</p>
+<p><strong>Defensive consideration:</strong> Maintain source information and establish verification requirements before accepting external datasets.</p>
+<h3>4.2 Dataset preparation</h3>
+<p>Raw data is cleaned, filtered, transformed, labelled and converted into a format suitable for training.</p>
+<p>Incorrect transformations, faulty labels and compromised annotation processes can introduce problems.</p>
+<p><strong>Defensive consideration:</strong> Maintain dataset versions, review annotation quality and document preprocessing procedures.</p>
+<h3>4.3 Pretraining</h3>
+<p>During pretraining, models learn general representations and patterns from large collections of data.</p>
+<p>Unreliable information can influence the model's learned behaviour.</p>
+<p><strong>Defensive consideration:</strong> Establish dataset governance, maintain source records and use independent evaluation material.</p>
+<h3>4.4 Supervised fine-tuning</h3>
+<p>Supervised fine-tuning adapts a pretrained model using instruction-and-response examples.</p>
+<p>A contaminated dataset may introduce incorrect responses or unwanted behavioural associations.</p>
+<p><strong>Defensive consideration:</strong> Review fine-tuning examples, preserve the original checkpoint and compare model behaviour before and after training.</p>
+<h3>4.5 Reinforcement learning</h3>
+<p>Reinforcement learning and preference-based optimisation can influence model behaviour through rewards, rankings or feedback.</p>
+<p>If feedback is manipulated or systematically unreliable, the optimisation process may encourage undesirable behaviour.</p>
+<p>This includes risks involving reward-model quality, human annotation and automated feedback systems.</p>
+<p><strong>Defensive consideration:</strong> Verify feedback sources, document reward criteria and independently evaluate the resulting model.</p>
+<h3>4.6 Model conversion and distribution</h3>
+<p>Models may be converted into different formats for deployment.</p>
+<p>Developers might use checkpoint conversion, quantisation or other transformations.</p>
+<p>Third-party repositories and distribution infrastructure introduce additional trust requirements.</p>
+<p>Model files should be checked for unexpected modifications, and conversion procedures should be documented.</p>
+<p><strong>Defensive consideration:</strong> Verify file integrity, preserve trusted original checkpoints and record conversion details.</p>
+<h3>4.7 Deployment</h3>
+<p>A model that passed development testing may encounter different inputs in production.</p>
+<p>Unexpected input patterns, retrieval content and application integrations can introduce additional risks.</p>
+<p><strong>Defensive consideration:</strong> Monitor behaviour, maintain application-level access controls and establish an incident-response process.</p>
+<h3>4.8 Updates and maintenance</h3>
+<p>AI applications frequently receive new datasets, model versions, dependencies and configuration changes.</p>
+<p>A previously trusted system can become unreliable after an update.</p>
+<p><strong>Defensive consideration:</strong> Treat every significant model or dataset update as a new security review event.</p>
+<h2>5. Detection and Investigation</h2>
+<p>Detecting model backdoors and data poisoning is challenging because neither problem necessarily produces obvious signs.</p>
+<p>A reliable investigation requires several complementary techniques.</p>
+<p>No single method can guarantee that a model is completely free from hidden vulnerabilities.</p>
+<h3>5.1 Dataset auditing</h3>
+<p>Dataset auditing examines training examples for quality problems, inconsistencies, unusual patterns and suspicious records.</p>
+<p>For example, a developer can inspect whether particular labels are disproportionately associated with unusual examples.</p>
+<p>Tools such as Cleanlab help identify potentially incorrect labels, outliers, ambiguous examples and duplicate records.</p>
+<p>However, unusual data is not automatically malicious.</p>
+<p>Legitimate datasets can naturally contain rare examples and unusual distributions.</p>
+<p>Automated detection should therefore support human review rather than replace it.</p>
+<h3>5.2 Data provenance and source verification</h3>
+<p>Provenance records where data originated and how it changed during processing.</p>
+<p>A useful dataset record should include:</p>
+<ul><li>Original source.</li><li>Collection date.</li><li>Dataset version.</li><li>Licence and usage information.</li><li>Processing history.</li><li>Annotation methodology.</li><li>Integrity information.</li></ul>
+<p>This makes it easier to investigate unexpected model behaviour and identify potentially compromised sources.</p>
+<p>Provenance cannot establish that every original statement is true, but it provides accountability and traceability.</p>
+<h3>5.3 Duplicate and anomaly detection</h3>
+<p>Duplicate detection identifies repeated or near-identical examples.</p>
+<p>Anomaly detection identifies examples that differ significantly from the expected dataset distribution.</p>
+<p>These techniques can reveal accidental duplication, unusual data clusters and certain forms of manipulation.</p>
+<p>However, a sophisticated poisoned example may look statistically normal.</p>
+<p>Conversely, a legitimate but rare example may be incorrectly flagged.</p>
+<p>Therefore, anomaly detection should not be treated as proof of malicious activity.</p>
+<h3>5.4 Label-quality checks</h3>
+<p>Incorrect labels can significantly influence supervised training.</p>
+<p>Label auditing compares examples, labels and model predictions to identify potentially inconsistent annotations.</p>
+<p>For text datasets, this can involve reviewing whether an answer actually addresses the associated question.</p>
+<p>For classification datasets, it can involve checking whether the assigned category matches the example.</p>
+<p>Human review remains important because automated systems can also misunderstand ambiguous examples.</p>
+<h3>5.5 Independent evaluation datasets</h3>
+<p>One important defensive practice is maintaining an evaluation dataset that is separate from the training dataset.</p>
+<p>The evaluation material should be controlled independently and should represent the actual tasks the model is expected to perform.</p>
+<p>For security-sensitive systems, evaluation should include:</p>
+<ul><li>Ordinary inputs.</li><li>Unusual but legitimate inputs.</li><li>Ambiguous inputs.</li><li>Adversarially constructed test cases.</li><li>Inputs covering important application-specific edge cases.</li></ul>
+<p>A model should be evaluated before and after fine-tuning.</p>
+<p>This makes it easier to identify unexpected behavioural changes.</p>
+<h3>5.6 Behavioural testing</h3>
+<p>Behavioural testing examines how a model responds to different input conditions.</p>
+<p>For example, a developer can compare responses to semantically equivalent questions expressed in different ways.</p>
+<p>If the model produces a highly unusual response under one specific condition, investigators can examine whether that behaviour is reproducible.</p>
+<p>Repeated observations provide useful evidence, but they do not automatically establish a backdoor.</p>
+<p>Language models are probabilistic systems, and ordinary variations in output are expected.</p>
+<h3>5.7 Comparing models before and after fine-tuning</h3>
+<p>Developers should preserve an original model checkpoint.</p>
+<p>They can then compare the original and fine-tuned versions using the same evaluation dataset.</p>
+<p>Important measurements include:</p>
+<ul><li>Task accuracy.</li><li>Response consistency.</li><li>Instruction-following behaviour.</li><li>Factual reliability.</li><li>Unexpected output patterns.</li><li>Performance on security-focused test cases.</li></ul>
+<p>This comparison helps identify behavioural changes introduced during fine-tuning.</p>
+<p>It cannot independently establish the integrity of the original model.</p>
+<h3>5.8 Model-weight integrity verification</h3>
+<p>Model-weight integrity verification checks whether files have changed unexpectedly.</p>
+<p>Cryptographic hashes such as SHA-256 can help establish whether a downloaded file matches a previously recorded version.</p>
+<p>For example:</p>
+<pre><code>sha256sum model.safetensors</code></pre>
+<p>The resulting hash can be compared against a trusted, independently obtained reference.</p>
+<p>An important limitation must be understood: a matching hash proves that a file matches the reference hash. It does not prove that the original model was trustworthy.</p>
+<p>A malicious or compromised model can have a perfectly valid hash.</p>
+<h3>5.9 Production monitoring</h3>
+<p>After deployment, developers should monitor model outputs and relevant system behaviour.</p>
+<p>Monitoring can help identify:</p>
+<ul><li>Sudden changes in response patterns.</li><li>Unexpected increases in incorrect answers.</li><li>Repeated unusual output behaviour.</li><li>Changes following model updates.</li><li>Problems associated with particular input categories.</li></ul>
+<p>Monitoring should also respect user privacy and applicable data-protection requirements.</p>
+<p>A production monitoring system cannot identify every hidden vulnerability, but it provides an additional opportunity to investigate unexpected behaviour.</p>
+<h2>6. Prevention and Security Best Practices</h2>
+<p>Preventing model backdoors and data poisoning requires a security process that covers the entire AI development pipeline.</p>
+<h3>Use trusted training datasets</h3>
+<p>Obtain datasets from sources with documented origins, maintenance practices and appropriate usage permissions.</p>
+<p>Do not assume that a dataset is trustworthy simply because it is popular or publicly available.</p>
+<h3>Maintain dataset provenance</h3>
+<p>Keep records of the origin, version and processing history of every important dataset.</p>
+<p>This is particularly useful when combining multiple external datasets.</p>
+<h3>Verify model downloads</h3>
+<p>Use trusted model repositories and verify downloaded files against independently obtained checksums or other authenticity information when available.</p>
+<p>For Git-based repositories, review the source repository and relevant release information.</p>
+<h3>Review third-party model checkpoints</h3>
+<p>A pretrained model should be treated as an external software dependency.</p>
+<p>Review its model card, repository history, configuration files, supported architecture and available provenance information.</p>
+<h3>Maintain independent evaluation datasets</h3>
+<p>Do not evaluate a model exclusively on examples used during training.</p>
+<p>Independent evaluation helps identify overfitting, data leakage and certain unexpected behavioural changes.</p>
+<h3>Record training configurations</h3>
+<p>Maintain records of:</p>
+<ul><li>Base model and revision.</li><li>Dataset versions.</li><li>Training software.</li><li>Hyperparameters.</li><li>Random seeds.</li><li>Training duration.</li><li>Model checkpoints.</li><li>Evaluation results.</li></ul>
+<p>These records improve reproducibility and make investigations easier.</p>
+<h3>Preserve original checkpoints</h3>
+<p>Always retain an unchanged copy of the original model before fine-tuning.</p>
+<p>This makes it possible to compare the original and modified models and investigate when unexpected behaviour appeared.</p>
+<h3>Audit software dependencies</h3>
+<p>AI development involves multiple software packages, libraries, model loaders and conversion tools.</p>
+<p>A compromised dependency can undermine the security of an otherwise trustworthy model.</p>
+<p>Use maintained packages, review dependency changes and maintain a software inventory.</p>
+<h3>Restrict unnecessary network access</h3>
+<p>Training and inference environments should have only the network access they actually require.</p>
+<p>Separate model development from production infrastructure where practical.</p>
+<p>Avoid granting unnecessary permissions to model-loading and training environments.</p>
+<h3>Monitor model outputs</h3>
+<p>Establish an evaluation and monitoring process that checks for unexpected behavioural changes.</p>
+<p>Do not rely exclusively on benchmark performance.</p>
+<h3>Review third-party contributions</h3>
+<p>External datasets, training scripts, model adapters and configuration changes should undergo appropriate review before being accepted into production.</p>
+<h3>Establish an AI model security review process</h3>
+<p>Organisations should define clear security responsibilities throughout the model lifecycle.</p>
+<p>A security review should cover the model, dataset, training configuration, dependencies, deployment environment and update procedures.</p>
+<p>The <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI Risk Management Framework</a> provides a useful foundation for organising AI risk-management activities.</p>
+<h3>6.1 Securing an open-weight model before fine-tuning</h3>
+<p>Open-weight models provide developers with access to pretrained parameters, making customisation and local deployment possible.</p>
+<p>However, access to model weights does not automatically establish that a model is secure.</p>
+<p>Before fine-tuning an externally obtained model, developers should establish a verification process.</p>
+<p><strong>Step 1: Verify the repository</strong></p>
+<p>Identify the official repository and confirm that the model name, publisher and repository information are consistent.</p>
+<p>Avoid downloading important model files from unknown mirrors.</p>
+<p><strong>Step 2: Inspect model documentation</strong></p>
+<p>Read the model card and review the intended use, architecture, training information, known limitations and supported configurations.</p>
+<p><strong>Step 3: Verify the files</strong></p>
+<p>Record cryptographic hashes for the downloaded files.</p>
+<p>Use trusted reference hashes where available.</p>
+<p><strong>Step 4: Review the loading process</strong></p>
+<p>Inspect the model-loading dependencies and avoid executing untrusted repository code without understanding its purpose.</p>
+<p>Prefer standard, documented model formats and safe loading procedures.</p>
+<p><strong>Step 5: Evaluate the original model</strong></p>
+<p>Run an independent baseline evaluation before changing any weights.</p>
+<p>Record representative responses and relevant performance measurements.</p>
+<p><strong>Step 6: Audit the fine-tuning dataset</strong></p>
+<p>Check for incorrect answers, duplicated examples, unreliable sources and inconsistent formatting.</p>
+<p>Maintain a record of all dataset transformations.</p>
+<p><strong>Step 7: Preserve the original checkpoint</strong></p>
+<p>Keep the original model unchanged and store the fine-tuned version separately.</p>
+<p><strong>Step 8: Compare the results</strong></p>
+<p>Evaluate both versions using the same independent tests.</p>
+<p>Investigate unexpected changes rather than assuming that fine-tuning improved every aspect of the model.</p>
+<p><strong>Step 9: Secure deployment</strong></p>
+<p>Use appropriate access controls, dependency management, monitoring and update procedures.</p>
+<p>This approach reduces avoidable supply-chain risks, although it cannot guarantee that every hidden vulnerability will be detected.</p>
+<h2>7. Practical Case Study: Fine-Tuning an Open-Weight Model</h2>
+<p>Consider a hypothetical developer building a custom educational AI assistant using Qwen2.5-0.5B-Instruct.</p>
+<p>The purpose is to answer educational questions, explain scientific concepts and summarise learning material.</p>
+<p>The following example demonstrates a defensive development workflow.</p>
+<p>It is not an allegation that the named model contains a backdoor or has experienced a confirmed data-poisoning incident.</p>
+<h3>Step 1: Obtain the original model</h3>
+<p>The developer begins with the official model repository:</p>
+<p><a href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct" target="_blank" rel="noopener">Qwen2.5-0.5B-Instruct — Official Hugging Face Repository</a>.</p>
+<p>The repository provides model information, configuration files and downloadable model weights.</p>
+<p>The developer checks that the repository is the expected publisher's repository and records the model revision used.</p>
+<h3>Step 2: Check model files and integrity</h3>
+<p>The downloaded files are inspected.</p>
+<p>The developer records their names, sizes and SHA-256 hashes.</p>
+<p>Where trusted reference hashes are available, the recorded values are compared.</p>
+<p>The developer also reviews the model configuration and loading dependencies.</p>
+<p>This establishes a baseline for future integrity checks.</p>
+<h3>Step 3: Audit the fine-tuning dataset</h3>
+<p>The educational assistant requires question-and-answer examples.</p>
+<p>The developer collects material from suitable educational sources and prepares a structured dataset.</p>
+<p>Each example is reviewed for:</p>
+<ul><li>Scientific correctness.</li><li>Relevant answers.</li><li>Consistent formatting.</li><li>Duplicate content.</li><li>Unreliable source material.</li><li>Inappropriate or unnecessary information.</li></ul>
+<p>A dataset-quality tool can help identify suspicious records, but important scientific claims should still receive appropriate human review.</p>
+<h3>Step 4: Maintain an independent evaluation dataset</h3>
+<p>The developer creates a separate evaluation dataset that is not included in training.</p>
+<p>It contains questions covering biology, chemistry, physics and general educational knowledge.</p>
+<p>The evaluation set also includes questions that test consistency, ambiguity handling and factual reliability.</p>
+<p>This dataset remains unchanged throughout training.</p>
+<h3>Step 5: Compare original and fine-tuned behaviour</h3>
+<p>Before fine-tuning, the original model is evaluated.</p>
+<p>After fine-tuning, the same evaluation is repeated.</p>
+<p>The developer compares:</p>
+<p>| Evaluation area | Original model | Fine-tuned model | |---|---|---| | Educational question answering | Baseline measurement | Compared with baseline | | Scientific accuracy | Baseline measurement | Compared with baseline | | Summarisation quality | Baseline measurement | Compared with baseline | | Instruction following | Baseline measurement | Compared with baseline | | Response consistency | Baseline measurement | Compared with baseline | | Unusual input behaviour | Baseline testing | Compared with baseline |</p>
+<p>The purpose is to identify improvements and unexpected regressions.</p>
+<p>A higher score in one category should not automatically be interpreted as an overall security improvement.</p>
+<h3>Step 6: Record training configurations and checkpoints</h3>
+<p>The developer preserves:</p>
+<ul><li>Original model revision.</li><li>Dataset version.</li><li>Training configuration.</li><li>Fine-tuning method.</li><li>Software dependencies.</li><li>Evaluation results.</li><li>Original checkpoint.</li><li>Fine-tuned checkpoint.</li></ul>
+<p>If the model uses QLoRA, the adapter configuration and adapter weights are also preserved.</p>
+<p>This helps establish which changes occurred during the training process.</p>
+<h3>Step 7: Monitor the deployed assistant</h3>
+<p>After deployment, the developer continues evaluating the model.</p>
+<p>Unexpected response patterns are investigated, especially when they appear following an update or configuration change.</p>
+<p>New model versions are not automatically trusted simply because they originate from the same repository.</p>
+<p>Each important update receives a fresh integrity and behavioural review.</p>
+<h3>Lessons from the case study</h3>
+<p>The most important lesson is that fine-tuning should be treated as a controlled software-development process rather than simply running a training script.</p>
+<p>A trustworthy development process requires:</p>
+<ol><li>A verified starting model.</li><li>Reviewed training data.</li><li>Independent evaluation.</li><li>Reproducible training records.</li><li>Model integrity checks.</li><li>Continuous monitoring.</li></ol>
+<p>These practices are useful whether the model runs locally, in a cloud environment or as part of a larger AI application.</p>
+<h2>8. Tools and Research Resources for AI Security</h2>
+<p>Several research and development tools can help investigate dataset quality, model behaviour and application-level security.</p>
+<p>They address different problems and should not be treated as interchangeable solutions.</p>
+<h3>8.1 Cleanlab</h3>
+<p><strong>Official documentation:</strong> https://docs.cleanlab.ai/</p>
+<p><strong>GitHub:</strong> https://github.com/cleanlab/cleanlab</p>
+<p>Cleanlab is an open-source toolkit for identifying problems in machine-learning datasets.</p>
+<p>It helps detect potentially incorrect labels, ambiguous examples, outliers and duplicate records.</p>
+<p>For developers preparing fine-tuning datasets, it can provide useful information about data quality before training begins.</p>
+<p>Its capabilities are particularly relevant when working with labelled datasets.</p>
+<p><strong>Limitations:</strong> Cleanlab does not establish whether a model contains a backdoor. Identifying unusual examples also does not prove malicious manipulation. Its findings require interpretation and appropriate review.</p>
+<h3>8.2 BackdoorBench</h3>
+<p><strong>Official project:</strong> https://backdoorbench.github.io/</p>
+<p><strong>GitHub:</strong> https://github.com/SCLBD/BackdoorBench</p>
+<p>BackdoorBench is a research benchmark designed to support the study and evaluation of backdoor learning methods and defences.</p>
+<p>It provides implementations and evaluation infrastructure for studying different backdoor-learning approaches.</p>
+<p>Researchers can use it to compare defensive techniques under controlled experimental conditions.</p>
+<p>It is particularly useful for academic investigations into model backdoors.</p>
+<p><strong>Limitations:</strong> It is a research benchmark, not a universal security scanner for every production language model. Results from supported benchmark settings cannot automatically be generalised to all architectures and applications.</p>
+<h3>8.3 NVIDIA NeMo Guardrails</h3>
+<p><strong>Official documentation:</strong> https://docs.nvidia.com/nemo/guardrails/</p>
+<p><strong>GitHub:</strong> https://github.com/NVIDIA/NeMo-Guardrails</p>
+<p>NeMo Guardrails is an open-source toolkit for adding programmable controls to language-model applications and agentic systems.</p>
+<p>It supports controls involving conversational inputs, outputs, agent tool calls and retrieved information.</p>
+<p>For example, an application can define which tools an AI agent is permitted to use and apply checks to certain types of interactions.</p>
+<p>These controls are useful for reducing application-level risks.</p>
+<p><strong>Limitations:</strong> Guardrails do not establish that the underlying model weights are free from backdoors. Application-level restrictions cannot replace dataset verification or model-integrity checks.</p>
+<h3>8.4 Garak</h3>
+<p><strong>Official documentation:</strong> https://docs.garak.ai/</p>
+<p><strong>GitHub:</strong> https://github.com/NVIDIA/garak</p>
+<p>Garak is an open-source LLM vulnerability scanner.</p>
+<p>It tests language models and LLM-based applications using different probes and detectors.</p>
+<p>Its assessments cover areas such as prompt injection, information leakage, hallucination, misinformation and other unwanted behaviours.</p>
+<p>Developers can use it as part of an AI security testing programme.</p>
+<p><strong>Limitations:</strong> Garak is not a universal model-backdoor detector. Its findings depend on available probes, detectors, model interfaces and testing coverage. A clean scan does not prove that a model is completely secure.</p>
+<h3>8.5 Additional research resources</h3>
+<p>The following resources are useful for understanding AI security from a broader perspective.</p>
+<p><strong>NIST AI Risk Management Framework</strong></p>
+<p>https://www.nist.gov/itl/ai-risk-management-framework</p>
+<p>Provides a framework for identifying, assessing and managing AI-related risks across development and deployment.</p>
+<p><strong>MITRE ATLAS</strong></p>
+<p>https://atlas.mitre.org/</p>
+<p>A knowledge base describing adversarial threats and techniques involving AI-enabled systems.</p>
+<p>It includes entries concerning training-data poisoning, AI supply-chain compromise and other AI-related threats.</p>
+<p><strong>OWASP Top 10 for LLM Applications</strong></p>
+<p>https://owasp.org/projects/top-10-for-large-language-model-applications/</p>
+<p>Provides security guidance for common risks affecting language-model applications, including training-data poisoning and supply-chain vulnerabilities.</p>
+<p><strong>Dataset Security for Machine Learning: Data Poisoning, Backdoor Attacks, and Defenses</strong></p>
+<p>https://doi.org/10.1109/TPAMI.2022.3162397</p>
+<p>A research paper examining dataset vulnerabilities, poisoning threats and defensive approaches.</p>
+<h2>9. Important Misconceptions About AI Security</h2>
+<p>Several common assumptions can create a false sense of security.</p>
+<h3>Misconception 1: Open-source models are automatically safe</h3>
+<p>Open-weight models provide access to model parameters, but this does not establish the integrity of the training process.</p>
+<p>A publicly available model may still have incomplete provenance information or unknown training-data limitations.</p>
+<p>Developers must evaluate models independently.</p>
+<h3>Misconception 2: Large datasets cannot be poisoned</h3>
+<p>Dataset size does not guarantee dataset integrity.</p>
+<p>A large dataset may contain unreliable sources, duplicated examples, incorrect labels or manipulated information.</p>
+<p>Scale can make auditing more difficult rather than eliminating the problem.</p>
+<h3>Misconception 3: High benchmark scores prove that a model has no backdoor</h3>
+<p>Benchmark scores measure performance under selected evaluation conditions.</p>
+<p>They do not establish that every possible input condition has been examined.</p>
+<p>A model can perform well on ordinary tests while retaining hidden conditional behaviour.</p>
+<h3>Misconception 4: Fine-tuning always removes unwanted behaviour</h3>
+<p>Fine-tuning changes model parameters, but it does not guarantee that every unwanted association will disappear.</p>
+<p>Some behaviours may persist, while others may be modified or introduced.</p>
+<p>The outcome depends on the training procedure and model characteristics.</p>
+<h3>Misconception 5: Every unusual response is evidence of a backdoor</h3>
+<p>Language models can produce unexpected answers for many ordinary reasons.</p>
+<p>Ambiguous questions, hallucinations, sampling variation and insufficient context can all influence outputs.</p>
+<p>A backdoor investigation requires reproducible evidence of suspicious conditional behaviour, not simply one incorrect answer.</p>
+<h3>Misconception 6: Data poisoning and model backdoors are identical</h3>
+<p>Data poisoning concerns manipulated training information.</p>
+<p>A model backdoor concerns hidden conditional behaviour in a model.</p>
+<p>Poisoning can introduce a backdoor, but it can also produce other forms of model degradation or manipulation.</p>
+<h3>Misconception 7: Local AI models are automatically secure</h3>
+<p>Running a model locally can provide greater control over where data is processed.</p>
+<p>However, local deployment does not automatically establish the integrity of the model files, training data, software dependencies or operating environment.</p>
+<p>A compromised model remains potentially compromised even when it runs without an internet connection.</p>
+<h2>10. The Future of AI Supply-Chain Security</h2>
+<p>AI development increasingly depends on interconnected resources.</p>
+<p>Developers use externally maintained models, datasets, software packages, training frameworks and evaluation tools.</p>
+<p>This creates a complex supply chain in which trust must be established at multiple stages.</p>
+<p>Several areas deserve particular attention.</p>
+<h3>Open-weight model distribution</h3>
+<p>Open-weight models make AI development more accessible.</p>
+<p>However, developers need reliable ways to establish model identity, revision history, file integrity and provenance.</p>
+<p>The ability to download model weights should not be confused with independent verification of the model's development history.</p>
+<h3>Third-party datasets</h3>
+<p>External datasets are essential to many machine-learning projects.</p>
+<p>Future dataset-security practices will need to emphasise source verification, version management, documentation and independent quality assessment.</p>
+<h3>Model repositories</h3>
+<p>Model repositories are increasingly important parts of the AI ecosystem.</p>
+<p>They need strong controls around publishing, maintaining and updating model artifacts.</p>
+<p>Developers should be able to distinguish official releases from unofficial copies and understand the provenance of the files they download.</p>
+<h3>Synthetic training data</h3>
+<p>As synthetic data becomes more widely used, its quality and origin will become increasingly important.</p>
+<p>Developers need ways to evaluate whether generated material is accurate, diverse and appropriate for its intended training objective.</p>
+<h3>Automated data collection</h3>
+<p>Automated collection systems can gather enormous amounts of information.</p>
+<p>However, automation does not guarantee that collected material is trustworthy.</p>
+<p>Future AI development practices will need stronger controls over source selection, data filtering and content verification.</p>
+<h3>AI model provenance</h3>
+<p>Model provenance concerns the history and origin of a model, including its training data, development process and modifications.</p>
+<p>Improved provenance can help organisations understand where a model came from and what changes occurred before deployment.</p>
+<p>It cannot independently prove that a model is free from vulnerabilities, but it makes security investigations more accountable.</p>
+<h3>Reproducible training</h3>
+<p>Reproducible training allows developers and researchers to document the conditions under which a model was produced.</p>
+<p>This includes training datasets, configurations, dependencies and evaluation results.</p>
+<p>Reproducibility helps investigators distinguish expected training behaviour from unexplained changes.</p>
+<h3>Independent security audits</h3>
+<p>Independent audits can provide an additional layer of confidence.</p>
+<p>An audit may examine datasets, model files, training procedures, software dependencies and deployment controls.</p>
+<p>However, even a well-conducted audit has a defined scope. It cannot guarantee the absence of every unknown vulnerability.</p>
+<p>The broader direction is clear: AI security needs to become a standard part of model development rather than an activity performed only after deployment.</p>
+<h2>11. Conclusion</h2>
+<p>Artificial intelligence security is not simply a question of whether a model produces accurate answers.</p>
+<p>A model can achieve strong benchmark results and still contain hidden behavioural vulnerabilities. Similarly, a model can be built using a sophisticated architecture but learn unreliable information from manipulated or poorly reviewed training data.</p>
+<p>Model backdoors and data poisoning demonstrate two different weaknesses in the AI development process.</p>
+<p>Data poisoning threatens the integrity of the information used to train models. Model backdoors threaten the integrity of the resulting model's behaviour.</p>
+<p>Their relationship highlights why AI security must extend beyond the final application.</p>
+<p>Developers need to understand the origin of their datasets, verify the models they download, preserve original checkpoints, audit dependencies and evaluate behavioural changes throughout training and deployment.</p>
+<p>Open-weight models provide valuable opportunities for researchers, students and developers, but responsible use requires an understanding of the associated supply-chain risks.</p>
+<p>Tools such as Cleanlab, BackdoorBench, Garak and NVIDIA NeMo Guardrails can contribute to a broader defensive strategy. None should be considered a complete solution on its own.</p>
+<p>Ultimately, trustworthy AI depends on the integrity of the entire development process.</p>
+<p><strong>The most important lesson is this: Do not trust an AI model simply because it works correctly. Understand what it learned, verify where it came from, examine how it changes, and continue testing how it behaves.</strong></p>
+<hr>
+<h2>References and Further Reading</h2>
+<p>The following publications and official resources provide the technical foundation for this article.</p>
+<h3>Academic research</h3>
+<ol><li><strong>BadNets: Identifying Vulnerabilities in the Machine Learning Model Supply Chain (2017)</strong></li></ol>
+<p>   Tianyu Gu, Brendan Dolan-Gavitt and Siddharth Garg.</p>
+<p>   https://arxiv.org/abs/1708.06733</p>
+<ol><li><strong>Threats to Training: A Survey of Poisoning Attacks and Defenses on Machine Learning Systems (2022)</strong></li></ol>
+<p>   Zhibo Wang et al.</p>
+<p>   https://doi.org/10.1145/3538707</p>
+<ol><li><strong>Dataset Security for Machine Learning: Data Poisoning, Backdoor Attacks, and Defenses (2023)</strong></li></ol>
+<p>   Micah Goldblum et al.</p>
+<p>   https://doi.org/10.1109/TPAMI.2022.3162397</p>
+<ol><li><strong>Backdoor Learning: A Survey (2024)</strong></li></ol>
+<p>   Yiming Li, Yong Jiang, Zhifeng Li and Shu-Tao Xia.</p>
+<p>   https://doi.org/10.1109/TNNLS.2022.3182979</p>
+<h3>Official security frameworks</h3>
+<ol><li><strong>NIST AI Risk Management Framework</strong></li></ol>
+<p>   https://www.nist.gov/itl/ai-risk-management-framework</p>
+<ol><li><strong>MITRE ATLAS</strong></li></ol>
+<p>   https://atlas.mitre.org/</p>
+<ol><li><strong>OWASP Top 10 for LLM Applications</strong></li></ol>
+<p>   https://owasp.org/projects/top-10-for-large-language-model-applications/</p>
+<h3>Tools and documentation</h3>
+<ol><li><strong>Cleanlab</strong></li></ol>
+<p>   https://github.com/cleanlab/cleanlab</p>
+<ol><li><strong>BackdoorBench</strong></li></ol>
+<p>   https://github.com/SCLBD/BackdoorBench</p>
+<ol><li><strong>NVIDIA NeMo Guardrails</strong></li></ol>
+<p>    https://github.com/NVIDIA/NeMo-Guardrails</p>
+<ol><li><strong>Garak</strong></li></ol>
+<p>    https://github.com/NVIDIA/garak</p>
+<h3>Model documentation</h3>
+<ol><li><strong>Qwen2.5-0.5B-Instruct — Official Model Repository</strong></li></ol>
+<p>    https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct</p>
+<hr>
+<p><em>Editorial note: The hypothetical examples in this article are educational illustrations. They should not be interpreted as reports of confirmed attacks against the named model or any specific organisation. Research findings and defensive capabilities should be interpreted within the experimental conditions and documented limitations of their respective sources.</em></p>
+</article>
+
+<footer>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year"></span> Ajit Singh Rathore | ASRBMY</span>
+    <span><a href="../index.html">← All write-ups</a></span>
+  </div>
+</footer>
+
+<script src="../../assets/blog.js"></script>
+</body>
+</html>
