@@ -165,7 +165,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
 <meta name="description" content="${esc(desc)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${esc(pageUrl)}">
 <meta property="og:type" content="article">
@@ -180,12 +180,12 @@
 <meta name="twitter:image" content="https://asrbmy.github.io/og-image.png">
 <script type="application/ld+json">${ld}${closeScript}
 <meta name="theme-color" content="#0B1220">
-<link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
+<link rel="icon" href="/favicon-64.png?v=3" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon.ico?v=3" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/jetbrains-mono-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/blog.css">
 </head>
 <body>
@@ -193,7 +193,7 @@
 
 <header>
   <div class="nav-inner">
-    <a href="../../index.html" class="brand"><img class="brand-logo" src="/favicon-64.png?v=3" alt="" width="28" height="28"> ASRBMY</a>
+    <a href="../../index.html" class="brand"><img class="brand-logo" src="/assets/img/logo.webp?v=3" alt="" width="28" height="28"> ASRBMY</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <ul id="navList">

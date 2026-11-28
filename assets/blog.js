@@ -1,7 +1,9 @@
 // Shared behaviour for blog pages: mobile nav, theme toggle, footer year,
 // and (on the index page only) rendering post cards + tag filters from posts.js
 
-document.addEventListener('DOMContentLoaded', () => {
+// Runs immediately: this script sits at the end of <body>, so the elements already exist.
+// Rendering now (instead of waiting for DOMContentLoaded) avoids a layout jump on the listing page.
+(() => {
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
   const navList = document.getElementById('navList');
@@ -22,8 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeIcon = document.getElementById('themeIcon');
   const themeLabel = document.getElementById('themeLabel');
 
+
+  // Header logo + browser-tab icon follow the theme (white logo with blue lines in Light mode)
+  function syncBrandIcons(theme) {
+    var icon = theme === 'light' ? '/favicon-light-64.png?v=3' : '/favicon-64.png?v=3';
+    var logo = theme === 'light' ? '/assets/img/logo-light.webp?v=3' : '/assets/img/logo.webp?v=3';
+    document.querySelectorAll('.brand-logo').forEach(function (i) { i.setAttribute('src', logo); });
+    document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach(function (l) { l.parentNode.removeChild(l); });
+    var link = document.createElement('link');
+    link.rel = 'icon'; link.type = 'image/png'; link.href = icon;
+    document.head.appendChild(link);
+  }
+
   function applyTheme(theme) {
     root.setAttribute('data-theme', theme);
+    syncBrandIcons(theme);
     if (themeIcon) themeIcon.textContent = theme === 'light' ? '☀️' : '🌙';
     if (themeLabel) themeLabel.textContent = theme === 'light' ? 'Light' : 'Dark';
   }
@@ -158,4 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })();
   }
-});
+})();
+
+// Repeat-visit caching (see /sw.js). Skipped on admin/tools pages.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/^\/(admin|tools)\//.test(location.pathname)) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+}
