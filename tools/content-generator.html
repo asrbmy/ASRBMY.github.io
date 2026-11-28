@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Content Generator — ASRBMY Site Tool</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at https://api.github.com; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data: blob:; media-src 'self' https: blob:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; connect-src 'self' https://gc.zgo.at https://api.github.com; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0B1220">
 <link rel="icon" href="/favicon-64.png?v=3" type="image/png" sizes="64x64">
@@ -118,6 +118,20 @@
   .project-links a{font-size:13px; font-weight:600; color:var(--cyan); text-decoration:none;}
 
   .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+  /* ===== Media insert dialog + attachments ===== */
+  dialog#insertDialog{background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:22px; width:min(520px,92vw); box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  dialog#insertDialog::backdrop{background:rgba(3,8,16,.65);}
+  #insertDialog h2{font-size:18px; margin:0 0 14px;}
+  #insertDialog .form-field{margin-bottom:14px;}
+  #insertDialog .or{font-size:12px; color:var(--muted); margin:-6px 0 10px; font-family:'JetBrains Mono',monospace;}
+  #insertDialog .thumb{max-width:100%; max-height:140px; border-radius:8px; border:1px solid var(--line); margin-top:8px; display:block;}
+  .dlg-error{color:#ff8a8a; font-size:13px; min-height:18px;}
+  .attach-box{margin-top:12px; border:1px dashed var(--line); border-radius:10px; padding:12px 14px; background:var(--panel-2);}
+  .attach-title{font-size:12px; color:var(--muted); margin-bottom:8px;}
+  .attach-box ul{list-style:none; margin:0 0 10px; padding:0; display:grid; gap:6px;}
+  .attach-box li{display:flex; justify-content:space-between; gap:10px; align-items:center; font-size:13px; word-break:break-all;}
+  .attach-box li button{border:0; background:none; color:#ff8a8a; cursor:pointer; font-size:16px; min-width:32px; min-height:32px;}
   /* ===== Advanced post editor ===== */
   .seg{display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--panel-2);}
   .seg button{border:0; background:none; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; padding:8px 14px; cursor:pointer; min-height:36px;}
@@ -276,16 +290,25 @@
               <button type="button" class="tool-btn" data-act="ol" title="Numbered list">1. List</button>
               <button type="button" class="tool-btn" data-act="quote" title="Quote">“ ”</button>
               <button type="button" class="tool-btn" data-act="link" title="Link (Ctrl+K)">Link</button>
-              <button type="button" class="tool-btn" data-act="image" title="Image">Image</button>
+              <button type="button" class="tool-btn" data-act="image" title="Insert image">🖼 Image</button>
+              <button type="button" class="tool-btn" data-act="video" title="Insert video (YouTube, Vimeo or file)">🎬 Video</button>
+              <button type="button" class="tool-btn" data-act="audio" title="Insert audio">🎵 Audio</button>
+              <button type="button" class="tool-btn" data-act="button" title="Insert a button">🔘 Button</button>
+              <button type="button" class="tool-btn" data-act="file" title="Insert a download file">📎 File</button>
             </div>
             <textarea id="p-body" style="min-height:280px;" spellcheck="true"></textarea>
             <div class="sub-hint" id="bodyHint"></div>
+            <div class="attach-box" id="attachBox" hidden>
+              <div class="attach-title">Files to upload to <code>/assets/uploads/</code></div>
+              <ul id="attachList"></ul>
+              <button type="button" class="mini-btn" id="btnDlAttach">⬇ Download these files</button>
+            </div>
           </div>
 
           <div class="btn-row">
             <button class="btn btn-primary" id="btnDlPost" type="button">⬇ Post HTML</button>
             <button class="btn btn-ghost" id="btnDlPostsJs" type="button">⬇ Updated posts.js</button>
-            <button class="btn btn-primary" id="btnDlAll" type="button">⬇ Everything (5 files)</button>
+            <button class="btn btn-primary" id="btnDlAll" type="button">⬇ Everything (incl. media)</button>
           </div>
           <div class="btn-row" style="margin-top:10px;">
             <button class="btn btn-ghost" id="btnDlSitemap" type="button">sitemap.xml</button>
@@ -428,6 +451,18 @@
   </div>
 </footer>
 
+
+<dialog id="insertDialog" aria-labelledby="dlgTitle">
+  <form method="dialog" id="dlgForm">
+    <h2 id="dlgTitle">Insert</h2>
+    <div id="dlgFields"></div>
+    <div class="dlg-error" id="dlgError" role="alert"></div>
+    <div class="btn-row" style="margin-top:14px;">
+      <button type="submit" class="btn btn-primary" value="ok">Insert</button>
+      <button type="button" class="btn btn-ghost" id="dlgCancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
 <script src="../blog/posts.js"></script>
 <script src="../assets/blog.js"></script>
 <script>
@@ -522,7 +557,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
 <meta name="description" content="${esc(desc)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; media-src 'self' https:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${esc(pageUrl)}">
 <meta property="og:type" content="article">
@@ -734,7 +769,7 @@ ${body}
     const codes = [];
     let t = text.replace(/`([^`\n]+)`/g, (m, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000'; });
     t = esc(t);
-    t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, u) => {
+    t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (m, alt, u) => {
       const url = mdUrl(u);
       return url ? '<img src="' + escAttr(url) + '" alt="' + escAttr(unesc(alt)) + '" loading="lazy">' : m;
     });
@@ -749,10 +784,36 @@ ${body}
     return t;
   }
 
+  // ----- Media helpers (video / audio / button / file) -----
+  function embedFor(raw) {
+    const u = unesc(raw).trim();
+    let m;
+    if ((m = u.match(/(?:youtube\.com\/watch\?(?:[^#\s]*&)?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([\w-]{11})/i))) {
+      return '<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/' + m[1] + '" title="YouTube video" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen"></iframe></div>';
+    }
+    if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/i))) {
+      return '<div class="embed"><iframe src="https://player.vimeo.com/video/' + m[1] + '" title="Vimeo video" loading="lazy" allowfullscreen allow="fullscreen; picture-in-picture"></iframe></div>';
+    }
+    const url = mdUrl(raw);
+    return url ? '<video controls preload="metadata" playsinline src="' + escAttr(url) + '"></video>' : '';
+  }
+  function mdDirective(kind, label, rawUrl) {
+    const url = mdUrl(rawUrl);
+    if (kind === 'video') return embedFor(rawUrl);
+    if (!url) return '';
+    const ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener"' : '';
+    const text = mdInline(label || '').trim();
+    if (kind === 'audio') return '<audio controls preload="none" src="' + escAttr(url) + '"></audio>';
+    if (kind === 'button') return '<p class="post-actions"><a class="btn btn-primary" href="' + escAttr(url) + '"' + ext + '>' + (text || 'Open') + '</a></p>';
+    if (kind === 'button-outline') return '<p class="post-actions"><a class="btn btn-ghost" href="' + escAttr(url) + '"' + ext + '>' + (text || 'Open') + '</a></p>';
+    if (kind === 'file') return '<p><a class="file-link" href="' + escAttr(url) + '" download>⬇ ' + (text || 'Download file') + '</a></p>';
+    return '';
+  }
+
   function mdToHtml(src) {
     const lines = src.replace(/\r\n?/g, '\n').split('\n');
     const out = [];
-    const blockStart = /^(```|#{1,6}\s|>\s?|\s*[-*]\s+|\s*\d+\.\s+|(-{3,}|\*{3,})\s*$)/;
+    const blockStart = /^(```|@\[|#{1,6}\s|>\s?|\s*[-*]\s+|\s*\d+\.\s+|(-{3,}|\*{3,})\s*$)/;
     let i = 0;
     while (i < lines.length) {
       const line = lines[i];
@@ -765,6 +826,15 @@ ${body}
         continue;
       }
       if (!line.trim()) { i++; continue; }
+      if ((m = line.match(/^@\[(video|audio|button|button-outline|file)(?:\s+([^\]]*))?\]\((\S+?)\)\s*$/))) {
+        const html = mdDirective(m[1], m[2], m[3]);
+        if (html) out.push(html);
+        i++; continue;
+      }
+      if ((m = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\s+"([^"]+)"\)\s*$/))) {
+        const u = mdUrl(m[2]);
+        if (u) { out.push('<figure><img src="' + escAttr(u) + '" alt="' + escAttr(m[1]) + '" loading="lazy"><figcaption>' + mdInline(m[3]) + '</figcaption></figure>'); i++; continue; }
+      }
       if ((m = line.match(/^(#{1,6})\s+(.*)$/))) {
         const lvl = m[1].length <= 2 ? 2 : 3;
         out.push('<h' + lvl + '>' + mdInline(m[2].trim()) + '</h' + lvl + '>');
@@ -800,7 +870,8 @@ ${body}
   // Preview-only sanitiser (the editor is yours, but never run stray scripts in the tool)
   function sanitizePreview(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
-    doc.querySelectorAll('script,iframe,object,embed,style,link,meta,form,base').forEach(n => n.remove());
+    doc.querySelectorAll('script,object,embed,style,link,meta,form,base').forEach(n => n.remove());
+    doc.querySelectorAll('iframe').forEach(f => { if (!/^https:\/\/(www\.youtube-nocookie\.com|player\.vimeo\.com)\//.test(f.getAttribute('src') || '')) f.remove(); });
     doc.querySelectorAll('*').forEach(el => {
       Array.from(el.attributes).forEach(a => {
         if (/^on/i.test(a.name) || /^\s*(javascript|data):/i.test(a.value) && a.name !== 'src') el.removeAttribute(a.name);
@@ -928,6 +999,7 @@ ${body}
     $('codeEntry').textContent = JSON.stringify(entryFor(p), null, 2);
     $('codeBody').textContent = p.bodyHtml || '(empty)';
 
+    mapAttachmentsToPreview($('pvPost'));
     renderTagSuggestions();
     saveDraft();
   }
@@ -972,12 +1044,12 @@ ${body}
     bold: () => wrapSel('**', '**', 'bold text'), italic: () => wrapSel('*', '*', 'italic text'),
     code: () => wrapSel('`', '`', 'code'), codeblock: () => wrapSel('\n```\n', '\n```\n', 'code here'),
     ul: () => prefixLines('- '), ol: () => prefixLines('', true), quote: () => prefixLines('> '),
-    link: () => { const u = prompt('Link URL (https://…)'); if (u) wrapSel('[', '](' + u.trim() + ')', 'link text'); },
-    image: () => {
-      const u = prompt('Image URL or path (e.g. /assets/uploads/photo.png)'); if (!u) return;
-      const a = prompt('Alt text: describe the image for screen readers and search engines') || '';
-      wrapSel('![' + a.replace(/[\]\[]/g, '') + '](' + u.trim() + ')', '', '');
-    }
+    link: () => openInsert('link'),
+    image: () => openInsert('image'),
+    video: () => openInsert('video'),
+    audio: () => openInsert('audio'),
+    button: () => openInsert('button'),
+    file: () => openInsert('file')
   };
   $('mdToolbar').addEventListener('click', (e) => {
     const b = e.target.closest('.tool-btn'); if (b && actions[b.dataset.act]) actions[b.dataset.act]();
@@ -999,7 +1071,7 @@ ${body}
       ? 'Write in Markdown.\n\n## A heading\nA paragraph with **bold**, *italic*, `code` and a [link](https://example.com).\n\n- bullet\n- list'
       : '<p>Intro paragraph…</p>\n\n<h2>Recon</h2>\n<p>What I found…</p>';
     $('bodyHint').textContent = mode === 'md'
-      ? 'Markdown: ## heading, **bold**, *italic*, `code`, ``` code block ```, - list, > quote, [text](url), ![alt](url)'
+      ? 'Markdown: ## heading, **bold**, *italic*, `code`, - list, > quote, [text](url). Use the toolbar for image, video, audio, button and file.'
       : 'HTML mode: paste your own <p>, <h2>, <ul>, <pre><code>… exactly as it will be published.';
     scheduleRefresh();
   }
@@ -1023,6 +1095,130 @@ ${body}
     $('p-excerpt').value = autoExcerpt(t); scheduleRefresh();
   });
 
+
+  // =====================================================================
+  //  MEDIA: images, video, audio, buttons, files
+  // =====================================================================
+  const attachments = new Map(); // safe file name -> { file, blobUrl }
+  const UPLOAD_DIR = '/assets/uploads/';
+
+  const fmtSize = (n) => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  function safeName(name) {
+    const dot = name.lastIndexOf('.');
+    const base = (dot > 0 ? name.slice(0, dot) : name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'file';
+    const ext = dot > 0 ? name.slice(dot).toLowerCase().replace(/[^a-z0-9.]/g, '') : '';
+    let out = base + ext, n = 2;
+    while (attachments.has(out) && attachments.get(out).file.name !== name) out = base + '-' + (n++) + ext;
+    return out;
+  }
+  function addAttachment(file) {
+    const name = safeName(file.name);
+    const old = attachments.get(name); if (old) URL.revokeObjectURL(old.blobUrl);
+    attachments.set(name, { file, blobUrl: URL.createObjectURL(file) });
+    renderAttachments();
+    return name;
+  }
+  function renderAttachments() {
+    $('attachBox').hidden = attachments.size === 0;
+    $('attachList').innerHTML = Array.from(attachments.entries()).map(([name, a]) =>
+      '<li><span>' + esc(name) + ' <span style="color:var(--muted)">(' + fmtSize(a.file.size) + ')</span></span><button type="button" data-rm="' + escAttr(name) + '" aria-label="Remove ' + escAttr(name) + '">✕</button></li>').join('');
+  }
+  $('attachList').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-rm]'); if (!b) return;
+    const a = attachments.get(b.dataset.rm); if (a) URL.revokeObjectURL(a.blobUrl);
+    attachments.delete(b.dataset.rm); renderAttachments(); scheduleRefresh();
+  });
+  $('btnDlAttach').addEventListener('click', () => {
+    Array.from(attachments.entries()).forEach(([name, a], i) => setTimeout(() => downloadFile(name, a.file, a.file.type || 'application/octet-stream'), i * 350));
+    postStatus('Downloading ' + attachments.size + ' file(s). Upload them to /assets/uploads/ in your repo.', 'ok');
+  });
+  // show attached files in the live preview (they only exist in this browser until you upload them)
+  function mapAttachmentsToPreview(root) {
+    root.querySelectorAll('[src],[href]').forEach(el => {
+      ['src', 'href'].forEach(attr => {
+        const v = el.getAttribute(attr) || '';
+        if (v.indexOf(UPLOAD_DIR) === 0) {
+          const a = attachments.get(decodeURIComponent(v.slice(UPLOAD_DIR.length)));
+          if (a) el.setAttribute(attr, a.blobUrl);
+        }
+      });
+    });
+  }
+
+  // ---------- insert dialog ----------
+  const dlg = $('insertDialog');
+  const DIALOGS = {
+    link:   { title: 'Insert link', fields: [{ id: 'text', label: 'Link text', ph: 'e.g. read the docs' }, { id: 'url', label: 'URL', ph: 'https://…', req: true }] },
+    image:  { title: 'Insert image', file: 'image/*', fields: [{ id: 'url', label: 'Image URL or path', ph: 'https://… or choose a file below', req: true }, { id: 'alt', label: 'Alt text (describe the image)', ph: 'e.g. Wireshark showing a DNS query', req: true }, { id: 'caption', label: 'Caption (optional)', ph: '' }] },
+    video:  { title: 'Insert video', file: 'video/*', fields: [{ id: 'url', label: 'YouTube / Vimeo link, or video file URL', ph: 'https://youtu.be/… or choose a file below', req: true }] },
+    audio:  { title: 'Insert audio', file: 'audio/*', fields: [{ id: 'url', label: 'Audio file URL or path', ph: 'https://… or choose a file below', req: true }] },
+    button: { title: 'Insert button', fields: [{ id: 'text', label: 'Button text', ph: 'e.g. View on GitHub', req: true }, { id: 'url', label: 'Button link', ph: 'https://…', req: true }, { id: 'style', label: 'Style', select: [['button', 'Solid (main button)'], ['button-outline', 'Outline']] }] },
+    file:   { title: 'Insert download file', file: '*/*', fields: [{ id: 'url', label: 'File URL or path', ph: 'https://… or choose a file below', req: true }, { id: 'text', label: 'Button text', ph: 'e.g. Download the cheat sheet (PDF)' }] }
+  };
+  let dlgType = null, dlgSavedRange = null;
+
+  function openInsert(type) {
+    const spec = DIALOGS[type]; if (!spec) return;
+    dlgType = type;
+    const ta = $('p-body'); dlgSavedRange = [ta.selectionStart, ta.selectionEnd];
+    const selected = ta.value.slice(dlgSavedRange[0], dlgSavedRange[1]);
+    $('dlgTitle').textContent = spec.title;
+    $('dlgError').textContent = '';
+    let html = '';
+    if (spec.file) {
+      html += '<div class="form-field"><label for="dlg-file">Choose a file from your computer</label><input type="file" id="dlg-file" accept="' + spec.file + '"><div class="sub-hint">It is saved under ' + UPLOAD_DIR + ' (you upload it to your repo after).</div><img class="thumb" id="dlgThumb" alt="" hidden></div><div class="or">— or paste a link —</div>';
+    }
+    spec.fields.forEach(f => {
+      html += '<div class="form-field"><label for="dlg-' + f.id + '">' + f.label + '</label>';
+      if (f.select) html += '<select id="dlg-' + f.id + '">' + f.select.map(o => '<option value="' + o[0] + '">' + o[1] + '</option>').join('') + '</select>';
+      else html += '<input type="text" id="dlg-' + f.id + '" placeholder="' + escAttr(f.ph || '') + '" autocomplete="off">';
+      html += '</div>';
+    });
+    $('dlgFields').innerHTML = html;
+    if (selected && $('dlg-text')) $('dlg-text').value = selected;
+    const fileInput = $('dlg-file');
+    if (fileInput) fileInput.addEventListener('change', () => {
+      const f = fileInput.files[0]; if (!f) return;
+      if (f.size > 25 * 1048576) $('dlgError').textContent = 'Large file (' + fmtSize(f.size) + '). GitHub allows up to 100 MB, but big files slow your site. Compress it if you can.';
+      const name = addAttachment(f);
+      $('dlg-url').value = UPLOAD_DIR + name;
+      if (type === 'file' && $('dlg-text') && !$('dlg-text').value) $('dlg-text').value = 'Download ' + f.name;
+      if (type === 'image' && $('dlg-alt') && !$('dlg-alt').value) $('dlg-alt').value = f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
+      const th = $('dlgThumb'); if (th && type === 'image') { th.src = attachments.get(name).blobUrl; th.hidden = false; }
+    });
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    const first = dlg.querySelector('input:not([type=file]),select'); if (first) first.focus();
+  }
+  $('dlgCancel').addEventListener('click', () => dlg.close());
+  $('dlgForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const spec = DIALOGS[dlgType]; const v = {};
+    spec.fields.forEach(f => { v[f.id] = ($('dlg-' + f.id).value || '').trim(); });
+    for (const f of spec.fields) if (f.req && !v[f.id]) { $('dlgError').textContent = 'Please fill in: ' + f.label; $('dlg-' + f.id).focus(); return; }
+    if (v.url && !/^(https?:\/\/|\/|\.\.?\/|mailto:)/i.test(v.url)) { $('dlgError').textContent = 'The link must start with https:// (or / for a file on your site).'; return; }
+    let md = '';
+    if (dlgType === 'link') md = '[' + (v.text || v.url) + '](' + v.url + ')';
+    else if (dlgType === 'image') md = '![' + v.alt.replace(/[\[\]]/g, '') + '](' + v.url + (v.caption ? ' "' + v.caption.replace(/"/g, "'") + '"' : '') + ')';
+    else if (dlgType === 'video') md = '@[video](' + v.url + ')';
+    else if (dlgType === 'audio') md = '@[audio](' + v.url + ')';
+    else if (dlgType === 'button') md = '@[' + v.style + ' ' + v.text.replace(/[\]]/g, '') + '](' + v.url + ')';
+    else if (dlgType === 'file') md = '@[file ' + (v.text || 'Download file').replace(/[\]]/g, '') + '](' + v.url + ')';
+    insertAtCursor(md, dlgType === 'link');
+    dlg.close();
+  });
+  function insertAtCursor(text, inline) {
+    const ta = $('p-body'); ta.focus();
+    let [s, e] = dlgSavedRange || [ta.selectionStart, ta.selectionEnd];
+    const before = ta.value.slice(0, s), after = ta.value.slice(e);
+    const pre = inline ? '' : (before && !/\n\n$/.test(before) ? (/\n$/.test(before) ? '\n' : '\n\n') : '');
+    const post = inline ? '' : (after && !/^\n\n/.test(after) ? (/^\n/.test(after) ? '\n' : '\n\n') : '\n');
+    ta.value = before + pre + text + post + after;
+    const pos = (before + pre + text + post).length;
+    ta.selectionStart = ta.selectionEnd = pos;
+    scheduleRefresh();
+  }
+  if (!dlg.showModal) { /* very old browsers: the dialog opens inline via the open attribute */ }
+
   // ---------- Output sub-tabs ----------
   document.querySelectorAll('.subtab').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('.subtab').forEach(x => x.setAttribute('aria-selected', 'false'));
@@ -1036,7 +1232,7 @@ ${body}
     const el = $('postStatus'); el.textContent = msg; el.className = 'status-msg' + (kind ? ' ' + kind : '');
   }
   function downloadFile(name, text, type) {
-    const blob = new Blob([text], { type: type || 'text/plain' });
+    const blob = (text instanceof Blob) ? text : new Blob([text], { type: type || 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
@@ -1124,8 +1320,9 @@ ${body}
     const p = validatePost(); if (!p) return;
     const list = mergedPosts(p);
     const files = [[p.slug + '.html', postFile(p), 'text/html'], ['posts.js', buildPostsJs(list), 'text/javascript'], ['sitemap.xml', buildSitemap(list), 'application/xml'], ['rss.xml', buildRss(list), 'application/rss+xml'], ['llms.txt', buildLlms(list), 'text/plain']];
+    attachments.forEach((a, name) => files.push([name, a.file, a.file.type || 'application/octet-stream']));
     files.forEach((f, i) => setTimeout(() => downloadFile(f[0], f[1], f[2]), i * 350));
-    postStatus('Downloading 5 files: ' + p.slug + '.html → /blog/posts/ · posts.js → /blog/ · sitemap.xml, rss.xml and llms.txt → site root. If your browser blocks multiple downloads, allow them or download one at a time.', 'ok');
+    postStatus('Downloading ' + (5 + attachments.size) + ' files: ' + p.slug + '.html → /blog/posts/ · posts.js → /blog/ · sitemap.xml, rss.xml and llms.txt → site root' + (attachments.size ? ' · your images, video, audio and files → /assets/uploads/' : '') + '. If your browser blocks multiple downloads, allow them or download one at a time.', 'ok');
   });
   $('btnCopyEntry').addEventListener('click', () => {
     const p = validatePost(); if (!p) return;

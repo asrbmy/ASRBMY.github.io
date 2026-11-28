@@ -333,3 +333,23 @@ footer{border-top:1px solid var(--line); padding:36px 0;}
 html[data-theme="light"]{color-scheme:light;}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
 .sr-only{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+
+/* ---- Media inside write-ups: images, video, audio, buttons, files ---- */
+.post-body figure{margin:26px 0;}
+.post-body figure img{display:block; width:100%; height:auto; border-radius:10px; border:1px solid var(--line);}
+.post-body figcaption{font-size:13px; color:var(--muted); margin-top:8px; text-align:center;}
+.post-body p > img{display:block; max-width:100%; height:auto; border-radius:10px; border:1px solid var(--line); margin:6px 0;}
+.post-body video, .post-body audio{display:block; width:100%; max-width:100%; margin:22px 0; border-radius:10px;}
+.post-body video{background:#000; aspect-ratio:16/9;}
+.post-body .embed{position:relative; aspect-ratio:16/9; margin:24px 0; border-radius:10px; overflow:hidden; border:1px solid var(--line); background:#000;}
+.post-body .embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.post-body .post-actions{display:flex; flex-wrap:wrap; gap:12px; margin:22px 0;}
+.post-body .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:11px 22px; border-radius:8px; font-weight:600; font-size:14px; text-decoration:none; border:1px solid transparent; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+.post-body .btn:hover{transform:translateY(-1px);}
+.post-body .btn-primary{background:var(--cyan); color:#08131A;}
+.post-body .btn-primary:hover{box-shadow:0 6px 20px rgba(79,209,197,.25);}
+.post-body .btn-ghost{border-color:var(--line); color:var(--ink); background:var(--panel);}
+.post-body .btn-ghost:hover{border-color:var(--cyan);}
+.post-body .file-link{display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border:1px solid var(--line); background:var(--panel); border-radius:10px; color:var(--ink); text-decoration:none; font-weight:600; font-size:14px; word-break:break-word;}
+.post-body .file-link:hover{border-color:var(--cyan); color:var(--cyan);}
+@media print{ .post-body .embed, .post-body video, .post-body audio{display:none;} }

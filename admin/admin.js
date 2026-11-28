@@ -165,7 +165,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)} — Ajit Singh Rathore (ASRBMY)</title>
 <meta name="description" content="${esc(desc)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data:; media-src 'self' https:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; connect-src 'self' https://gc.zgo.at; object-src 'none'; base-uri 'self';">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${esc(pageUrl)}">
 <meta property="og:type" content="article">
